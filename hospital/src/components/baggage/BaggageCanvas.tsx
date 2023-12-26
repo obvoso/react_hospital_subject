@@ -6,25 +6,34 @@ import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
 import { startAnimation, checkForMatchAndScore } from "./index";
+import { useRecoilState } from "recoil";
+import { BaggageGameState } from "@/atoms/baggage/game";
 
 export interface ItemAnimation {
   startTime: number;
   yPosition: number;
   status: BaggageStatus;
   done: boolean;
+  index: number;
 }
 
-interface BaggageCanvasProps {
-  score: number;
-  setScore: (score: number) => void;
+function shuffleArrayKeepingIndex(array: ItemAnimation[]) {
+  let newArray = [...array];
+
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
 }
 
-export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
+export default function BaggageCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
   const [leftPressed, rightPressed] = useKeyPress(["ArrowLeft", "ArrowRight"]);
   const [lastScoredItemIndex, setLastScoredItemIndex] = useState(-1);
+  const [gameState, setGameState] = useRecoilState(BaggageGameState);
 
   useEffect(() => {
     preloadImages([
@@ -40,12 +49,12 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
   }, []);
 
   useEffect(() => {
-    if (itemAnimations.length === 0) return;
     startAnimation(
       canvasRef.current,
       itemAnimations,
       setItemAnimations,
-      images
+      images,
+      gameState.start
     );
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -53,8 +62,9 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
         checkForMatchAndScore({
           pressedKey: event.key,
           itemAnimations: itemAnimations,
-          score: score,
-          setScore: setScore,
+          score: gameState.score,
+          setScore: () =>
+            setGameState({ ...gameState, score: gameState.score + 1 }),
           setItemAnimations: setItemAnimations,
           lastScoredItemIndex: lastScoredItemIndex,
           setLastScoredItemIndex: setLastScoredItemIndex,
@@ -66,7 +76,7 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [itemAnimations]);
+  }, [itemAnimations, gameState.start]);
 
   const preloadImages = (imageFiles: string[]) => {
     let imagesToLoad = imageFiles.length;
@@ -85,15 +95,16 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
             yPosition: 0,
             status: i % 2 === 0 ? BaggageStatus.BLUE : BaggageStatus.YELLOW,
             done: false,
+            index: i,
           }));
-
-          setItemAnimations(newItems);
-          startAnimation(
-            canvasRef.current,
-            itemAnimations,
-            setItemAnimations,
-            images
-          );
+          setItemAnimations(shuffleArrayKeepingIndex(newItems));
+          //startAnimation(
+          //  canvasRef.current,
+          //  itemAnimations,
+          //  setItemAnimations,
+          //  images,
+          //  gameState.start
+          //);
         }
       };
       img.onerror = () => {

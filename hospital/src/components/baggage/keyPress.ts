@@ -1,7 +1,6 @@
 import { BaggageStatus } from "@/utils/constEnum";
 import { cmToPixels } from "@/utils/unit";
 import { ItemAnimation } from "./BaggageCanvas";
-import { Key, useState } from "react";
 
 interface KeyPressProps {
   pressedKey: string;
@@ -27,6 +26,7 @@ const checkForMatchAndScore = ({
   const startPointY = 100;
   const endPositionY = cmToPixels(8.5);
 
+  console.log(itemAnimations);
   const currentItemIndex = itemAnimations.findIndex(
     (item) =>
       item.done === false &&
