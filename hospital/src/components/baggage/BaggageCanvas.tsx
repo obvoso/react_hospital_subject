@@ -8,6 +8,7 @@ import { BaggageStatus } from "@/utils/constEnum";
 import { startAnimation, checkForMatchAndScore } from "./index";
 import { useRecoilState } from "recoil";
 import { BaggageGameState } from "@/atoms/baggage/game";
+import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
 
 export interface ItemAnimation {
   startTime: number;
@@ -27,7 +28,11 @@ function shuffleArrayKeepingIndex(array: ItemAnimation[]) {
   return newArray;
 }
 
-export default function BaggageCanvas() {
+export default function BaggageCanvas({
+  gameLevelInfo,
+}: {
+  gameLevelInfo: BaggageLevelConfig;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);

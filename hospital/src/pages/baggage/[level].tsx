@@ -1,14 +1,18 @@
 // pages/game.tsx
 import { BaggageCanvas } from "@/components/baggage";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
+import {
+  baggageGameLevels,
+  BaggageLevelConfig,
+} from "@/utils/baggageGameLevels";
 import { BaggageGameState } from "@/atoms/baggage/game";
 
 export default function GamePage() {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const router = useRouter();
-  const { level } = router.query;
+  const level = Number(router.query.level);
   const [timeLeft, setTimeLeft] = useState(11);
 
   useEffect(() => {
@@ -38,13 +42,13 @@ export default function GamePage() {
     if (gameState.score === 5) {
       setGameState({ start: false, score: 0 }); // 상태 리셋
       setTimeLeft(11); // 시간 리셋
-      router.push(`/baggage/${Number(level) + 1}`); // 다음 레벨로 이동
+      router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
     }
   }, [gameState.score, router, level]);
 
   return (
     <div>
-      <BaggageCanvas />
+      <BaggageCanvas gameLevelInfo={baggageGameLevels[level]} />
       <div>Score: {gameState.score}</div>
       <div>Time left: {timeLeft}</div>
       <button onClick={() => setGameState({ ...gameState, start: true })}>
@@ -54,36 +58,26 @@ export default function GamePage() {
   );
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [
-      { params: { level: "0" } },
-      { params: { level: "1" } },
-      { params: { level: "2" } },
-      { params: { level: "3" } },
-      { params: { level: "4" } },
-      { params: { level: "5" } },
-      { params: { level: "6" } },
-      { params: { level: "7" } },
-      { params: { level: "8" } },
-      { params: { level: "9" } },
-      { params: { level: "10" } },
-      { params: { level: "11" } },
-      { params: { level: "12" } },
-    ],
-    fallback: false,
-  };
-}
+export const getStaticPaths = async () => {
+  const paths = baggageGameLevels.map((level) => ({
+    params: { level: level.level.toString() },
+  }));
 
-export async function getStaticProps({
-  params,
-}: {
-  params: { level: string };
-}) {
-  // Fetch data for the blog post using params.level
+  return { paths, fallback: false };
+};
+
+export const getStaticProps = async ({ params }) => {
+  const levelConfig = baggageGameLevels.find(
+    (level) => level.level.toString() === params.level
+  );
+
+  if (!levelConfig) {
+    return { notFound: true };
+  }
+
   return {
     props: {
-      // Your props here
+      levelConfig,
     },
   };
-}
+};
