@@ -1,9 +1,9 @@
 import { RefObject } from "react";
 import { ItemAnimation } from "./BaggageCanvas";
 import { cmToPixels } from "@/utils/unit";
-import { drawStaticElements } from "./drawUtils";
+import { drawStaticElements } from "./index";
 
-export const startAnimation = (
+const startAnimation = (
   canvas: HTMLCanvasElement | null,
   itemAnimations: ItemAnimation[],
   setItemAnimations: (item: ItemAnimation[]) => void,
@@ -59,3 +59,5 @@ export const startAnimation = (
 
   requestAnimationFrame(animate);
 };
+
+export default startAnimation;

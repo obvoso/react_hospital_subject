@@ -15,7 +15,7 @@ interface KeyPressProps {
   setLastScoredItemIndex: (index: number) => void;
 }
 
-export const checkForMatchAndScore = ({
+const checkForMatchAndScore = ({
   pressedKey,
   itemAnimations,
   score,
@@ -56,3 +56,5 @@ export const checkForMatchAndScore = ({
     });
   }
 };
+
+export default checkForMatchAndScore;

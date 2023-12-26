@@ -1,7 +1,7 @@
 import { cmToPixels } from "@/utils/unit";
 import { RefObject } from "react";
 
-export const drawStaticElements = (
+const drawStaticElements = (
   context: CanvasRenderingContext2D,
   images: RefObject<{ [key: string]: HTMLImageElement }>
 ) => {
@@ -27,3 +27,5 @@ export const drawStaticElements = (
     );
   }
 };
+
+export default drawStaticElements;

@@ -4,9 +4,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
-import { startAnimation } from "./animationUtils";
 import { BaggageStatus } from "@/utils/constEnum";
-import { checkForMatchAndScore } from "./keyPress";
+import { startAnimation, checkForMatchAndScore } from "./index";
 
 export interface ItemAnimation {
   startTime: number;
