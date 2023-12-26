@@ -1,14 +1,14 @@
-import React, { useRef, useEffect, RefObject, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
-//import { startAnimation } from "./animationUtils";
-import { drawStaticElements } from "./drawUtils";
+import { startAnimation } from "./animationUtils";
 import { BaggageStatus } from "@/utils/constEnum";
+import { checkForMatchAndScore } from "./keyPress";
 
-interface ItemAnimation {
+export interface ItemAnimation {
   startTime: number;
   yPosition: number;
   status: BaggageStatus;
@@ -25,6 +25,7 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
   const [leftPressed, rightPressed] = useKeyPress(["ArrowLeft", "ArrowRight"]);
+  const [lastScoredItemIndex, setLastScoredItemIndex] = useState(-1);
 
   useEffect(() => {
     preloadImages([
@@ -41,11 +42,24 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
 
   useEffect(() => {
     if (itemAnimations.length === 0) return;
-    startAnimation();
+    startAnimation(
+      canvasRef.current,
+      itemAnimations,
+      setItemAnimations,
+      images
+    );
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-        checkForMatchAndScore(event.key);
+        checkForMatchAndScore({
+          pressedKey: event.key,
+          itemAnimations: itemAnimations,
+          score: score,
+          setScore: setScore,
+          setItemAnimations: setItemAnimations,
+          lastScoredItemIndex: lastScoredItemIndex,
+          setLastScoredItemIndex: setLastScoredItemIndex,
+        });
       }
     };
 
@@ -75,7 +89,12 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
           }));
 
           setItemAnimations(newItems);
-          startAnimation();
+          startAnimation(
+            canvasRef.current,
+            itemAnimations,
+            setItemAnimations,
+            images
+          );
         }
       };
       img.onerror = () => {
@@ -84,93 +103,6 @@ export default function BaggageCanvas({ score, setScore }: BaggageCanvasProps) {
       };
       img.src = `/assets/baggage/${file}.png`;
     });
-  };
-
-  const startAnimation = () =>
-    //canvas: HTMLCanvasElement
-    //itemAnimations: RefObject<{ startTime: number; yPosition: number }[]>,
-    //images: RefObject<{ [key: string]: HTMLImageElement }>
-    {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const context = canvas.getContext("2d");
-      if (!context) return;
-
-      const startPositionY = 100;
-      const endPositionY = cmToPixels(8.5);
-      const duration = 1000; // 레일을 지나는데 걸리는 시간
-      const delay = 1000; // 다음 아이템 등장 시간
-
-      const animate = (timestamp: number) => {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        drawStaticElements(context, images);
-
-        let animateDone = false;
-        let updatedAnimations = itemAnimations.map((item, index) => {
-          if (item.done) return item;
-
-          const itemKey = `item_${index}`;
-          const itemImage = images.current[itemKey];
-          if (!itemImage) return item;
-
-          const startTime =
-            item.startTime === 0 ? timestamp + index * delay : item.startTime;
-          const elapsed = timestamp - startTime;
-          const progress = elapsed > 0 ? Math.min(1, elapsed / duration) : 0;
-          const yPosition = progress * endPositionY;
-
-          if (progress < 1)
-            context.drawImage(itemImage, startPositionY, yPosition);
-
-          if (progress >= 1 && index === itemAnimations.length - 1)
-            animateDone = true;
-
-          return {
-            ...item,
-            startTime: startTime,
-            yPosition: yPosition,
-            done: progress >= 1,
-          };
-        });
-
-        setItemAnimations(updatedAnimations);
-
-        if (!animateDone) {
-          requestAnimationFrame(animate);
-        }
-      };
-
-      requestAnimationFrame(animate);
-    };
-
-  const checkForMatchAndScore = (pressedKey: string) => {
-    const startPointY = 100;
-    const endPositionY = cmToPixels(8.5);
-
-    const currentItem = itemAnimations.find(
-      (item) =>
-        item.done == false &&
-        item.yPosition >= startPointY &&
-        item.yPosition <= endPositionY
-    );
-    console.log(currentItem);
-    if (!currentItem) return;
-
-    const carrierColor =
-      pressedKey === "ArrowLeft" ? BaggageStatus.BLUE : BaggageStatus.YELLOW;
-
-    if (currentItem.status === carrierColor) {
-      setScore(score + 1);
-      console.log("score: ", score + 1);
-      setItemAnimations((prevItems) => {
-        return prevItems.map((item) => {
-          if (item === currentItem) {
-            return { ...item, done: true };
-          }
-          return item;
-        });
-      });
-    }
   };
 
   return (
