@@ -2,13 +2,15 @@ import { RefObject } from "react";
 import { ItemAnimation } from "../BaggageCanvas";
 import { cmToPixels } from "@/utils/unit";
 import { drawStaticElements } from "../index";
+import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
 
 const startAnimation = (
   canvas: HTMLCanvasElement | null,
   itemAnimations: ItemAnimation[],
   setItemAnimations: (item: ItemAnimation[]) => void,
   images: RefObject<{ [key: string]: HTMLImageElement }>,
-  start: boolean
+  start: boolean,
+  config: BaggageLevelConfig
 ) => {
   if (!canvas) return;
   const context = canvas.getContext("2d");
@@ -16,13 +18,13 @@ const startAnimation = (
 
   let animationFrameId: number;
   const startPositionX = 130;
-  const endPositionY = cmToPixels(8.5);
-  const duration = 1000; // 레일을 지나는데 걸리는 시간
+  const endPositionY = cmToPixels(8.5) + 100;
+  const duration = config.speed; // 레일을 지나는데 걸리는 시간
   const delay = 1000; // 다음 아이템 등장 시간
 
   const animate = (timestamp: number) => {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    drawStaticElements(context, images);
+    drawStaticElements(context, images, config);
 
     if (!start) {
       cancelAnimationFrame(animationFrameId);
@@ -32,10 +34,8 @@ const startAnimation = (
     let animateDone = false;
     let updatedAnimations = itemAnimations.map((item, index) => {
       if (item.done) return item;
-
-      const itemKey = `item_${item.index}`;
-      if (!images.current) return item;
-      const itemImage = images.current[itemKey];
+      if (images.current === null) return item;
+      const itemImage = images.current[item.imageKey];
       if (!itemImage) return item;
 
       const startTime =

@@ -14,7 +14,7 @@ export interface ItemAnimation {
   yPosition: number;
   status: BaggageStatus;
   done: boolean;
-  index: number;
+  imageKey: string;
 }
 
 export default function BaggageCanvas() {
@@ -27,18 +27,8 @@ export default function BaggageCanvas() {
   const [config, setConfig] = useRecoilState(BaggageGameConfigState);
 
   useEffect(() => {
-    // 레벨링 따라서 이미지 로드해야됨
-    preloadImages(canvasRef, images, itemAnimations, setItemAnimations, [
-      "conveyor",
-      "carrier_blue",
-      "carrier_yellow",
-      "item_0",
-      "item_1",
-      "item_2",
-      "item_3",
-      "item_4",
-    ]);
-  }, []);
+    preloadImages(canvasRef, images, itemAnimations, setItemAnimations, config);
+  }, [config]);
 
   useEffect(() => {
     startAnimation(
@@ -46,7 +36,8 @@ export default function BaggageCanvas() {
       itemAnimations,
       setItemAnimations,
       images,
-      gameState.start
+      gameState.start,
+      config
     );
 
     const handleKeyDown = (event: KeyboardEvent) => {

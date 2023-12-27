@@ -1,31 +1,33 @@
+import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
 import { cmToPixels } from "@/utils/unit";
 import { RefObject } from "react";
 
 const drawStaticElements = (
   context: CanvasRenderingContext2D,
-  images: RefObject<{ [key: string]: HTMLImageElement }>
+  images: RefObject<{ [key: string]: HTMLImageElement }>,
+  config: BaggageLevelConfig
 ) => {
   if (!context || !images.current) return;
 
   const conveyorImage = images.current["conveyor"];
-  const carrierBlueImage = images.current["carrier_blue"];
-  const carrierYellowImage = images.current["carrier_yellow"];
 
   if (conveyorImage) {
     context.drawImage(conveyorImage, 100, 100, cmToPixels(4), cmToPixels(8.5));
   }
-  if (carrierBlueImage) {
-    context.drawImage(carrierBlueImage, 10, 300, cmToPixels(2), cmToPixels(3));
-  }
-  if (carrierYellowImage) {
+
+  config.basket.forEach((basket) => {
+    if (!images.current) return;
+    const basketImage = images.current[basket.imageKey];
+    if (!basketImage) return;
+    if (basket.x === undefined || basket.y === undefined) return;
     context.drawImage(
-      carrierYellowImage,
-      260,
-      300,
+      basketImage,
+      basket.x,
+      basket.y,
       cmToPixels(2),
       cmToPixels(3)
     );
-  }
+  });
 };
 
 export default drawStaticElements;

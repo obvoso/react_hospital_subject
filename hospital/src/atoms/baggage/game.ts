@@ -19,5 +19,7 @@ export const BaggageGameConfigState = atom<BaggageLevelConfig>({
     direction: "forward",
     classification: 2,
     obstacle: false,
+    basket: [],
+    item: [],
   },
 });

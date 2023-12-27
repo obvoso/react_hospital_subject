@@ -1,3 +1,9 @@
+interface assets {
+  imageKey: string;
+  x?: number;
+  y?: number;
+}
+
 export interface BaggageLevelConfig {
   level: number;
   items: number;
@@ -6,6 +12,8 @@ export interface BaggageLevelConfig {
   direction: string;
   classification: number;
   obstacle: boolean;
+  basket: assets[];
+  item: assets[];
 }
 
 export const baggageGameLevels: BaggageLevelConfig[] = [
@@ -18,6 +26,17 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "forward",
     obstacle: false,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_blue6", x: 0, y: 0 },
+      { imageKey: "item_blue2", x: 0, y: 0 },
+      { imageKey: "item_yellow1", x: 0, y: 0 },
+      { imageKey: "item_yellow2", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+    ],
   },
   {
     level: 1,
@@ -27,6 +46,17 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "forward",
     obstacle: true,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_blue3", x: 0, y: 0 },
+      { imageKey: "item_blue4", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+      { imageKey: "item_yellow4", x: 0, y: 0 },
+      { imageKey: "item_red1", x: 0, y: 0 },
+    ],
   },
   //본문제
   {
@@ -37,6 +67,22 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "forward",
     obstacle: false,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_blue6", x: 0, y: 0 },
+      { imageKey: "item_blue2", x: 0, y: 0 },
+      { imageKey: "item_blue3", x: 0, y: 0 },
+      { imageKey: "item_blue4", x: 0, y: 0 },
+      { imageKey: "item_blue5", x: 0, y: 0 },
+      { imageKey: "item_yellow1", x: 0, y: 0 },
+      { imageKey: "item_yellow2", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+      { imageKey: "item_yellow4", x: 0, y: 0 },
+      { imageKey: "item_yellow5", x: 0, y: 0 },
+    ],
   },
   {
     level: 3,
@@ -46,6 +92,22 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "forward",
     obstacle: true,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_blue6", x: 0, y: 0 },
+      { imageKey: "item_blue2", x: 0, y: 0 },
+      { imageKey: "item_blue3", x: 0, y: 0 },
+      { imageKey: "item_blue4", x: 0, y: 0 },
+      { imageKey: "item_yellow1", x: 0, y: 0 },
+      { imageKey: "item_yellow2", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+      { imageKey: "item_yellow4", x: 0, y: 0 },
+      { imageKey: "item_green1", x: 0, y: 0 },
+      { imageKey: "item_red1", x: 0, y: 0 },
+    ],
   },
   {
     level: 4,
@@ -55,6 +117,22 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "backward",
     obstacle: false,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_blue6", x: 0, y: 0 },
+      { imageKey: "item_blue2", x: 0, y: 0 },
+      { imageKey: "item_blue3", x: 0, y: 0 },
+      { imageKey: "item_blue4", x: 0, y: 0 },
+      { imageKey: "item_blue5", x: 0, y: 0 },
+      { imageKey: "item_yellow1", x: 0, y: 0 },
+      { imageKey: "item_yellow2", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+      { imageKey: "item_yellow4", x: 0, y: 0 },
+      { imageKey: "item_yellow5", x: 0, y: 0 },
+    ],
   },
   {
     level: 5,
@@ -64,6 +142,22 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "backward",
     obstacle: true,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_blue6", x: 0, y: 0 },
+      { imageKey: "item_blue2", x: 0, y: 0 },
+      { imageKey: "item_blue3", x: 0, y: 0 },
+      { imageKey: "item_blue4", x: 0, y: 0 },
+      { imageKey: "item_yellow1", x: 0, y: 0 },
+      { imageKey: "item_yellow2", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+      { imageKey: "item_yellow4", x: 0, y: 0 },
+      { imageKey: "item_green1", x: 0, y: 0 },
+      { imageKey: "item_red1", x: 0, y: 0 },
+    ],
   },
   {
     level: 6,
@@ -73,6 +167,23 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 40,
     direction: "forward",
     obstacle: false,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_red", x: 110, y: 450 },
+    ],
+    item: [
+      { imageKey: "item_blue6", x: 0, y: 0 },
+      { imageKey: "item_blue2", x: 0, y: 0 },
+      { imageKey: "item_blue3", x: 0, y: 0 },
+      { imageKey: "item_yellow1", x: 0, y: 0 },
+      { imageKey: "item_yellow2", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+      { imageKey: "item_yellow4", x: 0, y: 0 },
+      { imageKey: "item_red3", x: 0, y: 0 },
+      { imageKey: "item_red4", x: 0, y: 0 },
+      { imageKey: "item_red5", x: 0, y: 0 },
+    ],
   },
   {
     level: 7,
@@ -82,6 +193,23 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 40,
     direction: "forward",
     obstacle: true,
+    basket: [
+      { imageKey: "carrier_blue", x: 10, y: 350 },
+      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_red", x: 110, y: 450 },
+    ],
+    item: [
+      { imageKey: "item_blue2", x: 0, y: 0 },
+      { imageKey: "item_blue3", x: 0, y: 0 },
+      { imageKey: "item_yellow2", x: 0, y: 0 },
+      { imageKey: "item_yellow3", x: 0, y: 0 },
+      { imageKey: "item_red3", x: 0, y: 0 },
+      { imageKey: "item_red4", x: 0, y: 0 },
+      { imageKey: "item_red5", x: 0, y: 0 },
+      { imageKey: "item_green1", x: 0, y: 0 },
+      { imageKey: "item_clothes1", x: 0, y: 0 },
+      { imageKey: "item_clothes4", x: 0, y: 0 },
+    ],
   },
   {
     level: 8,
@@ -91,6 +219,22 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 40,
     direction: "forward",
     obstacle: false,
+    basket: [
+      { imageKey: "carrier_gray", x: 10, y: 350 },
+      { imageKey: "basket", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_clothes1", x: 0, y: 0 },
+      { imageKey: "item_clothes2", x: 0, y: 0 },
+      { imageKey: "item_clothes3", x: 0, y: 0 },
+      { imageKey: "item_clothes4", x: 0, y: 0 },
+      { imageKey: "item_clothes5", x: 0, y: 0 },
+      { imageKey: "item_food1", x: 0, y: 0 },
+      { imageKey: "item_food2", x: 0, y: 0 },
+      { imageKey: "item_food3", x: 0, y: 0 },
+      { imageKey: "item_food4", x: 0, y: 0 },
+      { imageKey: "item_food5", x: 0, y: 0 },
+    ],
   },
   {
     level: 9,
@@ -100,6 +244,22 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 40,
     direction: "forward",
     obstacle: true,
+    basket: [
+      { imageKey: "carrier_gray", x: 10, y: 350 },
+      { imageKey: "basket", x: 260, y: 350 },
+    ],
+    item: [
+      { imageKey: "item_clothes1", x: 0, y: 0 },
+      { imageKey: "item_clothes2", x: 0, y: 0 },
+      { imageKey: "item_clothes3", x: 0, y: 0 },
+      { imageKey: "item_clothes4", x: 0, y: 0 },
+      { imageKey: "item_food1", x: 0, y: 0 },
+      { imageKey: "item_food2", x: 0, y: 0 },
+      { imageKey: "item_food3", x: 0, y: 0 },
+      { imageKey: "item_toy1", x: 0, y: 0 },
+      { imageKey: "item_toy2", x: 0, y: 0 },
+      { imageKey: "item_toy3", x: 0, y: 0 },
+    ],
   },
   {
     level: 10,
@@ -109,6 +269,23 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 45,
     direction: "forward",
     obstacle: false,
+    basket: [
+      { imageKey: "carrier_gray", x: 10, y: 350 },
+      { imageKey: "basket", x: 260, y: 350 },
+      { imageKey: "bag", x: 120, y: 450 },
+    ],
+    item: [
+      { imageKey: "item_clothes5", x: 0, y: 0 },
+      { imageKey: "item_clothes2", x: 0, y: 0 },
+      { imageKey: "item_clothes3", x: 0, y: 0 },
+      { imageKey: "item_clothes4", x: 0, y: 0 },
+      { imageKey: "item_food3", x: 0, y: 0 },
+      { imageKey: "item_food4", x: 0, y: 0 },
+      { imageKey: "item_food5", x: 0, y: 0 },
+      { imageKey: "item_acc1", x: 0, y: 0 },
+      { imageKey: "item_acc2", x: 0, y: 0 },
+      { imageKey: "item_acc3", x: 0, y: 0 },
+    ],
   },
   {
     level: 11,
@@ -118,5 +295,22 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 45,
     direction: "forward",
     obstacle: true,
+    basket: [
+      { imageKey: "carrier_gray", x: 10, y: 350 },
+      { imageKey: "basket", x: 260, y: 350 },
+      { imageKey: "bag", x: 120, y: 450 },
+    ],
+    item: [
+      { imageKey: "item_clothes5", x: 0, y: 0 },
+      { imageKey: "item_clothes2", x: 0, y: 0 },
+      { imageKey: "item_clothes3", x: 0, y: 0 },
+      { imageKey: "item_food3", x: 0, y: 0 },
+      { imageKey: "item_food4", x: 0, y: 0 },
+      { imageKey: "item_food5", x: 0, y: 0 },
+      { imageKey: "item_acc2", x: 0, y: 0 },
+      { imageKey: "item_acc3", x: 0, y: 0 },
+      { imageKey: "item_toy2", x: 0, y: 0 },
+      { imageKey: "item_toy3", x: 0, y: 0 },
+    ],
   },
 ];

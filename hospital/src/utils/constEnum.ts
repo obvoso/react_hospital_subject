@@ -1,6 +1,6 @@
 export const enum BaggageStatus {
-  RED = "red",
-  BLUE = "blue",
-  GREEN = "green",
-  YELLOW = "yellow",
+  LEFT = "left",
+  RIGHT = "right",
+  DOWN = "down",
+  PASS = "pass",
 }
