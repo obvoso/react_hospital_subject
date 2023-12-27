@@ -1,5 +1,5 @@
 import { BaggageCanvas } from "@/components/baggage";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggageGameLevels";
@@ -11,6 +11,7 @@ export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
   const [timeLeft, setTimeLeft] = useState(config.timeLimit);
+  const [nextBtn, setNextBtn] = useState(false);
 
   // 타이머
   useEffect(() => {
@@ -28,25 +29,21 @@ export default function GamePage() {
 
   // 게임 오버
   useEffect(() => {
-    if (timeLeft === 0) {
-      setGameState({ start: false, score: 0 }); // 상태 리셋
-      setTimeLeft(config.timeLimit); // 시간 리셋
-      router.push(`/baggage/${Number(level) + 1}`); // 다음 레벨로 이동
-    }
+    if (timeLeft === 0) setNextBtn(true);
   }, [timeLeft]);
 
   // 게임 클리어
   useEffect(() => {
     //장애물 있을 경우 종료 조건 다름
-    if (
-      gameState.score === config.items
-      //gameState.score === (config.obstacle ? config.items - 2 : config.items)
-    ) {
-      setGameState({ start: false, score: 0 }); // 상태 리셋
-      setTimeLeft(config.timeLimit); // 시간 리셋
-      if (level < 11) router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
-    }
+    if (gameState.score === config.items - config.obstacle) setNextBtn(true);
   }, [gameState.score, router, level]);
+
+  const handleNextLevel = useCallback(() => {
+    setGameState({ start: false, score: 0 }); // 상태 리셋
+    setTimeLeft(config.timeLimit); // 시간 리셋
+    if (level < 11) router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
+    setNextBtn(false);
+  }, [nextBtn, router, level]);
 
   // 레벨 설정
   useEffect(() => {
@@ -64,6 +61,7 @@ export default function GamePage() {
       <button onClick={() => setGameState({ ...gameState, start: true })}>
         Start
       </button>
+      {nextBtn && <button onClick={handleNextLevel}>Next</button>}
     </div>
   );
 }

@@ -44,10 +44,8 @@ const startAnimation = (
         if (progress < 1 && yPosition >= 50)
           context.drawImage(itemImage, startPositionX, yPosition, 90, 90);
 
-        if (progress >= 1 && index === itemAnimations.length - 1) {
-          console.log("animation done");
+        if (progress >= 1 && index === itemAnimations.length - 1)
           animateDone = true;
-        }
 
         return {
           ...item,

@@ -11,7 +11,7 @@ export interface BaggageLevelConfig {
   timeLimit: number;
   direction: string;
   classification: number;
-  obstacle: boolean;
+  obstacle: number;
   basket: assets[];
   item: assets[];
 }
@@ -25,7 +25,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 5,
     timeLimit: 30,
     direction: "forward",
-    obstacle: false,
+    obstacle: 0,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -45,7 +45,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 5,
     timeLimit: 30,
     direction: "forward",
-    obstacle: true,
+    obstacle: 1,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -66,7 +66,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 30,
     direction: "forward",
-    obstacle: false,
+    obstacle: 0,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -91,7 +91,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 5,
     timeLimit: 30,
     direction: "forward",
-    obstacle: true,
+    obstacle: 2,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -116,7 +116,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 30,
     direction: "backward",
-    obstacle: false,
+    obstacle: 0,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -141,7 +141,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 30,
     direction: "backward",
-    obstacle: true,
+    obstacle: 2,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -166,7 +166,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 40,
     direction: "forward",
-    obstacle: false,
+    obstacle: 0,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -192,7 +192,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 40,
     direction: "forward",
-    obstacle: true,
+    obstacle: 3,
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
@@ -218,7 +218,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 40,
     direction: "forward",
-    obstacle: false,
+    obstacle: 0,
     basket: [
       { imageKey: "carrier_gray", x: 10, y: 350 },
       { imageKey: "basket", x: 260, y: 350 },
@@ -243,7 +243,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 40,
     direction: "forward",
-    obstacle: true,
+    obstacle: 3,
     basket: [
       { imageKey: "carrier_gray", x: 10, y: 350 },
       { imageKey: "basket", x: 260, y: 350 },
@@ -268,7 +268,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 45,
     direction: "forward",
-    obstacle: false,
+    obstacle: 0,
     basket: [
       { imageKey: "carrier_gray", x: 10, y: 350 },
       { imageKey: "basket", x: 260, y: 350 },
@@ -294,7 +294,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     items: 10,
     timeLimit: 45,
     direction: "forward",
-    obstacle: true,
+    obstacle: 2,
     basket: [
       { imageKey: "carrier_gray", x: 10, y: 350 },
       { imageKey: "basket", x: 260, y: 350 },
