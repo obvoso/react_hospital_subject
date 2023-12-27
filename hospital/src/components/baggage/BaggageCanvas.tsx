@@ -40,6 +40,7 @@ export default function BaggageCanvas() {
       config
     );
 
+    //얘 수정해라!!!!
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         checkForMatchAndScore({
