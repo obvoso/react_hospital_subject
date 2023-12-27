@@ -44,7 +44,7 @@ export default function GamePage() {
     ) {
       setGameState({ start: false, score: 0 }); // 상태 리셋
       setTimeLeft(config.timeLimit); // 시간 리셋
-      router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
+      if (level < 11) router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
     }
   }, [gameState.score, router, level]);
 
@@ -52,12 +52,13 @@ export default function GamePage() {
   useEffect(() => {
     const levelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
+    console.log(levelConfig);
     setTimeLeft(levelConfig.timeLimit);
   }, [level]);
 
   return (
     <div>
-      <BaggageCanvas />
+      <BaggageCanvas level={level} key={level} />
       <div>Score: {gameState.score}</div>
       <div>Time left: {timeLeft}</div>
       <button onClick={() => setGameState({ ...gameState, start: true })}>

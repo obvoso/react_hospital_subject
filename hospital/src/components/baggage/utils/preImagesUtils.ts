@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { ItemAnimation } from "../BaggageCanvas";
 import { BaggageStatus } from "@/utils/constEnum";
-import { shuffleArrayKeepingIndex } from "../index";
+import { drawStaticElements, shuffleArrayKeepingIndex } from "../index";
 import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
 
 export const preloadImages = (
@@ -12,15 +12,20 @@ export const preloadImages = (
   config: BaggageLevelConfig
 ) => {
   staticImagesPreload(images, config);
-  let imagesToLoad = config.items - 1;
+  let imagesToLoad = config.items;
+
+  console.log(config);
 
   config.item.forEach((file) => {
     const img = new Image();
-    console.log(file);
     img.onload = () => {
-      if (!images.current) return;
+      if (!images.current) {
+        console.error("image.current is null");
+        return;
+      }
       images.current[file.imageKey] = img;
       imagesToLoad--;
+      console.log(imagesToLoad, canvasRef.current, itemAnimations.length);
       if (
         imagesToLoad === 0 &&
         canvasRef.current &&
@@ -32,8 +37,7 @@ export const preloadImages = (
           status: keyType(
             config.item[i].imageKey,
             config.direction,
-            config.classification,
-            config.obstacle
+            config.classification
           ),
           done: false,
           imageKey: config.item[i].imageKey,
@@ -48,6 +52,12 @@ export const preloadImages = (
     };
     img.src = `/assets/baggage/${file.imageKey}.png`;
   });
+
+  drawStaticElements(
+    canvasRef.current?.getContext("2d") as any,
+    images,
+    config
+  );
 };
 
 const staticImagesPreload = (
@@ -77,21 +87,20 @@ const staticImagesPreload = (
 function keyType(
   item: string,
   direction: string,
-  classification: number,
-  obstacle: boolean
+  classification: number
 ): BaggageStatus {
-  if (item.includes("blue" || "clothes")) {
+  if (item.includes("blue") || item.includes("clothes")) {
     if (direction === "forward") {
       return BaggageStatus.LEFT;
     }
     return BaggageStatus.RIGHT;
-  } else if (item.includes("yellow" || "food")) {
+  } else if (item.includes("yellow") || item.includes("food")) {
     if (direction === "forward") {
       return BaggageStatus.RIGHT;
     }
     return BaggageStatus.LEFT;
-  } else if (item.includes("red" || "acc")) {
-    if (direction === "forward" && classification === 3 && !obstacle) {
+  } else if (item.includes("red") || item.includes("acc")) {
+    if (direction === "forward" && classification === 3) {
       return BaggageStatus.DOWN;
     }
   }

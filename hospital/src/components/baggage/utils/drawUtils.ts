@@ -18,15 +18,13 @@ const drawStaticElements = (
   config.basket.forEach((basket) => {
     if (!images.current) return;
     const basketImage = images.current[basket.imageKey];
+
     if (!basketImage) return;
     if (basket.x === undefined || basket.y === undefined) return;
-    context.drawImage(
-      basketImage,
-      basket.x,
-      basket.y,
-      cmToPixels(2),
-      cmToPixels(3)
-    );
+
+    const width = basket.y >= 400 ? cmToPixels(3) : cmToPixels(2);
+    const height = basket.y >= 400 ? cmToPixels(2) : cmToPixels(3);
+    context.drawImage(basketImage, basket.x, basket.y, width, height);
   });
 };
 

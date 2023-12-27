@@ -10,13 +10,13 @@ const startAnimation = (
   setItemAnimations: (item: ItemAnimation[]) => void,
   images: RefObject<{ [key: string]: HTMLImageElement }>,
   start: boolean,
+  setGameState: (state: any) => void,
   config: BaggageLevelConfig
 ) => {
   if (!canvas) return;
   const context = canvas.getContext("2d");
   if (!context) return;
 
-  let animationFrameId: number;
   const startPositionX = 130;
   const endPositionY = cmToPixels(8.5) + 100;
   const duration = config.speed; // 레일을 지나는데 걸리는 시간
@@ -26,48 +26,45 @@ const startAnimation = (
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawStaticElements(context, images, config);
 
-    if (!start) {
-      cancelAnimationFrame(animationFrameId);
-      return;
-    }
+    if (start) {
+      let animateDone = false;
+      let updatedAnimations = itemAnimations.map((item, index) => {
+        if (item.done) return item;
 
-    let animateDone = false;
-    let updatedAnimations = itemAnimations.map((item, index) => {
-      if (item.done) return item;
-      if (images.current === null) return item;
-      const itemImage = images.current[item.imageKey];
-      if (!itemImage) return item;
+        if (images.current === null) return item;
+        const itemImage = images.current[item.imageKey];
+        if (!itemImage) return item;
 
-      const startTime =
-        item.startTime === 0 ? timestamp + index * delay : item.startTime;
-      const elapsed = timestamp - startTime;
-      const progress = elapsed > 0 ? Math.min(1, elapsed / duration) : 0;
-      const yPosition = progress * endPositionY;
+        const startTime =
+          item.startTime === 0 ? timestamp + index * delay : item.startTime;
+        const elapsed = timestamp - startTime;
+        const progress = elapsed > 0 ? Math.min(1, elapsed / duration) : 0;
+        const yPosition = progress * endPositionY;
 
-      if (progress < 1 && yPosition >= 50)
-        context.drawImage(itemImage, startPositionX, yPosition, 90, 90);
+        if (progress < 1 && yPosition >= 50)
+          context.drawImage(itemImage, startPositionX, yPosition, 90, 90);
 
-      if (progress >= 1 && index === itemAnimations.length - 1) {
-        animateDone = true;
+        if (progress >= 1 && index === itemAnimations.length - 1) {
+          console.log("animation done");
+          animateDone = true;
+        }
+
+        return {
+          ...item,
+          startTime: startTime,
+          yPosition: yPosition,
+          done: progress >= 1,
+        };
+      });
+
+      setItemAnimations(updatedAnimations);
+
+      if (!animateDone) {
+        requestAnimationFrame(animate);
       }
-
-      return {
-        ...item,
-        startTime: startTime,
-        yPosition: yPosition,
-        done: progress >= 1,
-      };
-    });
-    setItemAnimations(updatedAnimations);
-    animateDone = updatedAnimations.every((item) => item.done);
-
-    if (!animateDone) {
-      animationFrameId = requestAnimationFrame(animate);
-    } else {
-      cancelAnimationFrame(animationFrameId);
     }
   };
-  animationFrameId = requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 };
 
 export default startAnimation;

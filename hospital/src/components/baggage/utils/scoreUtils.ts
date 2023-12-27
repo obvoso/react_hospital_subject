@@ -26,7 +26,7 @@ const checkForMatchAndScore = ({
   const startPointY = 100;
   const endPositionY = cmToPixels(8.5);
 
-  //console.log(itemAnimations);
+  console.log(itemAnimations);
   const currentItemIndex = itemAnimations.findIndex(
     (item) =>
       item.done === false &&
@@ -40,16 +40,29 @@ const checkForMatchAndScore = ({
   const currentItem = itemAnimations[currentItemIndex];
   if (currentItem.done) return;
 
-  const carrierColor =
-    pressedKey === "ArrowLeft" ? BaggageStatus.BLUE : BaggageStatus.YELLOW;
+  const pressKey =
+    pressedKey === "ArrowLeft"
+      ? BaggageStatus.LEFT
+      : pressedKey === "ArrowRight"
+      ? BaggageStatus.RIGHT
+      : BaggageStatus.DOWN;
 
-  if (currentItem.status === carrierColor) {
+  if (currentItem.status === pressKey) {
     setScore(score + 1);
     setLastScoredItemIndex(currentItemIndex);
     setItemAnimations((prevItems: ItemAnimation[]) => {
       return prevItems.map((item) => {
         if (item === currentItem) {
-          return { ...item, done: true, scored: true };
+          return { ...item, done: true };
+        }
+        return item;
+      });
+    });
+  } else {
+    setItemAnimations((prevItems: ItemAnimation[]) => {
+      return prevItems.map((item) => {
+        if (item === currentItem) {
+          return { ...item, done: true };
         }
         return item;
       });

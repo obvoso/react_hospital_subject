@@ -170,7 +170,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
-      { imageKey: "carrier_red", x: 110, y: 450 },
+      { imageKey: "carrier_red", x: 110, y: 480 },
     ],
     item: [
       { imageKey: "item_blue6", x: 0, y: 0 },
@@ -196,7 +196,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     basket: [
       { imageKey: "carrier_blue", x: 10, y: 350 },
       { imageKey: "carrier_yellow", x: 260, y: 350 },
-      { imageKey: "carrier_red", x: 110, y: 450 },
+      { imageKey: "carrier_red", x: 110, y: 480 },
     ],
     item: [
       { imageKey: "item_blue2", x: 0, y: 0 },
@@ -272,7 +272,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     basket: [
       { imageKey: "carrier_gray", x: 10, y: 350 },
       { imageKey: "basket", x: 260, y: 350 },
-      { imageKey: "bag", x: 120, y: 450 },
+      { imageKey: "bag", x: 120, y: 480 },
     ],
     item: [
       { imageKey: "item_clothes5", x: 0, y: 0 },
@@ -298,7 +298,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     basket: [
       { imageKey: "carrier_gray", x: 10, y: 350 },
       { imageKey: "basket", x: 260, y: 350 },
-      { imageKey: "bag", x: 120, y: 450 },
+      { imageKey: "bag", x: 120, y: 480 },
     ],
     item: [
       { imageKey: "item_clothes5", x: 0, y: 0 },

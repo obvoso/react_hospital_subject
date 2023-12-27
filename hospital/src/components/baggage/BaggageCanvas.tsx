@@ -5,9 +5,15 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
-import { startAnimation, checkForMatchAndScore, preloadImages } from "./index";
+import {
+  startAnimation,
+  checkForMatchAndScore,
+  preloadImages,
+  drawStaticElements,
+} from "./index";
 import { useRecoilState } from "recoil";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
+import { start } from "repl";
 
 export interface ItemAnimation {
   startTime: number;
@@ -17,7 +23,7 @@ export interface ItemAnimation {
   imageKey: string;
 }
 
-export default function BaggageCanvas() {
+export default function BaggageCanvas({ level }: { level: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
@@ -28,21 +34,32 @@ export default function BaggageCanvas() {
 
   useEffect(() => {
     preloadImages(canvasRef, images, itemAnimations, setItemAnimations, config);
+    return () => {
+      images.current = {};
+      setItemAnimations([]);
+      setLastScoredItemIndex(-1);
+    };
   }, [config]);
 
   useEffect(() => {
+    const allDone = itemAnimations.every((item) => item.done);
+    if (allDone) return;
     startAnimation(
       canvasRef.current,
       itemAnimations,
       setItemAnimations,
       images,
       gameState.start,
+      setGameState,
       config
     );
-
-    //얘 수정해라!!!!
+    //장애물 어떻게 감지하지...
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      if (
+        event.key === "ArrowLeft" ||
+        event.key === "ArrowRight" ||
+        event.key === "ArrowDown"
+      ) {
         checkForMatchAndScore({
           pressedKey: event.key,
           itemAnimations: itemAnimations,
@@ -60,12 +77,7 @@ export default function BaggageCanvas() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [itemAnimations, gameState.start]);
-
-  //useEffect(() => {
-  //  setItemAnimations([]);
-  //  setLastScoredItemIndex(-1);
-  //}, [config, gameState.start]);
+  }, [itemAnimations, gameState.start, level, config]);
 
   return (
     <>
