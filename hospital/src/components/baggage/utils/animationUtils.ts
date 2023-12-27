@@ -3,6 +3,7 @@ import { ItemAnimation } from "../BaggageCanvas";
 import { cmToPixels } from "@/utils/unit";
 import { drawStaticElements } from "../index";
 import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
+import { BaggageStatus } from "@/utils/constEnum";
 
 const startAnimation = (
   canvas: HTMLCanvasElement | null,
@@ -10,7 +11,6 @@ const startAnimation = (
   setItemAnimations: (item: ItemAnimation[]) => void,
   images: RefObject<{ [key: string]: HTMLImageElement }>,
   start: boolean,
-  setGameState: (state: any) => void,
   config: BaggageLevelConfig
 ) => {
   if (!canvas) return;
@@ -18,7 +18,7 @@ const startAnimation = (
   if (!context) return;
 
   const startPositionX = 130;
-  const endPositionY = cmToPixels(8.5) + 100;
+  const endPositionY = cmToPixels(8.5) + 20;
   const duration = config.speed; // 레일을 지나는데 걸리는 시간
   const delay = 1000; // 다음 아이템 등장 시간
 
@@ -38,7 +38,7 @@ const startAnimation = (
         const startTime =
           item.startTime === 0 ? timestamp + index * delay : item.startTime;
         const elapsed = timestamp - startTime;
-        const progress = elapsed > 0 ? Math.min(1, elapsed / duration) : 0;
+        const progress = Math.min(1, elapsed / duration);
         const yPosition = progress * endPositionY;
 
         if (progress < 1 && yPosition >= 50)
@@ -51,7 +51,7 @@ const startAnimation = (
           ...item,
           startTime: startTime,
           yPosition: yPosition,
-          done: progress >= 1,
+          done: progress >= 1 && item.status !== BaggageStatus.PASS,
         };
       });
 

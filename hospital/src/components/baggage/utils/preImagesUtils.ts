@@ -14,18 +14,13 @@ export const preloadImages = (
   staticImagesPreload(images, config);
   let imagesToLoad = config.items;
 
-  console.log(config);
-
   config.item.forEach((file) => {
     const img = new Image();
     img.onload = () => {
-      if (!images.current) {
-        console.error("image.current is null");
-        return;
-      }
+      if (!images.current) return;
+
       images.current[file.imageKey] = img;
       imagesToLoad--;
-      console.log(imagesToLoad, canvasRef.current, itemAnimations.length);
       if (
         imagesToLoad === 0 &&
         canvasRef.current &&
@@ -42,7 +37,6 @@ export const preloadImages = (
           done: false,
           imageKey: config.item[i].imageKey,
         }));
-        console.log(newItems);
         setItemAnimations(shuffleArrayKeepingIndex(newItems));
       }
     };

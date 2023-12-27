@@ -35,7 +35,7 @@ export default function GamePage() {
   // 게임 클리어
   useEffect(() => {
     //장애물 있을 경우 종료 조건 다름
-    if (gameState.score === config.items - config.obstacle) setNextBtn(true);
+    if (gameState.score === config.items) setNextBtn(true);
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
@@ -49,7 +49,6 @@ export default function GamePage() {
   useEffect(() => {
     const levelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
-    console.log(levelConfig);
     setTimeLeft(levelConfig.timeLimit);
   }, [level]);
 

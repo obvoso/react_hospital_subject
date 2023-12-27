@@ -5,15 +5,9 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
-import {
-  startAnimation,
-  checkForMatchAndScore,
-  preloadImages,
-  drawStaticElements,
-} from "./index";
+import { startAnimation, checkForMatchAndScore, preloadImages } from "./index";
 import { useRecoilState } from "recoil";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
-import { start } from "repl";
 
 export interface ItemAnimation {
   startTime: number;
@@ -42,18 +36,15 @@ export default function BaggageCanvas({ level }: { level: number }) {
   }, [config]);
 
   useEffect(() => {
-    const allDone = itemAnimations.every((item) => item.done);
-    if (allDone) return;
     startAnimation(
       canvasRef.current,
       itemAnimations,
       setItemAnimations,
       images,
       gameState.start,
-      setGameState,
       config
     );
-    //장애물 어떻게 감지하지...
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
         event.key === "ArrowLeft" ||
@@ -73,9 +64,35 @@ export default function BaggageCanvas({ level }: { level: number }) {
       }
     };
 
+    const incrementScoreForPassingItems = () => {
+      if (
+        itemAnimations.find(
+          (item) =>
+            item.status === BaggageStatus.PASS &&
+            !item.done &&
+            item.yPosition >= cmToPixels(8.5) + 20
+        )
+      ) {
+        setItemAnimations((prev) =>
+          prev.map((item) => {
+            if (
+              item.status === BaggageStatus.PASS &&
+              !item.done &&
+              item.yPosition >= cmToPixels(8.5) + 20
+            ) {
+              item.done = true;
+              setGameState({ ...gameState, score: gameState.score + 1 });
+            }
+            return item;
+          })
+        );
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      incrementScoreForPassingItems();
     };
   }, [itemAnimations, gameState.start, level, config]);
 
