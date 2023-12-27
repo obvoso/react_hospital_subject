@@ -5,10 +5,9 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
-import { startAnimation, checkForMatchAndScore } from "./index";
+import { startAnimation, checkForMatchAndScore, preloadImages } from "./index";
 import { useRecoilState } from "recoil";
-import { BaggageGameState } from "@/atoms/baggage/game";
-import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
+import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
 
 export interface ItemAnimation {
   startTime: number;
@@ -18,30 +17,18 @@ export interface ItemAnimation {
   index: number;
 }
 
-function shuffleArrayKeepingIndex(array: ItemAnimation[]) {
-  let newArray = [...array];
-
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-}
-
-export default function BaggageCanvas({
-  gameLevelInfo,
-}: {
-  gameLevelInfo: BaggageLevelConfig;
-}) {
+export default function BaggageCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
   const [leftPressed, rightPressed] = useKeyPress(["ArrowLeft", "ArrowRight"]);
   const [lastScoredItemIndex, setLastScoredItemIndex] = useState(-1);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
+  const [config, setConfig] = useRecoilState(BaggageGameConfigState);
 
   useEffect(() => {
-    preloadImages([
+    // 레벨링 따라서 이미지 로드해야됨
+    preloadImages(canvasRef, images, itemAnimations, setItemAnimations, [
       "conveyor",
       "carrier_blue",
       "carrier_yellow",
@@ -83,42 +70,10 @@ export default function BaggageCanvas({
     };
   }, [itemAnimations, gameState.start]);
 
-  const preloadImages = (imageFiles: string[]) => {
-    let imagesToLoad = imageFiles.length;
-    imageFiles.forEach((file) => {
-      const img = new Image();
-      img.onload = () => {
-        images.current[file] = img;
-        imagesToLoad--;
-        if (
-          imagesToLoad === 0 &&
-          canvasRef.current &&
-          itemAnimations.length === 0
-        ) {
-          const newItems = Array.from({ length: 5 }, (_, i) => ({
-            startTime: 0,
-            yPosition: 0,
-            status: i % 2 === 0 ? BaggageStatus.BLUE : BaggageStatus.YELLOW,
-            done: false,
-            index: i,
-          }));
-          setItemAnimations(shuffleArrayKeepingIndex(newItems));
-          //startAnimation(
-          //  canvasRef.current,
-          //  itemAnimations,
-          //  setItemAnimations,
-          //  images,
-          //  gameState.start
-          //);
-        }
-      };
-      img.onerror = () => {
-        console.error(`Failed to load image: ${file}`);
-        imagesToLoad--;
-      };
-      img.src = `/assets/baggage/${file}.png`;
-    });
-  };
+  //useEffect(() => {
+  //  setItemAnimations([]);
+  //  setLastScoredItemIndex(-1);
+  //}, [config, gameState.start]);
 
   return (
     <>

@@ -3,7 +3,7 @@ export interface BaggageLevelConfig {
   items: number;
   speed: number;
   timeLimit: number;
-  direction?: string;
+  direction: string;
   classification: number;
   obstacle: boolean;
 }
@@ -16,6 +16,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 1000,
     items: 5,
     timeLimit: 30,
+    direction: "forward",
     obstacle: false,
   },
   {
@@ -24,6 +25,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 1000,
     items: 5,
     timeLimit: 30,
+    direction: "forward",
     obstacle: true,
   },
   //본문제
@@ -33,6 +35,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 750,
     items: 10,
     timeLimit: 30,
+    direction: "forward",
     obstacle: false,
   },
   {
@@ -41,6 +44,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 750,
     items: 5,
     timeLimit: 30,
+    direction: "forward",
     obstacle: true,
   },
   {
@@ -67,6 +71,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 500,
     items: 10,
     timeLimit: 40,
+    direction: "forward",
     obstacle: false,
   },
   {
@@ -75,6 +80,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 500,
     items: 10,
     timeLimit: 40,
+    direction: "forward",
     obstacle: true,
   },
   {
@@ -83,6 +89,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 500,
     items: 10,
     timeLimit: 40,
+    direction: "forward",
     obstacle: false,
   },
   {
@@ -91,6 +98,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 500,
     items: 10,
     timeLimit: 40,
+    direction: "forward",
     obstacle: true,
   },
   {
@@ -99,6 +107,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 500,
     items: 10,
     timeLimit: 45,
+    direction: "forward",
     obstacle: false,
   },
   {
@@ -107,6 +116,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     speed: 500,
     items: 10,
     timeLimit: 45,
+    direction: "forward",
     obstacle: true,
   },
 ];
