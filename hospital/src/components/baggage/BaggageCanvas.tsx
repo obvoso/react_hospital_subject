@@ -1,13 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-import Button from "@mui/material/Button";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowCircleDownTwoToneIcon from "@mui/icons-material/ArrowCircleDownTwoTone";
+import ArrowCircleLeftTwoToneIcon from "@mui/icons-material/ArrowCircleLeftTwoTone";
+import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwoTone";
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
 import { startAnimation, checkForMatchAndScore, preloadImages } from "./index";
 import { useRecoilState } from "recoil";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
+import KeyDownButton from "./KeyDownButton";
 
 export interface ItemAnimation {
   startTime: number;
@@ -21,10 +22,14 @@ export default function BaggageCanvas({ level }: { level: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
-  const [leftPressed, rightPressed] = useKeyPress(["ArrowLeft", "ArrowRight"]);
   const [lastScoredItemIndex, setLastScoredItemIndex] = useState(-1);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const [config, setConfig] = useRecoilState(BaggageGameConfigState);
+  const [leftPressed, rightPressed, downPressed] = useKeyPress([
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowDown",
+  ]);
 
   useEffect(() => {
     preloadImages(canvasRef, images, itemAnimations, setItemAnimations, config);
@@ -70,7 +75,7 @@ export default function BaggageCanvas({ level }: { level: number }) {
           (item) =>
             item.status === BaggageStatus.PASS &&
             !item.done &&
-            item.yPosition >= cmToPixels(8.5) + 20
+            item.yPosition >= cmToPixels(8.5) - 80
         )
       ) {
         setItemAnimations((prev) =>
@@ -78,7 +83,7 @@ export default function BaggageCanvas({ level }: { level: number }) {
             if (
               item.status === BaggageStatus.PASS &&
               !item.done &&
-              item.yPosition >= cmToPixels(8.5) + 20
+              item.yPosition >= cmToPixels(8.5) - 80
             ) {
               item.done = true;
               setGameState({ ...gameState, score: gameState.score + 1 });
@@ -97,24 +102,33 @@ export default function BaggageCanvas({ level }: { level: number }) {
   }, [itemAnimations, gameState.start, level, config]);
 
   return (
-    <>
+    <div className="flex flex-col items-center min-w-[500px]">
+      <div className="flex flex-col bg-blue-100 p-4 rounded-xl">
+        <span className="text-lg font-bold text-center">
+          {level > 1 ? level - 1 + "단계" : "연습"}
+        </span>
+        <span className="font-semibold text-center whitespace-pre-line">
+          {config.subject}
+        </span>
+      </div>
       <canvas
         ref={canvasRef}
         width={cmToPixels(10)}
-        height={cmToPixels(15)}
+        height={cmToPixels(14)}
       ></canvas>
-      <Button
-        variant={leftPressed ? "contained" : "outlined"}
-        startIcon={<ArrowBackIosIcon />}
-      >
-        Left
-      </Button>
-      <Button
-        variant={rightPressed ? "contained" : "outlined"}
-        endIcon={<ArrowForwardIosIcon />}
-      >
-        Right
-      </Button>
-    </>
+      <div className="flex mt-4">
+        <KeyDownButton downPressed={leftPressed}>
+          <ArrowCircleLeftTwoToneIcon />
+        </KeyDownButton>
+        {level >= 6 && level !== 8 && level !== 9 && (
+          <KeyDownButton downPressed={downPressed}>
+            <ArrowCircleDownTwoToneIcon />
+          </KeyDownButton>
+        )}
+        <KeyDownButton downPressed={rightPressed}>
+          <ArrowCircleRightTwoToneIcon />
+        </KeyDownButton>
+      </div>
+    </div>
   );
 }

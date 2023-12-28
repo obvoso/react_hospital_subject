@@ -46,12 +46,6 @@ export const preloadImages = (
     };
     img.src = `/assets/baggage/${file.imageKey}.png`;
   });
-
-  drawStaticElements(
-    canvasRef.current?.getContext("2d") as any,
-    images,
-    config
-  );
 };
 
 const staticImagesPreload = (
@@ -59,11 +53,20 @@ const staticImagesPreload = (
   config: BaggageLevelConfig
 ) => {
   const conveyorImage = new Image();
+
   conveyorImage.onload = () => {
     if (!images.current) return;
     images.current["conveyor"] = conveyorImage;
   };
   conveyorImage.src = "/assets/baggage/conveyor.png";
+
+  const personImage = new Image();
+
+  personImage.onload = () => {
+    if (!images.current) return;
+    images.current["person"] = personImage;
+  };
+  personImage.src = "/assets/baggage/person.png";
 
   config.basket.forEach((file) => {
     const img = new Image();

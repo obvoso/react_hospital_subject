@@ -23,8 +23,8 @@ const checkForMatchAndScore = ({
   lastScoredItemIndex,
   setLastScoredItemIndex,
 }: KeyPressProps) => {
-  const startPointY = 100;
-  const endPositionY = cmToPixels(8.5);
+  const startPointY = 0;
+  const endPositionY = cmToPixels(8.5) - 80;
 
   console.log(itemAnimations);
   const currentItemIndex = itemAnimations.findIndex(

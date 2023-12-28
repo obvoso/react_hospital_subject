@@ -27,10 +27,10 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "forward",
     obstacle: 0,
-    subject: "연습\n왼쪽, 오른쪽 버튼을 사용하여 같은 색깔의 짐을 챙겨 주세요!",
+    subject: "왼쪽, 오른쪽 버튼을 사용하여 같은 색깔의 짐을 챙겨 주세요!",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_blue6", x: 0, y: 0 },
@@ -49,10 +49,10 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     direction: "forward",
     obstacle: 1,
     subject:
-      "연습\n이번에도 같은 색깔의 짐을 챙겨 주세요! 단, 다른 색깔의 짐은 무시하세요.",
+      "이번에도 같은 색깔의 짐을 챙겨 주세요!\n단, 다른 색깔의 짐은 무시하세요.",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_blue3", x: 0, y: 0 },
@@ -71,10 +71,10 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "forward",
     obstacle: 0,
-    subject: "1단계\n이번에는 속도가 조금 빨라집니다.",
+    subject: "이번에는 속도가 조금 빨라집니다.",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_blue6", x: 0, y: 0 },
@@ -93,14 +93,14 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     level: 3,
     classification: 2,
     speed: 750,
-    items: 5,
+    items: 10,
     timeLimit: 30,
     direction: "forward",
     obstacle: 2,
-    subject: "2단계\n이번에도 다른 색깔의 짐은 무시하세요.",
+    subject: "이번에도 다른 색깔의 짐은 무시하세요.",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_blue6", x: 0, y: 0 },
@@ -123,10 +123,10 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "backward",
     obstacle: 0,
-    subject: "3단계\n이번에는 반대의 색깔로 짐을 챙겨야합니다.",
+    subject: "이번에는 반대의 색깔로 짐을 챙겨야합니다.",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_blue6", x: 0, y: 0 },
@@ -150,10 +150,10 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     direction: "backward",
     obstacle: 2,
     subject:
-      "4단계\n이번에도 반대의 색깔로 짐을 챙겨주세요.\n단, 다른 색깔의 짐은 무시하세요",
+      "이번에도 반대의 색깔로 짐을 챙겨주세요.\n단, 다른 색깔의 짐은 무시하세요",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_blue6", x: 0, y: 0 },
@@ -176,11 +176,11 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 40,
     direction: "forward",
     obstacle: 0,
-    subject: "5단계\n이번에는 색깔이 하나 더 많습니다.",
+    subject: "이번에는 색깔이 하나 더 많습니다.",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
-      { imageKey: "carrier_red", x: 110, y: 480 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
+      { imageKey: "carrier_red", x: 120, y: 430 },
     ],
     item: [
       { imageKey: "item_blue6", x: 0, y: 0 },
@@ -203,11 +203,11 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 40,
     direction: "forward",
     obstacle: 3,
-    subject: "6단계\n이번에도 다른 색깔의 짐은 무시하세요.",
+    subject: "이번에도 다른 색깔의 짐은 무시하세요.",
     basket: [
-      { imageKey: "carrier_blue", x: 10, y: 350 },
-      { imageKey: "carrier_yellow", x: 260, y: 350 },
-      { imageKey: "carrier_red", x: 110, y: 480 },
+      { imageKey: "carrier_blue", x: 10, y: 260 },
+      { imageKey: "carrier_yellow", x: 280, y: 260 },
+      { imageKey: "carrier_red", x: 120, y: 430 },
     ],
     item: [
       { imageKey: "item_blue2", x: 0, y: 0 },
@@ -231,10 +231,10 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     direction: "forward",
     obstacle: 0,
     subject:
-      "7단계\n이번에는 옷과 음식을 나눠 챙겨야합니다.\n 캐리어에는 옷을 담고, 바구니에는 음식을 담아주세요!",
+      "이번에는 옷과 음식을 나눠 챙겨야합니다.\n캐리어에는 옷을 담고, 바구니에는 음식을 담아주세요!",
     basket: [
-      { imageKey: "carrier_gray", x: 10, y: 350 },
-      { imageKey: "basket", x: 260, y: 350 },
+      { imageKey: "carrier_gray", x: 10, y: 260 },
+      { imageKey: "basket", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_clothes1", x: 0, y: 0 },
@@ -257,10 +257,10 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 40,
     direction: "forward",
     obstacle: 3,
-    subject: "8단계\n이번에도 옷과 음식을 챙겨주세요!\n단 장난감은 무시하세요.",
+    subject: "이번에도 옷과 음식을 챙겨주세요!\n단 장난감은 무시하세요.",
     basket: [
-      { imageKey: "carrier_gray", x: 10, y: 350 },
-      { imageKey: "basket", x: 260, y: 350 },
+      { imageKey: "carrier_gray", x: 10, y: 260 },
+      { imageKey: "basket", x: 280, y: 260 },
     ],
     item: [
       { imageKey: "item_clothes1", x: 0, y: 0 },
@@ -284,11 +284,11 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     direction: "forward",
     obstacle: 0,
     subject:
-      "9단계\n이번에는 악세서리가 추가되었어요!\n손가방에는 악세서리를 담아주세요!",
+      "이번에는 악세서리가 추가되었어요!\n손가방에는 악세서리를 담아주세요!",
     basket: [
-      { imageKey: "carrier_gray", x: 10, y: 350 },
-      { imageKey: "basket", x: 260, y: 350 },
-      { imageKey: "bag", x: 120, y: 480 },
+      { imageKey: "carrier_gray", x: 10, y: 260 },
+      { imageKey: "basket", x: 280, y: 260 },
+      { imageKey: "bag", x: 130, y: 430 },
     ],
     item: [
       { imageKey: "item_clothes5", x: 0, y: 0 },
@@ -312,11 +312,11 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     direction: "forward",
     obstacle: 2,
     subject:
-      "10단계\n이번데도 옷, 음식, 악세서리를 챙겨주세요!\n단, 장난감은 무시하세요.",
+      "이번에도 옷, 음식, 악세서리를 챙겨주세요!\n단, 장난감은 무시하세요.",
     basket: [
-      { imageKey: "carrier_gray", x: 10, y: 350 },
-      { imageKey: "basket", x: 260, y: 350 },
-      { imageKey: "bag", x: 120, y: 480 },
+      { imageKey: "carrier_gray", x: 10, y: 260 },
+      { imageKey: "basket", x: 280, y: 260 },
+      { imageKey: "bag", x: 130, y: 430 },
     ],
     item: [
       { imageKey: "item_clothes5", x: 0, y: 0 },

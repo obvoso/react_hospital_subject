@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggageGameLevels";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
+import { Button } from "@mui/material";
 
 export default function GamePage() {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
@@ -53,14 +54,32 @@ export default function GamePage() {
   }, [level]);
 
   return (
-    <div>
-      <BaggageCanvas level={level} key={level} />
-      <div>Score: {gameState.score}</div>
-      <div>Time left: {timeLeft}</div>
-      <button onClick={() => setGameState({ ...gameState, start: true })}>
-        Start
-      </button>
-      {nextBtn && <button onClick={handleNextLevel}>Next</button>}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
+        <BaggageCanvas level={level} key={level} />
+        <div className="text-center mt-4">
+          <div className="text-lg font-semibold">점수: {gameState.score}</div>
+          <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
+        </div>
+        <div className="flex justify-center space-x-4 mt-4">
+          <Button
+            variant="contained"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => setGameState({ ...gameState, start: true })}
+          >
+            게임 시작
+          </Button>
+          {nextBtn && (
+            <Button
+              variant="contained"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              onClick={handleNextLevel}
+            >
+              다음 단계
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

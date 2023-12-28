@@ -2,24 +2,24 @@ import { useState, useEffect } from "react";
 
 export const useKeyPress = (targetKeys: string[]): boolean[] => {
   const [keysPressed, setKeysPressed] = useState<boolean[]>(
-    new Array(targetKeys.length).fill(false)
+    targetKeys.map(() => false)
   );
 
   useEffect(() => {
     const downHandler = ({ key }: KeyboardEvent) => {
       const index = targetKeys.indexOf(key);
-      if (index >= 0) {
-        setKeysPressed((prev) =>
-          prev.map((val, i) => (i === index ? true : val))
+      if (index > -1) {
+        setKeysPressed((prevKeys) =>
+          prevKeys.map((pressed, i) => (i === index ? true : pressed))
         );
       }
     };
 
     const upHandler = ({ key }: KeyboardEvent) => {
       const index = targetKeys.indexOf(key);
-      if (index >= 0) {
-        setKeysPressed((prev) =>
-          prev.map((val, i) => (i === index ? false : val))
+      if (index > -1) {
+        setKeysPressed((prevKeys) =>
+          prevKeys.map((pressed, i) => (i === index ? false : pressed))
         );
       }
     };
@@ -31,7 +31,7 @@ export const useKeyPress = (targetKeys: string[]): boolean[] => {
       window.removeEventListener("keydown", downHandler);
       window.removeEventListener("keyup", upHandler);
     };
-  }, []);
+  }, [targetKeys]);
 
   return keysPressed;
 };

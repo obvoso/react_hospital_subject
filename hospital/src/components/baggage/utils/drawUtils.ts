@@ -10,10 +10,19 @@ const drawStaticElements = (
   if (!context || !images.current) return;
 
   const conveyorImage = images.current["conveyor"];
+  const personImage = images.current["person"];
 
-  if (conveyorImage) {
-    context.drawImage(conveyorImage, 100, 100, cmToPixels(4), cmToPixels(8.5));
-  }
+  if (conveyorImage)
+    context.drawImage(conveyorImage, 110, 0, cmToPixels(4), cmToPixels(8.5));
+
+  if (personImage)
+    context.drawImage(
+      personImage,
+      130,
+      cmToPixels(8),
+      cmToPixels(3),
+      cmToPixels(3)
+    );
 
   config.basket.forEach((basket) => {
     if (!images.current) return;
@@ -22,8 +31,8 @@ const drawStaticElements = (
     if (!basketImage) return;
     if (basket.x === undefined || basket.y === undefined) return;
 
-    const width = basket.y >= 400 ? cmToPixels(3) : cmToPixels(2);
-    const height = basket.y >= 400 ? cmToPixels(2) : cmToPixels(3);
+    const width = basket.y >= 300 ? cmToPixels(3) : cmToPixels(2);
+    const height = basket.y >= 300 ? cmToPixels(2) : cmToPixels(3);
     context.drawImage(basketImage, basket.x, basket.y, width, height);
   });
 };
