@@ -27,10 +27,6 @@ const checkForMatchAndScore = ({
 }: KeyPressProps) => {
   const startPointY = 50;
   const endPositionY = cmToPixels(dpi, 8.5) - 80;
-
-  console.log(endPositionY);
-  console.log(itemAnimations);
-
   const currentItemIndex = itemAnimations.findIndex(
     (item) =>
       item.done === false &&

@@ -108,9 +108,23 @@ export default function BaggageCanvas({ level }: { level: number }) {
     };
   }, [itemAnimations, gameState.start, level, config]);
 
+  const handleButtonClick = (direction: string) => {
+    checkForMatchAndScore({
+      pressedKey: direction,
+      itemAnimations: itemAnimations,
+      score: gameState.score,
+      setScore: () =>
+        setGameState({ ...gameState, score: gameState.score + 1 }),
+      setItemAnimations: setItemAnimations,
+      lastScoredItemIndex: lastScoredItemIndex,
+      setLastScoredItemIndex: setLastScoredItemIndex,
+      dpi,
+    });
+  };
+
   return (
     <div className="flex flex-col items-center min-w-[500px]">
-      <div className="flex flex-col bg-blue-100 p-4 rounded-xl">
+      <div className="flex flex-col bg-blue-200 p-4 rounded-xl">
         <span className="text-lg font-bold text-center">
           {level > 1 ? level - 1 + "단계" : "연습"}
         </span>
@@ -124,15 +138,24 @@ export default function BaggageCanvas({ level }: { level: number }) {
         height={cmToPixels(dpi, 14)}
       ></canvas>
       <div className="flex mt-4">
-        <KeyDownButton downPressed={leftPressed}>
+        <KeyDownButton
+          downPressed={leftPressed}
+          checkForMatchAndScore={() => handleButtonClick("ArrowLeft")}
+        >
           <ArrowCircleLeftTwoToneIcon />
         </KeyDownButton>
         {level >= 6 && level !== 8 && level !== 9 && (
-          <KeyDownButton downPressed={downPressed}>
+          <KeyDownButton
+            downPressed={downPressed}
+            checkForMatchAndScore={() => handleButtonClick("ArrowDown")}
+          >
             <ArrowCircleDownTwoToneIcon />
           </KeyDownButton>
         )}
-        <KeyDownButton downPressed={rightPressed}>
+        <KeyDownButton
+          downPressed={rightPressed}
+          checkForMatchAndScore={() => handleButtonClick("ArrowRight")}
+        >
           <ArrowCircleRightTwoToneIcon />
         </KeyDownButton>
       </div>

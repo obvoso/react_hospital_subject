@@ -41,13 +41,13 @@ export default function GamePage() {
 
   // 게임 오버
   useEffect(() => {
-    if (timeLeft === 0) setNextBtn(true);
+    if (timeLeft === 0) if (level < 11) setNextBtn(true);
   }, [timeLeft]);
 
   // 게임 클리어
   useEffect(() => {
     //장애물 있을 경우 종료 조건 다름
-    if (gameState.score === config.items) setNextBtn(true);
+    if (gameState.score === config.items && level < 11) setNextBtn(true);
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
@@ -75,8 +75,17 @@ export default function GamePage() {
         <div className="flex justify-center space-x-4 mt-4">
           <Button
             variant="contained"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => setGameState({ ...gameState, start: true })}
+            className={`text-white font-bold py-2 px-4 rounded ${
+              gameState.start
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
+            onClick={() => {
+              if (!gameState.start) {
+                setGameState({ ...gameState, start: true });
+              }
+            }}
+            disabled={gameState.start}
           >
             게임 시작
           </Button>
