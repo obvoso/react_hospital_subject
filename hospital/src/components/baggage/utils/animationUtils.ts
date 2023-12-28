@@ -18,11 +18,11 @@ const startAnimation = (
   const context = canvas.getContext("2d");
   if (!context) return;
 
-  const startPositionX = 140;
-  const endPositionY = cmToPixels(dpi, 8.5) - 80;
+  const startPositionX = 190;
+  const endPositionY = cmToPixels(dpi, 8.5) - 60;
   const duration = config.speed; // 레일을 지나는데 걸리는 시간
   const delay = duration * 2; // 다음 아이템 등장 시간
-  const itemSize = 90;
+  const itemSize = 80;
 
   const animate = (timestamp: number) => {
     context.clearRect(0, 0, canvas.width, canvas.height);

@@ -25,8 +25,8 @@ const checkForMatchAndScore = ({
   setLastScoredItemIndex,
   dpi,
 }: KeyPressProps) => {
-  const startPointY = 0;
-  const endPositionY = cmToPixels(dpi, 8.5) - 80;
+  const startPointY = 50;
+  const endPositionY = cmToPixels(dpi, 8.5) - 60;
 
   console.log(itemAnimations);
   const currentItemIndex = itemAnimations.findIndex(
@@ -47,29 +47,25 @@ const checkForMatchAndScore = ({
       ? BaggageStatus.LEFT
       : pressedKey === "ArrowRight"
       ? BaggageStatus.RIGHT
-      : BaggageStatus.DOWN;
+      : pressedKey === "ArrowDown"
+      ? BaggageStatus.DOWN
+      : BaggageStatus.PASS;
 
-  if (currentItem.status === pressKey) {
+  if (
+    currentItem.status === pressKey &&
+    currentItem.status !== BaggageStatus.PASS
+  ) {
     setScore(score + 1);
     setLastScoredItemIndex(currentItemIndex);
-    setItemAnimations((prevItems: ItemAnimation[]) => {
-      return prevItems.map((item) => {
-        if (item === currentItem) {
-          return { ...item, done: true };
-        }
-        return item;
-      });
-    });
-  } else {
-    setItemAnimations((prevItems: ItemAnimation[]) => {
-      return prevItems.map((item) => {
-        if (item === currentItem) {
-          return { ...item, done: true };
-        }
-        return item;
-      });
-    });
   }
+  setItemAnimations((prevItems: ItemAnimation[]) => {
+    return prevItems.map((item) => {
+      if (item === currentItem) {
+        return { ...item, done: true };
+      }
+      return item;
+    });
+  });
 };
 
 export default checkForMatchAndScore;

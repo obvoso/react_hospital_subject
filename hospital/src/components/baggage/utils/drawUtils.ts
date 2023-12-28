@@ -16,7 +16,7 @@ const drawStaticElements = (
   if (conveyorImage)
     context.drawImage(
       conveyorImage,
-      110,
+      140,
       0,
       cmToPixels(dpi, 4),
       cmToPixels(dpi, 8.5)
@@ -25,7 +25,7 @@ const drawStaticElements = (
   if (personImage)
     context.drawImage(
       personImage,
-      130,
+      160,
       cmToPixels(dpi, 8),
       cmToPixels(dpi, 3),
       cmToPixels(dpi, 3)
@@ -38,8 +38,8 @@ const drawStaticElements = (
     if (!basketImage) return;
     if (basket.x === undefined || basket.y === undefined) return;
 
-    const width = basket.y >= 300 ? cmToPixels(dpi, 3) : cmToPixels(dpi, 2);
-    const height = basket.y >= 300 ? cmToPixels(dpi, 2) : cmToPixels(dpi, 3);
+    const width = basket.y >= 350 ? cmToPixels(dpi, 3) : cmToPixels(dpi, 2);
+    const height = basket.y >= 350 ? cmToPixels(dpi, 2) : cmToPixels(dpi, 3);
     context.drawImage(basketImage, basket.x, basket.y, width, height);
   });
 };

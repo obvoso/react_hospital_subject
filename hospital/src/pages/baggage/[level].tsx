@@ -22,7 +22,7 @@ export default function GamePage() {
 
   useEffect(() => {
     console.log(window.devicePixelRatio);
-    const dpi = getDPI() * 1.4;
+    const dpi = getDPI() * 1.2;
     setDpi(dpi);
   }, []);
 
