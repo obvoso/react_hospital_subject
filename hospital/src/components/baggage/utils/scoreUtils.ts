@@ -28,7 +28,6 @@ const checkForMatchAndScore = ({
   const startPointY = 50;
   const endPositionY = cmToPixels(dpi, 8.5) - 60;
 
-  console.log(itemAnimations);
   const currentItemIndex = itemAnimations.findIndex(
     (item) =>
       item.done === false &&

@@ -21,7 +21,6 @@ export default function GamePage() {
   const [dpi, setDpi] = useRecoilState(DpiState);
 
   useEffect(() => {
-    console.log(window.devicePixelRatio);
     const dpi = getDPI() * 1.2;
     setDpi(dpi);
   }, []);
