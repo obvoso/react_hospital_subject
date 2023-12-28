@@ -12,6 +12,7 @@ interface KeyPressProps {
   ) => void;
   lastScoredItemIndex: number;
   setLastScoredItemIndex: (index: number) => void;
+  dpi: number;
 }
 
 const checkForMatchAndScore = ({
@@ -22,9 +23,10 @@ const checkForMatchAndScore = ({
   setItemAnimations,
   lastScoredItemIndex,
   setLastScoredItemIndex,
+  dpi,
 }: KeyPressProps) => {
   const startPointY = 0;
-  const endPositionY = cmToPixels(8.5) - 80;
+  const endPositionY = cmToPixels(dpi, 8.5) - 80;
 
   console.log(itemAnimations);
   const currentItemIndex = itemAnimations.findIndex(

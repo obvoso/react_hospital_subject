@@ -1,6 +1,11 @@
 import { atom } from "recoil";
 import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
 
+export const DpiState = atom({
+  key: "DpiState",
+  default: 0,
+});
+
 export const BaggageGameState = atom({
   key: "BaggageGameState",
   default: {
@@ -18,8 +23,9 @@ export const BaggageGameConfigState = atom<BaggageLevelConfig>({
     timeLimit: 30,
     direction: "forward",
     classification: 2,
-    obstacle: false,
+    obstacle: 0,
     basket: [],
     item: [],
+    subject: "",
   },
 });

@@ -6,8 +6,12 @@ import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
 import { startAnimation, checkForMatchAndScore, preloadImages } from "./index";
-import { useRecoilState } from "recoil";
-import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  BaggageGameConfigState,
+  BaggageGameState,
+  DpiState,
+} from "@/atoms/baggage/game";
 import KeyDownButton from "./KeyDownButton";
 
 export interface ItemAnimation {
@@ -24,7 +28,8 @@ export default function BaggageCanvas({ level }: { level: number }) {
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
   const [lastScoredItemIndex, setLastScoredItemIndex] = useState(-1);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
-  const [config, setConfig] = useRecoilState(BaggageGameConfigState);
+  const config = useRecoilValue(BaggageGameConfigState);
+  const dpi = useRecoilValue(DpiState);
   const [leftPressed, rightPressed, downPressed] = useKeyPress([
     "ArrowLeft",
     "ArrowRight",
@@ -47,7 +52,8 @@ export default function BaggageCanvas({ level }: { level: number }) {
       setItemAnimations,
       images,
       gameState.start,
-      config
+      config,
+      dpi
     );
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -65,6 +71,7 @@ export default function BaggageCanvas({ level }: { level: number }) {
           setItemAnimations: setItemAnimations,
           lastScoredItemIndex: lastScoredItemIndex,
           setLastScoredItemIndex: setLastScoredItemIndex,
+          dpi,
         });
       }
     };
@@ -75,7 +82,7 @@ export default function BaggageCanvas({ level }: { level: number }) {
           (item) =>
             item.status === BaggageStatus.PASS &&
             !item.done &&
-            item.yPosition >= cmToPixels(8.5) - 80
+            item.yPosition >= cmToPixels(dpi, 8.5) - 80
         )
       ) {
         setItemAnimations((prev) =>
@@ -83,7 +90,7 @@ export default function BaggageCanvas({ level }: { level: number }) {
             if (
               item.status === BaggageStatus.PASS &&
               !item.done &&
-              item.yPosition >= cmToPixels(8.5) - 80
+              item.yPosition >= cmToPixels(dpi, 8.5) - 80
             ) {
               item.done = true;
               setGameState({ ...gameState, score: gameState.score + 1 });
@@ -113,8 +120,8 @@ export default function BaggageCanvas({ level }: { level: number }) {
       </div>
       <canvas
         ref={canvasRef}
-        width={cmToPixels(10)}
-        height={cmToPixels(14)}
+        width={cmToPixels(dpi, 10)}
+        height={cmToPixels(dpi, 14)}
       ></canvas>
       <div className="flex mt-4">
         <KeyDownButton downPressed={leftPressed}>

@@ -11,21 +11,22 @@ const startAnimation = (
   setItemAnimations: (item: ItemAnimation[]) => void,
   images: RefObject<{ [key: string]: HTMLImageElement }>,
   start: boolean,
-  config: BaggageLevelConfig
+  config: BaggageLevelConfig,
+  dpi: number
 ) => {
   if (!canvas) return;
   const context = canvas.getContext("2d");
   if (!context) return;
 
   const startPositionX = 140;
-  const endPositionY = cmToPixels(8.5) - 80;
+  const endPositionY = cmToPixels(dpi, 8.5) - 80;
   const duration = config.speed; // 레일을 지나는데 걸리는 시간
-  const delay = 2000; // 다음 아이템 등장 시간
+  const delay = duration * 2; // 다음 아이템 등장 시간
   const itemSize = 90;
 
   const animate = (timestamp: number) => {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    drawStaticElements(context, images, config);
+    drawStaticElements(context, images, config, dpi);
 
     if (start) {
       let animateDone = false;
@@ -40,12 +41,10 @@ const startAnimation = (
           item.startTime === 0 ? timestamp + index * delay : item.startTime;
         const elapsed = timestamp - startTime;
         const progress =
-          Math.max(1, elapsed / duration) < 0
-            ? 0
-            : Math.min(1, elapsed / duration);
+          startTime > timestamp ? 0 : Math.min(1, elapsed / duration);
         const yPosition = progress * endPositionY;
 
-        if (progress < 1)
+        if (progress < 1 && 0 < progress)
           context.drawImage(
             itemImage,
             startPositionX,
