@@ -5,7 +5,7 @@ import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwo
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
-import { startAnimation, checkForMatchAndScore, preloadImages } from "./index";
+import { preloadImages } from "./index";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   BaggageGameConfigState,
@@ -13,6 +13,7 @@ import {
   DpiState,
 } from "@/atoms/baggage/game";
 import KeyDownButton from "./KeyDownButton";
+import { useAnimation, useGameControls } from "@/hooks/baggage/useGameControl";
 
 export interface ItemAnimation {
   startTime: number;
@@ -30,11 +31,32 @@ export default function BaggageCanvas({ level }: { level: number }) {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const config = useRecoilValue(BaggageGameConfigState);
   const dpi = useRecoilValue(DpiState);
+  const handleScore = useGameControls(
+    itemAnimations,
+    setItemAnimations,
+    gameState,
+    setGameState,
+    dpi,
+    level,
+    config,
+    lastScoredItemIndex,
+    setLastScoredItemIndex
+  );
   const [leftPressed, rightPressed, downPressed] = useKeyPress([
     "ArrowLeft",
     "ArrowRight",
     "ArrowDown",
   ]);
+
+  useAnimation(
+    canvasRef,
+    itemAnimations,
+    setItemAnimations,
+    images,
+    gameState,
+    config,
+    dpi
+  );
 
   useEffect(() => {
     preloadImages(canvasRef, images, itemAnimations, setItemAnimations, config);
@@ -44,83 +66,6 @@ export default function BaggageCanvas({ level }: { level: number }) {
       setLastScoredItemIndex(-1);
     };
   }, [config]);
-
-  useEffect(() => {
-    startAnimation(
-      canvasRef.current,
-      itemAnimations,
-      setItemAnimations,
-      images,
-      gameState.start,
-      config,
-      dpi
-    );
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === "ArrowLeft" ||
-        event.key === "ArrowRight" ||
-        event.key === "ArrowDown"
-      ) {
-        checkForMatchAndScore({
-          pressedKey: event.key,
-          itemAnimations: itemAnimations,
-          score: gameState.score,
-          setScore: () =>
-            setGameState({ ...gameState, score: gameState.score + 1 }),
-          setItemAnimations: setItemAnimations,
-          lastScoredItemIndex: lastScoredItemIndex,
-          setLastScoredItemIndex: setLastScoredItemIndex,
-          dpi,
-        });
-      }
-    };
-
-    const incrementScoreForPassingItems = () => {
-      if (
-        itemAnimations.find(
-          (item) =>
-            item.status === BaggageStatus.PASS &&
-            !item.done &&
-            item.yPosition >= cmToPixels(dpi, 8.5) - 80
-        )
-      ) {
-        setItemAnimations((prev) =>
-          prev.map((item) => {
-            if (
-              item.status === BaggageStatus.PASS &&
-              !item.done &&
-              item.yPosition >= cmToPixels(dpi, 8.5) - 80
-            ) {
-              item.done = true;
-              setGameState({ ...gameState, score: gameState.score + 1 });
-            }
-            return item;
-          })
-        );
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      incrementScoreForPassingItems();
-    };
-  }, [itemAnimations, gameState.start, level, config]);
-
-  const handleButtonClick = (direction: string) => {
-    checkForMatchAndScore({
-      pressedKey: direction,
-      itemAnimations: itemAnimations,
-      score: gameState.score,
-      setScore: () =>
-        setGameState({ ...gameState, score: gameState.score + 1 }),
-      setItemAnimations: setItemAnimations,
-      lastScoredItemIndex: lastScoredItemIndex,
-      setLastScoredItemIndex: setLastScoredItemIndex,
-      dpi,
-    });
-  };
 
   return (
     <div className="flex flex-col items-center min-w-[500px]">
@@ -140,21 +85,21 @@ export default function BaggageCanvas({ level }: { level: number }) {
       <div className="flex mt-4">
         <KeyDownButton
           downPressed={leftPressed}
-          checkForMatchAndScore={() => handleButtonClick("ArrowLeft")}
+          checkForMatchAndScore={() => handleScore("ArrowLeft")}
         >
           <ArrowCircleLeftTwoToneIcon />
         </KeyDownButton>
         {level >= 6 && level !== 8 && level !== 9 && (
           <KeyDownButton
             downPressed={downPressed}
-            checkForMatchAndScore={() => handleButtonClick("ArrowDown")}
+            checkForMatchAndScore={() => handleScore("ArrowDown")}
           >
             <ArrowCircleDownTwoToneIcon />
           </KeyDownButton>
         )}
         <KeyDownButton
           downPressed={rightPressed}
-          checkForMatchAndScore={() => handleButtonClick("ArrowRight")}
+          checkForMatchAndScore={() => handleScore("ArrowRight")}
         >
           <ArrowCircleRightTwoToneIcon />
         </KeyDownButton>
