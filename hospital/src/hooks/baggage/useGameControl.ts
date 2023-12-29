@@ -37,28 +37,19 @@ export const useGameControls = (
   };
 
   const incrementScoreForPassingItems = () => {
-    if (
-      itemAnimations.find(
-        (item) =>
+    setItemAnimations((prev) =>
+      prev.map((item) => {
+        if (
           item.status === BaggageStatus.PASS &&
           !item.done &&
           item.yPosition >= cmToPixels(8.5) - 80
-      )
-    ) {
-      setItemAnimations((prev) =>
-        prev.map((item) => {
-          if (
-            item.status === BaggageStatus.PASS &&
-            !item.done &&
-            item.yPosition >= cmToPixels(8.5) - 80
-          ) {
-            item.done = true;
-            setGameState({ ...gameState, score: gameState.score + 1 });
-          }
-          return item;
-        })
-      );
-    }
+        ) {
+          item.done = true;
+          setGameState({ ...gameState, score: gameState.score + 1 });
+        }
+        return item;
+      })
+    );
   };
 
   useEffect(() => {

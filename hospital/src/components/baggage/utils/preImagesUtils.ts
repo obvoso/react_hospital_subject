@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { ItemAnimation } from "../BaggageCanvas";
 import { BaggageStatus } from "@/utils/constEnum";
-import { drawStaticElements, shuffleArrayKeepingIndex } from "../index";
+import { drawStaticElements, shuffleArray } from "../index";
 import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
 
 export const preloadImages = (
@@ -37,7 +37,7 @@ export const preloadImages = (
           done: false,
           imageKey: config.item[i].imageKey,
         }));
-        setItemAnimations(shuffleArrayKeepingIndex(newItems));
+        setItemAnimations(shuffleArray(newItems));
       }
     };
     img.onerror = () => {
@@ -81,6 +81,7 @@ const staticImagesPreload = (
   });
 };
 
+//config에 있는 방향과 분류에 따라서 올바른 키를 정의
 function keyType(
   item: string,
   direction: string,

@@ -1,13 +1,9 @@
 import { ItemAnimation } from "../BaggageCanvas";
 
-export function shuffleArrayKeepingIndex(array: ItemAnimation[]) {
+export function shuffleArray(array: ItemAnimation[]) {
   let newArray = [...array];
-
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
+  newArray.sort(() => Math.random() - 0.5);
   return newArray;
 }
 
-export default shuffleArrayKeepingIndex;
+export default shuffleArray;

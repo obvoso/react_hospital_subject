@@ -18,7 +18,7 @@ const startAnimation = (
   if (!context) return;
 
   const startPositionX = 190;
-  const endPositionY = cmToPixels(8.5) - 80;
+  const endPositionY = cmToPixels(8.5) - 80; // 레일의 끝
   const duration = config.speed; // 레일을 지나는데 걸리는 시간
   const delay = duration * 2; // 다음 아이템 등장 시간
   const itemSize = 80;
@@ -59,6 +59,7 @@ const startAnimation = (
           ...item,
           startTime: startTime,
           yPosition: yPosition,
+          // PASS는 done을 false로 유지, useGameControl 훅에서 done을 true로 변경 후 점수 증가
           done: progress >= 1 && item.status !== BaggageStatus.PASS,
         };
       });
