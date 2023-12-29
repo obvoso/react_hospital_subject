@@ -1,4 +1,4 @@
-interface assets {
+export interface assets {
   imageKey: string;
   x?: number;
   y?: number;

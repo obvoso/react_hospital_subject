@@ -2,7 +2,7 @@ import { RefObject } from "react";
 import { ItemAnimation } from "../BaggageCanvas";
 import { BaggageStatus } from "@/utils/constEnum";
 import { drawStaticElements, shuffleArray } from "../index";
-import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
+import { BaggageLevelConfig, assets } from "@/utils/baggageGameLevels";
 
 export const preloadImages = (
   canvasRef: RefObject<HTMLCanvasElement>,
@@ -32,7 +32,8 @@ export const preloadImages = (
           status: keyType(
             config.item[i].imageKey,
             config.direction,
-            config.classification
+            config.classification,
+            config.basket
           ),
           done: false,
           imageKey: config.item[i].imageKey,
@@ -85,23 +86,34 @@ const staticImagesPreload = (
 function keyType(
   item: string,
   direction: string,
-  classification: number
+  classification: number,
+  basket: assets[]
 ): BaggageStatus {
-  if (item.includes("blue") || item.includes("clothes")) {
-    if (direction === "forward") {
-      return BaggageStatus.LEFT;
-    }
-    return BaggageStatus.RIGHT;
-  } else if (item.includes("yellow") || item.includes("food")) {
-    if (direction === "forward") {
-      return BaggageStatus.RIGHT;
-    }
-    return BaggageStatus.LEFT;
-  } else if (item.includes("red") || item.includes("acc")) {
-    if (direction === "forward" && classification === 3) {
-      return BaggageStatus.DOWN;
-    }
+  const isMatchingBasket = (
+    basketIndex: number,
+    key: string,
+    itemSubstring: string
+  ) => basket[basketIndex]?.imageKey === key && item.includes(itemSubstring);
+
+  if (
+    isMatchingBasket(0, "carrier_blue", "blue") ||
+    isMatchingBasket(0, "carrier_gray", "clothes")
+  ) {
+    return direction === "forward" ? BaggageStatus.LEFT : BaggageStatus.RIGHT;
+  } else if (
+    isMatchingBasket(1, "carrier_yellow", "yellow") ||
+    isMatchingBasket(1, "basket", "food")
+  ) {
+    return direction === "forward" ? BaggageStatus.RIGHT : BaggageStatus.LEFT;
+  } else if (
+    isMatchingBasket(2, "carrier_red", "red") ||
+    isMatchingBasket(2, "bag", "acc")
+  ) {
+    return direction === "forward" && classification === 3
+      ? BaggageStatus.DOWN
+      : BaggageStatus.PASS;
   }
+
   return BaggageStatus.PASS;
 }
 
