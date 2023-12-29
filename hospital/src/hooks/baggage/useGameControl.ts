@@ -18,12 +18,11 @@ export const useGameControls = (
   setItemAnimations: React.Dispatch<React.SetStateAction<ItemAnimation[]>>,
   gameState: GameState,
   setGameState: (state: GameState) => void,
-  dpi: number,
   level: number,
-  config: BaggageLevelConfig,
-  lastScoredItemIndex: number,
-  setLastScoredItemIndex: (index: number) => void
+  config: BaggageLevelConfig
 ) => {
+  const [lastScoredItemIndex, setLastScoredItemIndex] = useState<number>(-1);
+
   const handleScore = (direction: string) => {
     checkForMatchAndScore({
       pressedKey: direction,
@@ -34,7 +33,6 @@ export const useGameControls = (
       setItemAnimations: setItemAnimations,
       lastScoredItemIndex: lastScoredItemIndex,
       setLastScoredItemIndex: setLastScoredItemIndex,
-      dpi,
     });
   };
 
@@ -44,7 +42,7 @@ export const useGameControls = (
         (item) =>
           item.status === BaggageStatus.PASS &&
           !item.done &&
-          item.yPosition >= cmToPixels(dpi, 8.5) - 80
+          item.yPosition >= cmToPixels(8.5) - 80
       )
     ) {
       setItemAnimations((prev) =>
@@ -52,7 +50,7 @@ export const useGameControls = (
           if (
             item.status === BaggageStatus.PASS &&
             !item.done &&
-            item.yPosition >= cmToPixels(dpi, 8.5) - 80
+            item.yPosition >= cmToPixels(8.5) - 80
           ) {
             item.done = true;
             setGameState({ ...gameState, score: gameState.score + 1 });
@@ -64,14 +62,17 @@ export const useGameControls = (
   };
 
   useEffect(() => {
+    setLastScoredItemIndex(-1);
+  }, [config, level]);
+
+  useEffect(() => {
     startAnimation(
       canvasRef.current,
       itemAnimations,
       setItemAnimations,
       images,
       gameState.start,
-      config,
-      dpi
+      config
     );
 
     const handleKeyDown = (event: KeyboardEvent) => {

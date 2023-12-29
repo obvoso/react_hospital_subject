@@ -3,13 +3,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggageGameLevels";
-import {
-  BaggageGameConfigState,
-  BaggageGameState,
-  DpiState,
-} from "@/atoms/baggage/game";
+import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
 import { Button } from "@mui/material";
-import { getDPI } from "@/utils/unit";
 
 export default function GamePage() {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
@@ -18,12 +13,6 @@ export default function GamePage() {
   const level = Number(router.query.level);
   const [timeLeft, setTimeLeft] = useState(config.timeLimit);
   const [nextBtn, setNextBtn] = useState(false);
-  const [dpi, setDpi] = useRecoilState(DpiState);
-
-  useEffect(() => {
-    const dpi = getDPI() * 1.2;
-    setDpi(dpi);
-  }, []);
 
   // 타이머
   useEffect(() => {

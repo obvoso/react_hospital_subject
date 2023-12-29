@@ -27,7 +27,6 @@ export default function BaggageCanvas({ level }: { level: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
-  const [lastScoredItemIndex, setLastScoredItemIndex] = useState(-1);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const config = useRecoilValue(BaggageGameConfigState);
   const dpi = useRecoilValue(DpiState);
@@ -38,11 +37,8 @@ export default function BaggageCanvas({ level }: { level: number }) {
     setItemAnimations,
     gameState,
     setGameState,
-    dpi,
     level,
-    config,
-    lastScoredItemIndex,
-    setLastScoredItemIndex
+    config
   );
   const [leftPressed, rightPressed, downPressed] = useKeyPress([
     "ArrowLeft",
@@ -55,7 +51,6 @@ export default function BaggageCanvas({ level }: { level: number }) {
     return () => {
       images.current = {};
       setItemAnimations([]);
-      setLastScoredItemIndex(-1);
     };
   }, [config]);
 
@@ -71,8 +66,8 @@ export default function BaggageCanvas({ level }: { level: number }) {
       </div>
       <canvas
         ref={canvasRef}
-        width={cmToPixels(dpi, 10)}
-        height={cmToPixels(dpi, 14)}
+        width={cmToPixels(10)}
+        height={cmToPixels(14)}
       ></canvas>
       <div className="flex mt-4">
         <KeyDownButton
