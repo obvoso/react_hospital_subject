@@ -35,7 +35,6 @@ export default function GamePage() {
 
   // 게임 클리어
   useEffect(() => {
-    //장애물 있을 경우 종료 조건 다름
     if (gameState.score === config.items && level < 11) setNextBtn(true);
   }, [gameState.score, router, level]);
 
