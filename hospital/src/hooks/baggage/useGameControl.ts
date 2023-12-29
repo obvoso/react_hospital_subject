@@ -12,10 +12,10 @@ interface GameState {
 }
 
 export const useGameControls = (
+  canvasRef: RefObject<HTMLCanvasElement>,
+  images: RefObject<{ [key: string]: HTMLImageElement }>,
   itemAnimations: ItemAnimation[],
-  setItemAnimations: (
-    updateFunction: (prevItems: ItemAnimation[]) => ItemAnimation[]
-  ) => void,
+  setItemAnimations: React.Dispatch<React.SetStateAction<ItemAnimation[]>>,
   gameState: GameState,
   setGameState: (state: GameState) => void,
   dpi: number,
@@ -64,6 +64,16 @@ export const useGameControls = (
   };
 
   useEffect(() => {
+    startAnimation(
+      canvasRef.current,
+      itemAnimations,
+      setItemAnimations,
+      images,
+      gameState.start,
+      config,
+      dpi
+    );
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
         event.key === "ArrowLeft" ||
@@ -79,29 +89,7 @@ export const useGameControls = (
       window.removeEventListener("keydown", handleKeyDown);
       incrementScoreForPassingItems();
     };
-  }, [itemAnimations, gameState.score, level, config]);
+  }, [itemAnimations, gameState.start, level, config]);
 
   return handleScore;
-};
-
-export const useAnimation = (
-  canvasRef: RefObject<HTMLCanvasElement>,
-  itemAnimations: ItemAnimation[],
-  setItemAnimations: React.Dispatch<React.SetStateAction<ItemAnimation[]>>,
-  images: RefObject<{ [key: string]: HTMLImageElement }>,
-  gameState: GameState,
-  config: BaggageLevelConfig,
-  dpi: number
-) => {
-  useEffect(() => {
-    startAnimation(
-      canvasRef.current,
-      itemAnimations,
-      setItemAnimations,
-      images,
-      gameState.start,
-      config,
-      dpi
-    );
-  }, [itemAnimations, gameState.start, config]);
 };

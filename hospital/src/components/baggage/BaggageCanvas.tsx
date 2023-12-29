@@ -13,7 +13,7 @@ import {
   DpiState,
 } from "@/atoms/baggage/game";
 import KeyDownButton from "./KeyDownButton";
-import { useAnimation, useGameControls } from "@/hooks/baggage/useGameControl";
+import { useGameControls } from "@/hooks/baggage/useGameControl";
 
 export interface ItemAnimation {
   startTime: number;
@@ -32,6 +32,8 @@ export default function BaggageCanvas({ level }: { level: number }) {
   const config = useRecoilValue(BaggageGameConfigState);
   const dpi = useRecoilValue(DpiState);
   const handleScore = useGameControls(
+    canvasRef,
+    images,
     itemAnimations,
     setItemAnimations,
     gameState,
@@ -47,16 +49,6 @@ export default function BaggageCanvas({ level }: { level: number }) {
     "ArrowRight",
     "ArrowDown",
   ]);
-
-  useAnimation(
-    canvasRef,
-    itemAnimations,
-    setItemAnimations,
-    images,
-    gameState,
-    config,
-    dpi
-  );
 
   useEffect(() => {
     preloadImages(canvasRef, images, itemAnimations, setItemAnimations, config);
