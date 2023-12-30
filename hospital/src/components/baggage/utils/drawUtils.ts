@@ -1,4 +1,4 @@
-import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
+import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
 import { cmToPixels } from "@/utils/unit";
 import { RefObject } from "react";
 

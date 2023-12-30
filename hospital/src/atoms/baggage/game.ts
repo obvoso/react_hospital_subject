@@ -1,10 +1,5 @@
 import { atom } from "recoil";
-import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
-
-export const DpiState = atom({
-  key: "DpiState",
-  default: 0,
-});
+import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
 
 export const BaggageGameState = atom({
   key: "BaggageGameState",

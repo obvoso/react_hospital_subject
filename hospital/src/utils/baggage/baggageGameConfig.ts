@@ -1,4 +1,4 @@
-export interface assets {
+export interface BaggageItemAssets {
   imageKey: string;
   x?: number;
   y?: number;
@@ -13,8 +13,8 @@ export interface BaggageLevelConfig {
   classification: number;
   obstacle: number;
   subject: string;
-  basket: assets[];
-  item: assets[];
+  basket: BaggageItemAssets[];
+  item: BaggageItemAssets[];
 }
 
 export const baggageGameLevels: BaggageLevelConfig[] = [

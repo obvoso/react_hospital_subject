@@ -2,7 +2,10 @@ import { RefObject } from "react";
 import { ItemAnimation } from "../BaggageCanvas";
 import { BaggageStatus } from "@/utils/constEnum";
 import { drawStaticElements, shuffleArray } from "../index";
-import { BaggageLevelConfig, assets } from "@/utils/baggageGameLevels";
+import {
+  BaggageLevelConfig,
+  BaggageItemAssets,
+} from "@/utils/baggage/baggageGameConfig";
 
 export const preloadImages = (
   canvasRef: RefObject<HTMLCanvasElement>,
@@ -87,7 +90,7 @@ function keyType(
   item: string,
   direction: string,
   classification: number,
-  basket: assets[]
+  basket: BaggageItemAssets[]
 ): BaggageStatus {
   const isMatchingBasket = (
     basketIndex: number,
