@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
-import { Button } from "@mui/material";
 import CustomButton from "@/utils/CustomButton";
 
 export default function GamePage() {

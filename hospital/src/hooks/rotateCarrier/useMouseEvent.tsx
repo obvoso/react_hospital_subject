@@ -4,15 +4,16 @@ import {
   RotateCarrierLevelConfig,
   RotateCarrierSpacePoint,
 } from "@/utils/carrierRotation/carrierRotateGameConfig";
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 export const useMouseEvent = (
   canvasRef: RefObject<HTMLCanvasElement>,
-  config: RotateCarrierLevelConfig,
-  setClickedRectIndex: React.Dispatch<React.SetStateAction<number>>
+  config: RotateCarrierLevelConfig
+  //setClickedRectIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+  const [clickedRectIndex, setClickedRectIndex] = useState<number>(-1);
 
   const isMouseOverRect = (
     rect: RotateCarrierSpacePoint,
@@ -69,4 +70,5 @@ export const useMouseEvent = (
       canvasRef.current.removeEventListener("mouseup", handleMouseUp);
     };
   }, [gameState.start]);
+  return { clickedRectIndex };
 };
