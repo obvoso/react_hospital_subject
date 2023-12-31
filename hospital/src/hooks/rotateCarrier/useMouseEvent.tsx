@@ -23,7 +23,6 @@ export const useMouseEvent = (
       mouseX <= rect.x + rect.w &&
       mouseY >= rect.y &&
       mouseY <= rect.y + rect.h;
-    console.log(ret);
     return ret;
   };
 
@@ -37,8 +36,10 @@ export const useMouseEvent = (
     const y =
       (event.clientY - rect.top) * scaleY - canvasRef.current.height / 2;
 
-    const rotatedX = x * Math.cos(-Math.PI / 2) - y * Math.sin(-Math.PI / 2);
-    const rotatedY = x * Math.sin(-Math.PI / 2) + y * Math.cos(-Math.PI / 2);
+    const rotatedX =
+      x * Math.cos(-gameState.lastAngle) - y * Math.sin(-gameState.lastAngle);
+    const rotatedY =
+      x * Math.sin(-gameState.lastAngle) + y * Math.cos(-gameState.lastAngle);
 
     const rectIndex = config.space.findIndex((r) =>
       isMouseOverRect(r, rotatedX, rotatedY)
@@ -68,6 +69,6 @@ export const useMouseEvent = (
       canvasRef.current.removeEventListener("mousedown", handleMouseDown);
       canvasRef.current.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [gameState.start]);
+  }, [gameState.start, gameState.lastAngle]);
   return { clickedRectIndex };
 };

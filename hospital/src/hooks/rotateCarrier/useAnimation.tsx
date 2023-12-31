@@ -1,14 +1,12 @@
 import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   drawRect,
   drawStaticElements,
 } from "@/components/rotateCarrier/utils/DrawUtils";
 import { getRandomRotateDirection } from "@/components/rotateCarrier/utils/randomDirection";
-import { request } from "http";
-import { init } from "next/dist/compiled/webpack/webpack";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -53,10 +51,11 @@ export const useAnimation = ({
     let rotateDirection = getRandomRotateDirection();
     let degree = 0; //증가량은 속도
     let rotateCount = 0;
+    let angle = 0;
     let endAngle =
       rotateDirection === "right"
         ? config.rotationAngle[0]
-        : config.rotationAngle[0] * -1;
+        : -config.rotationAngle[0];
 
     const initNextRotate = () => {
       rotateCount++;
@@ -69,7 +68,12 @@ export const useAnimation = ({
 
     const animateStep = () => {
       if (rotateCount === config.rotation) {
-        console.log(degree);
+        setGameState((prev) => {
+          return {
+            ...prev,
+            lastAngle: angle,
+          };
+        });
         return;
       }
       switch (rotateDirection) {
@@ -82,7 +86,7 @@ export const useAnimation = ({
           if (degree <= endAngle) initNextRotate();
           break;
       }
-      let angle = degree * (Math.PI / 2);
+      angle = degree * Number((Math.PI / 2).toFixed(3));
       draw(angle);
       requestAnimationFrame(animateStep);
     };
@@ -118,6 +122,7 @@ export const useAnimation = ({
     }
   }, [gameState.start]);
 
+  // 클릭시 클릭한 rect에 색칠
   useEffect(() => {
     if (!gameState.start) return;
     const canvas = canvasRef.current;
@@ -125,6 +130,6 @@ export const useAnimation = ({
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    //draw(Math.PI / 2);
-  }, [clickedRectIndex, gameState.start, images]);
+    draw(gameState.lastAngle);
+  }, [clickedRectIndex, gameState.start, images, gameState.lastAngle]);
 };

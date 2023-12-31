@@ -4,8 +4,7 @@ import { atom } from "recoil";
 interface IRotateCarrierGame {
   score: number;
   start: boolean;
-  rotateCount: number;
-  rotateDirection: string;
+  lastAngle: number;
 }
 
 export const RotateCarrierGameState = atom<IRotateCarrierGame>({
@@ -13,8 +12,7 @@ export const RotateCarrierGameState = atom<IRotateCarrierGame>({
   default: {
     score: 0,
     start: false,
-    rotateCount: 0,
-    rotateDirection: "left",
+    lastAngle: 0,
   },
 });
 
