@@ -1,12 +1,12 @@
+import { RefObject, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
-import { RefObject, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import {
   drawRect,
   drawStaticElements,
-} from "@/components/rotateCarrier/utils/DrawUtils";
-import { getRandomRotateDirection } from "@/components/rotateCarrier/utils/randomDirection";
+  getRandomRotateDirection,
+} from "@/components/rotateCarrier/index";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -48,16 +48,13 @@ export const useAnimation = ({
   };
 
   const animateRotation = () => {
-    let rotateDirection = getRandomRotateDirection();
+    let rotateDirection = "";
     let degree = 0; //증가량은 속도
-    let rotateCount = 0;
+    let rotateCount = -1;
     let angle = 0;
-    let endAngle =
-      rotateDirection === "right"
-        ? config.rotationAngle[0]
-        : -config.rotationAngle[0];
+    let endAngle = 0;
 
-    const initNextRotate = () => {
+    const initRotateInfo = () => {
       rotateCount++;
       rotateDirection = getRandomRotateDirection();
       const rotateAngle = config.rotationAngle[rotateCount];
@@ -66,6 +63,7 @@ export const useAnimation = ({
         : (endAngle -= rotateAngle);
     };
 
+    initRotateInfo();
     const animateStep = () => {
       if (rotateCount === config.rotation) {
         setGameState((prev) => {
@@ -79,11 +77,11 @@ export const useAnimation = ({
       switch (rotateDirection) {
         case "right":
           degree = Number(degree.toFixed(3)) + 0.015;
-          if (degree >= endAngle) initNextRotate();
+          if (degree >= endAngle) initRotateInfo();
           break;
         case "left":
           degree = Number(degree.toFixed(3)) - 0.015;
-          if (degree <= endAngle) initNextRotate();
+          if (degree <= endAngle) initRotateInfo();
           break;
       }
       angle = degree * Number((Math.PI / 2).toFixed(3));

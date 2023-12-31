@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import { preLoadImages } from "./utils/preLoadImages";
-import { RotateCarrierConfigState } from "@/atoms/rotateCarrier/config";
 import { useRecoilValue } from "recoil";
+import { preLoadImages } from "./index";
+import { RotateCarrierConfigState } from "@/atoms/rotateCarrier/config";
 import { useMouseEvent } from "@/hooks/rotateCarrier/useMouseEvent";
 import { useAnimation } from "@/hooks/rotateCarrier/useAnimation";
 

@@ -71,3 +71,5 @@ export const drawStaticElements = (
   });
   context.restore();
 };
+
+//export default { drawStaticElements, drawRect };

@@ -14,3 +14,5 @@ export function preLoadImages(
     };
   });
 }
+
+export default preLoadImages;
