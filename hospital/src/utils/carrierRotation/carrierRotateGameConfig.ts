@@ -4,8 +4,8 @@ export interface RotateCarrierItemAssets {
 }
 
 export interface RotateCarrierSpacePoint {
-  x?: number;
-  y?: number;
+  x: number;
+  y: number;
   w: number;
   h: number;
 }

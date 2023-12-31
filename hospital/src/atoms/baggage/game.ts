@@ -1,6 +1,11 @@
 import { atom } from "recoil";
 import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
 
+export interface IGame {
+  score: number;
+  start: boolean;
+}
+
 export const BaggageGameState = atom({
   key: "BaggageGameState",
   default: {

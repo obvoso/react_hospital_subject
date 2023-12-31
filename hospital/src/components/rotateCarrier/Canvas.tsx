@@ -6,25 +6,35 @@ import {
 } from "@/atoms/rotateCarrier/config";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { RotateCarrierItemAssets } from "@/utils/carrierRotation/carrierRotateGameConfig";
+import { useMouseEvent } from "@/hooks/rotateCarrier/useMouseEvent";
 
 export default function Canvas() {
-  const canvasRef = useRef(null);
-  const [clickedRect, setClickedRect] = useState(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [clickedRectIndex, setClickedRectIndex] = useState<number>(-1);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const config = useRecoilValue(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
 
-  const drawRect = (context, x, y, width, height, color) => {
+  useMouseEvent(canvasRef, config, setClickedRectIndex);
+
+  const drawRect = (
+    context: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    color: string
+  ) => {
     context.fillStyle = color;
-    context.fillRect(x, y, width, height);
-    context.strokeRect(x, y, width, height);
+    context.fillRect(x, y, w, h);
+    context.strokeRect(x, y, w, h);
   };
 
-  const draw = (context, angle) => {
+  const draw = (context: CanvasRenderingContext2D, angle: number) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.save();
     context.translate(context.canvas.width / 2, context.canvas.height / 2);
-    context.rotate(angle); // Rotate based on the current angle
+    context.rotate(angle);
     context.drawImage(
       images.current["carrier"],
       -images.current["carrier"].width / 2,
@@ -33,20 +43,19 @@ export default function Canvas() {
       config.item[0].point.h
     );
 
-    // Draw rectangles with different colors based on state
-    const rects = [
-      { x: -120, y: -150, width: 190, height: 95 },
-      { x: -120, y: -55, width: 190, height: 95 },
-    ];
-    rects.forEach((rect, index) => {
-      const color = clickedRect === index ? "#6CB4EE" : "white";
-      drawRect(context, rect.x, rect.y, rect.width, rect.height, color);
+    config.space.forEach((rect, index) => {
+      const color = clickedRectIndex === index ? "#6CB4EE" : "white";
+      drawRect(context, rect.x, rect.y, rect.w, rect.h, color);
     });
 
     context.restore();
   };
 
-  const drawStaticElements = (context, image, question, alpha) => {
+  const drawStaticElements = (
+    context: CanvasRenderingContext2D,
+    question: RotateCarrierItemAssets[],
+    alpha: number
+  ) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.save();
     context.translate(context.canvas.width / 2, context.canvas.height / 2);
@@ -93,14 +102,14 @@ export default function Canvas() {
     context.restore();
   };
 
-  const animateQuestion = (context) => {
+  const animateQuestion = (context: CanvasRenderingContext2D) => {
     let duration = 0;
     const flash = () => {
       const progress = Math.min(duration, 1);
       const alpha = Math.sin(progress * Math.PI);
       const question = config.item.slice(1, config.findItems + 1);
       duration += 0.015;
-      drawStaticElements(context, null, question, alpha);
+      drawStaticElements(context, question, alpha);
 
       if (progress < 1) {
         requestAnimationFrame(flash);
@@ -110,11 +119,11 @@ export default function Canvas() {
     requestAnimationFrame(flash);
   };
 
-  const animate = (context) => {
+  const animate = (context: CanvasRenderingContext2D) => {
     let degree = 0;
     const animateStep = () => {
       const progress = Math.min(degree, 1);
-      const angle = progress * (Math.PI / 2); // Rotate 90 degrees over the duration
+      const angle = progress * (Math.PI / 2); // 90도
       degree += 0.015;
       draw(context, angle);
 
@@ -135,43 +144,6 @@ export default function Canvas() {
       animateQuestion(context); // start 누르고 1초동안 문제 보여주기
       setTimeout(() => animate(context), 1000); // start 누르고 1초 후 애니메이션 시작
     }
-    const handlemouseDown = (event) => {
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const x = (event.clientX - rect.left) * scaleX - canvas.width / 2;
-      const y = (event.clientY - rect.top) * scaleY - canvas.height / 2;
-      // Adjust for the rotation
-      const rotatedX = x * Math.cos(-Math.PI / 2) - y * Math.sin(-Math.PI / 2);
-      const rotatedY = x * Math.sin(-Math.PI / 2) + y * Math.cos(-Math.PI / 2);
-
-      const rectIndex = config.space.findIndex((r) =>
-        isMouseOverRect(r, rotatedX, rotatedY)
-      );
-      setClickedRect(rectIndex >= 0 ? rectIndex : null);
-      if (rectIndex === config.answerDirection) {
-        setGameState((prev) => {
-          return {
-            ...prev,
-            score: prev.score + 1,
-          };
-        });
-      }
-    };
-
-    const handlemouseUp = () => {
-      setClickedRect(null);
-    };
-
-    // Attach event listeners
-    canvas.addEventListener("mousedown", handlemouseDown);
-    canvas.addEventListener("mouseup", handlemouseUp);
-
-    // Detach event listeners on cleanup
-    return () => {
-      canvas.removeEventListener("mousedown", handlemouseDown);
-      canvas.removeEventListener("mouseup", handlemouseUp);
-    };
   }, [gameState.start]);
 
   useEffect(() => {
@@ -181,7 +153,7 @@ export default function Canvas() {
     const context = canvas.getContext("2d");
     if (!context) return;
     draw(context, Math.PI / 2);
-  }, [clickedRect, gameState.start, images]);
+  }, [clickedRectIndex, gameState.start, images]);
 
   useEffect(() => {
     preLoadImages(images, config);
@@ -196,12 +168,3 @@ export default function Canvas() {
     </div>
   );
 }
-
-const isMouseOverRect = (rect, mouseX, mouseY) => {
-  const ret =
-    mouseX >= rect.x &&
-    mouseX <= rect.x + rect.w &&
-    mouseY >= rect.y &&
-    mouseY <= rect.y + rect.h;
-  return ret;
-};

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import Canvas from "@/components/rotateCarrier/Canvas";
@@ -12,7 +12,6 @@ import { useRecoilState } from "recoil";
 export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
-  //const [start, setStart] = useState(false);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
 
