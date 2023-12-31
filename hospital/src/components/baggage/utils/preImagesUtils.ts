@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { ItemAnimation } from "../BaggageCanvas";
 import { BaggageStatus } from "@/utils/constEnum";
-import { drawStaticElements, shuffleArray } from "../index";
+import { shuffleArray } from "../index";
 import {
   BaggageLevelConfig,
   BaggageItemAssets,

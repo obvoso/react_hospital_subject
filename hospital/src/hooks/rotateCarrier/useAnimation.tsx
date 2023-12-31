@@ -1,11 +1,14 @@
 import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
 import { RefObject, useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   drawRect,
   drawStaticElements,
 } from "@/components/rotateCarrier/utils/DrawUtils";
+import { getRandomRotateDirection } from "@/components/rotateCarrier/utils/randomDirection";
+import { request } from "http";
+import { init } from "next/dist/compiled/webpack/webpack";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -22,7 +25,7 @@ export const useAnimation = ({
   config,
   clickedRectIndex,
 }: params) => {
-  const gameState = useRecoilValue(RotateCarrierGameState);
+  const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
 
   const draw = (angle: number) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
@@ -46,16 +49,42 @@ export const useAnimation = ({
     context.restore();
   };
 
-  const animate = () => {
-    let degree = 0;
+  const animateRotation = () => {
+    let rotateDirection = getRandomRotateDirection();
+    let degree = 0; //증가량은 속도
+    let rotateCount = 0;
+    let endAngle =
+      rotateDirection === "right"
+        ? config.rotationAngle[0]
+        : config.rotationAngle[0] * -1;
+
+    const initNextRotate = () => {
+      rotateCount++;
+      rotateDirection = getRandomRotateDirection();
+      const rotateAngle = config.rotationAngle[rotateCount];
+      rotateDirection === "right"
+        ? (endAngle += rotateAngle)
+        : (endAngle -= rotateAngle);
+    };
+
     const animateStep = () => {
-      const progress = Math.min(degree, 1);
-      const angle = progress * (Math.PI / 2); // 90도
-      degree += 0.015;
-      draw(angle);
-      if (progress < 1) {
-        requestAnimationFrame(animateStep);
+      if (rotateCount === config.rotation) {
+        console.log(degree);
+        return;
       }
+      switch (rotateDirection) {
+        case "right":
+          degree = Number(degree.toFixed(3)) + 0.015;
+          if (degree >= endAngle) initNextRotate();
+          break;
+        case "left":
+          degree = Number(degree.toFixed(3)) - 0.015;
+          if (degree <= endAngle) initNextRotate();
+          break;
+      }
+      let angle = degree * (Math.PI / 2);
+      draw(angle);
+      requestAnimationFrame(animateStep);
     };
     requestAnimationFrame(animateStep);
   };
@@ -85,7 +114,7 @@ export const useAnimation = ({
 
     if (gameState.start) {
       animateQuestion(context); // start 누르고 1초동안 문제 보여주기
-      setTimeout(animate, 1000); // start 누르고 1초 후 애니메이션 시작
+      setTimeout(animateRotation, 1000); // start 누르고 1초 후 애니메이션 시작
     }
   }, [gameState.start]);
 
@@ -96,6 +125,6 @@ export const useAnimation = ({
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    draw(Math.PI / 2);
+    //draw(Math.PI / 2);
   }, [clickedRectIndex, gameState.start, images]);
 };

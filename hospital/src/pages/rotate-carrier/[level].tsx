@@ -8,6 +8,7 @@ import {
   RotateCarrierGameState,
 } from "@/atoms/rotateCarrier/config";
 import { useRecoilState } from "recoil";
+import shuffleArray from "@/utils/arrayShuffle";
 
 export default function GamePage() {
   const router = useRouter();
@@ -17,7 +18,8 @@ export default function GamePage() {
 
   useEffect(() => {
     const levelConfig = RotateCarrierGameLevels[level];
-    setConfig(levelConfig);
+    const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
+    setConfig({ ...levelConfig, rotationAngle: shuffleAngle });
   }, [level]);
 
   function handleStart() {

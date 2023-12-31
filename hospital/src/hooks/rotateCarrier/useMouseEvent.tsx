@@ -1,4 +1,3 @@
-import { IGame } from "@/atoms/baggage/game";
 import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import {
   RotateCarrierLevelConfig,
@@ -10,7 +9,6 @@ import { useRecoilState } from "recoil";
 export const useMouseEvent = (
   canvasRef: RefObject<HTMLCanvasElement>,
   config: RotateCarrierLevelConfig
-  //setClickedRectIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const [clickedRectIndex, setClickedRectIndex] = useState<number>(-1);
@@ -25,6 +23,7 @@ export const useMouseEvent = (
       mouseX <= rect.x + rect.w &&
       mouseY >= rect.y &&
       mouseY <= rect.y + rect.h;
+    console.log(ret);
     return ret;
   };
 
