@@ -44,12 +44,11 @@ export const useAnimation = ({
     );
 
     config.space.forEach((rect, index) => {
-      //정담 파랑, 오답 빨강
+      const isCorrect = config.answerDirection.includes(clickedRectIndex);
       const color =
-        clickedRectIndex === config.answerDirection &&
-        index === config.answerDirection
+        isCorrect && clickedRectIndex === index
           ? "#6CB4EE"
-          : clickedRectIndex === index
+          : clickedRectIndex == index
           ? "red"
           : "white";
 

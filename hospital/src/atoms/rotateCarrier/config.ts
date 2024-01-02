@@ -32,7 +32,7 @@ export const RotateCarrierConfigState = atom<RotateCarrierLevelConfig>({
     findItems: 1,
     obstacle: 0,
     findDirection: false,
-    answerDirection: 0,
+    answerDirection: [],
     space: [
       { x: 0, y: 0, w: 0, h: 0 },
       { x: 0, y: 0, w: 0, h: 0 },

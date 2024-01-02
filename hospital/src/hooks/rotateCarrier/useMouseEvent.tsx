@@ -45,16 +45,29 @@ export const useMouseEvent = (
       isMouseOverRect(r, rotatedX, rotatedY)
     );
 
-    setClickedRectIndex(rectIndex >= 0 ? rectIndex : -1);
+    //setClickedRectIndex(rectIndex >= 0 ? rectIndex : -1);
+    console.log(rectIndex);
+    setClickedRectIndex(rectIndex);
     //정답
-    if (rectIndex === config.answerDirection) {
-      setGameState((prev) => {
-        return {
-          ...prev,
-          score: prev.score + 1,
-        };
-      });
-    }
+    config.answerDirection.forEach((answer) => {
+      console.log(rectIndex, answer);
+      if (rectIndex === answer) {
+        setGameState((prev) => {
+          return {
+            ...prev,
+            score: prev.score + 1,
+          };
+        });
+      }
+    });
+    //if (rectIndex === config.answerDirection) {
+    //  setGameState((prev) => {
+    //    return {
+    //      ...prev,
+    //      score: prev.score + 1,
+    //    };
+    //  });
+    //}
   };
 
   const handleMouseUp = () => {

@@ -39,7 +39,7 @@ export interface RotateCarrierLevelConfig {
   findItems: number;
   obstacle: number;
   findDirection: boolean;
-  answerDirection: number;
+  answerDirection: number[];
   space: RotateCarrierSpacePoint[];
   rotation: number;
   rotationAngle: number[];
@@ -55,7 +55,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 1,
     obstacle: 0,
     findDirection: false,
-    answerDirection: 0,
+    answerDirection: [0],
     space: [space[0], space[1]],
     rotation: 1,
     rotationAngle: [ANGLE.ANGLE_90],
@@ -69,7 +69,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 1,
     obstacle: 1,
     findDirection: false,
-    answerDirection: 1,
+    answerDirection: [1],
     space: [space[0], space[1]],
     rotation: 1,
     rotationAngle: [ANGLE.ANGLE_90],
@@ -83,7 +83,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 1,
     obstacle: 0,
     findDirection: true,
-    answerDirection: 0,
+    answerDirection: [0],
     space: [space[2], space[3], space[4], space[5]],
     rotation: 2,
     rotationAngle: [ANGLE.ANGLE_90, ANGLE.ANGLE_90],
@@ -110,6 +110,134 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
       },
       {
         imageKey: "item1_270",
+        point: { ...space[5], y: space[5].y + 10, h: 100 },
+      },
+    ],
+  },
+  {
+    level: 3,
+    findItems: 1,
+    obstacle: 0,
+    findDirection: true,
+    answerDirection: [0],
+    space: [space[2], space[3], space[4], space[5]],
+    rotation: 2,
+    rotationAngle: [ANGLE.ANGLE_90, ANGLE.ANGLE_90],
+    carrier: { imageKey: "carrier", point: carrier },
+    questions: [
+      {
+        imageKey: "item1_0",
+        point: { ...space[2], y: space[2].y + 10, h: 100 },
+      },
+    ],
+    obstacles: [
+      {
+        imageKey: "obstacle0",
+        point: { ...space[4], y: space[4].y + 20, h: 90 },
+      },
+    ],
+    examples: [
+      {
+        imageKey: "item1_0",
+        point: { ...space[2], y: space[2].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item1_90",
+        point: { ...space[3], y: space[3].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item1_180",
+        point: { ...space[4], y: space[4].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item1_270",
+        point: { ...space[5], y: space[5].y + 10, h: 100 },
+      },
+    ],
+  },
+  {
+    level: 4,
+    findItems: 1,
+    obstacle: 0,
+    findDirection: true,
+    answerDirection: [0],
+    space: [space[2], space[3], space[4], space[5]],
+    rotation: 3,
+    rotationAngle: [ANGLE.ANGLE_90, ANGLE.ANGLE_90, ANGLE.ANGLE_90],
+    carrier: { imageKey: "carrier", point: carrier },
+    questions: [
+      {
+        imageKey: "item2_0",
+        point: { ...space[2], y: space[2].y + 30, h: 80 },
+      },
+    ],
+    obstacles: [
+      {
+        imageKey: "item0_90",
+        point: { ...space[3], y: space[3].y + 20, h: 90 },
+      },
+      {
+        imageKey: "item4_0",
+        point: { ...space[5], y: space[5].y + 20, h: 90 },
+      },
+    ],
+    examples: [
+      {
+        imageKey: "item2_0",
+        point: { ...space[2], y: space[2].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item2_90",
+        point: { ...space[3], y: space[3].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item2_180",
+        point: { ...space[4], y: space[4].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item2_270",
+        point: { ...space[5], y: space[5].y + 10, h: 100 },
+      },
+    ],
+  },
+  {
+    level: 5,
+    findItems: 2,
+    obstacle: 0,
+    findDirection: true,
+    answerDirection: [0, 3],
+    space: [space[2], space[3], space[4], space[5]],
+    rotation: 1,
+    rotationAngle: [ANGLE.ANGLE_90],
+    //rotation: 3,
+    //rotationAngle: [ANGLE.ANGLE_90, ANGLE.ANGLE_180, ANGLE.ANGLE_90],
+    carrier: { imageKey: "carrier", point: carrier },
+    questions: [
+      {
+        imageKey: "item2_0",
+        point: { ...space[2], y: space[2].y + 30, h: 80 },
+      },
+      {
+        imageKey: "item4_0",
+        point: { ...space[5], y: space[5].y + 20, h: 90 },
+      },
+    ],
+    obstacles: [],
+    examples: [
+      {
+        imageKey: "item2_0",
+        point: { ...space[2], y: space[2].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item2_90",
+        point: { ...space[3], y: space[3].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item2_180",
+        point: { ...space[4], y: space[4].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item2_270",
         point: { ...space[5], y: space[5].y + 10, h: 100 },
       },
     ],
