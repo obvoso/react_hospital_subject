@@ -14,6 +14,7 @@ interface params {
   images: RefObject<{ [key: string]: HTMLImageElement }>;
   config: RotateCarrierLevelConfig;
   clickedRectIndex: number;
+  setSubject: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const useAnimation = ({
@@ -22,6 +23,7 @@ export const useAnimation = ({
   images,
   config,
   clickedRectIndex,
+  setSubject,
 }: params) => {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
 
@@ -65,6 +67,17 @@ export const useAnimation = ({
 
     initRotateInfo();
     const animateStep = () => {
+      switch (rotateDirection) {
+        case "right":
+          degree += 0.015;
+          if (degree >= endAngle) initRotateInfo();
+          break;
+        case "left":
+          degree -= 0.015;
+          if (degree <= endAngle) initRotateInfo();
+          break;
+      }
+      //종료조건
       if (rotateCount === config.rotation) {
         setGameState((prev) => {
           return {
@@ -72,19 +85,11 @@ export const useAnimation = ({
             lastAngle: angle,
           };
         });
+        setSubject("물건의 위치는 어디에 있을까요?");
         return;
       }
-      switch (rotateDirection) {
-        case "right":
-          degree = Number(degree.toFixed(3)) + 0.015;
-          if (degree >= endAngle) initRotateInfo();
-          break;
-        case "left":
-          degree = Number(degree.toFixed(3)) - 0.015;
-          if (degree <= endAngle) initRotateInfo();
-          break;
-      }
-      angle = degree * Number((Math.PI / 2).toFixed(3));
+
+      angle = degree * (Math.PI / 2);
       draw(angle);
       requestAnimationFrame(animateStep);
     };
@@ -116,7 +121,10 @@ export const useAnimation = ({
 
     if (gameState.start) {
       animateQuestion(context); // start 누르고 1초동안 문제 보여주기
-      setTimeout(animateRotation, 1000); // start 누르고 1초 후 애니메이션 시작
+      setSubject("물건의 위치를 잘 기억해주세요.");
+      setTimeout(() => {
+        animateRotation(), setSubject("캐리어가 회전합니다.");
+      }, 1000); // start 누르고 1초 후 애니메이션 시작
     }
   }, [gameState.start]);
 

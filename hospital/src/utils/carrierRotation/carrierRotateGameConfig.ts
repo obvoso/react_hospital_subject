@@ -1,3 +1,9 @@
+const enum ANGLE {
+  ANGLE_90 = 1,
+  ANGLE_180 = 2,
+  ANGLE_270 = 3,
+}
+
 export interface RotateCarrierItemAssets {
   imageKey: string;
   point: RotateCarrierSpacePoint;
@@ -34,8 +40,8 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
       { x: -120, y: -150, w: 190, h: 95 },
       { x: -120, y: -55, w: 190, h: 95 },
     ],
-    rotation: 2,
-    rotationAngle: [1, 2],
+    rotation: 1,
+    rotationAngle: [ANGLE.ANGLE_90],
     item: [
       { imageKey: "carrier", point: { x: 0, y: 0, w: 300, h: 400 } },
       { imageKey: "item1_0", point: { x: -120, y: -150, w: 190, h: 95 } },

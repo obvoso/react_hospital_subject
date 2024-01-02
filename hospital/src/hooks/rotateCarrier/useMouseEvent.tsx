@@ -44,7 +44,9 @@ export const useMouseEvent = (
     const rectIndex = config.space.findIndex((r) =>
       isMouseOverRect(r, rotatedX, rotatedY)
     );
+
     setClickedRectIndex(rectIndex >= 0 ? rectIndex : -1);
+    //정답
     if (rectIndex === config.answerDirection) {
       setGameState((prev) => {
         return {

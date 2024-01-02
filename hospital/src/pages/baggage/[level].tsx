@@ -1,13 +1,14 @@
 import { BaggageCanvas } from "@/components/baggage";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
 import CustomButton from "@/utils/CustomButton";
 
 export default function GamePage() {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
+  const resetGameState = useResetRecoilState(BaggageGameState);
   const [config, setConfig] = useRecoilState(BaggageGameConfigState);
   const router = useRouter();
   const level = Number(router.query.level);
@@ -39,7 +40,7 @@ export default function GamePage() {
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
-    setGameState({ start: false, score: 0 }); // 상태 리셋
+    resetGameState(); // 상태 리셋
     setTimeLeft(config.timeLimit); // 시간 리셋
     if (level < 11) router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
     setNextBtn(false);
