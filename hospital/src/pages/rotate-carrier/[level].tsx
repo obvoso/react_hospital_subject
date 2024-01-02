@@ -10,7 +10,10 @@ import {
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import shuffleArray from "@/utils/arrayShuffle";
 import CustomButton from "@/utils/CustomButton";
-import FindItemDirection from "../../components/rotateCarrier/FindItemDirection";
+import {
+  FindItemDirection,
+  FindItemExist,
+} from "@/components/rotateCarrier/index";
 
 export default function GamePage() {
   const router = useRouter();
@@ -19,38 +22,54 @@ export default function GamePage() {
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
-  const [nextBtn, setNextBtn] = useState(false);
+  const [nextLevelBtn, setNextLevelBtn] = useState(false);
   const [findDirection, setFindDirection] = useState(false);
+  const [findItemExist, setFindItemExist] = useState(false);
 
   useEffect(() => {
     const levelConfig = RotateCarrierGameLevels[level];
     const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
-    setConfig({ ...levelConfig, rotationAngle: shuffleAngle });
+    const shuffleExistItem = shuffleArray(levelConfig.itemExamples);
+    setConfig({
+      ...levelConfig,
+      rotationAngle: shuffleAngle,
+      itemExamples: shuffleExistItem,
+    });
   }, [level]);
 
   useEffect(() => {
     if (gameState.directionScore === config.findItems) {
-      setNextBtn(true);
+      setNextLevelBtn(true);
     }
   }, [gameState.directionScore]);
+
+  useEffect(() => {
+    if (gameState.itemScore === config.findItems) {
+      setFindDirection(true);
+    }
+  }, [gameState.itemScore]);
 
   // 게임 클리어
   useEffect(() => {
     if (gameState.score === config.findItems && level < 9) {
+      if (config.itemExamples.length && !gameState.itemScore) {
+        setFindItemExist(true);
+        return;
+      }
       if (config.findDirection && !gameState.directionScore) {
         setFindDirection(true);
         return;
       }
-      setNextBtn(true);
+      setNextLevelBtn(true);
     }
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
     resetGameState(); // 상태 리셋
     if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
-    setNextBtn(false);
+    setNextLevelBtn(false);
     setFindDirection(false);
-  }, [nextBtn, level]);
+  }, [nextLevelBtn, level]);
 
   function handleStart() {
     setGameState({ ...gameState, start: true });
@@ -59,7 +78,10 @@ export default function GamePage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h3>{subject}</h3>
-      {!findDirection && <Canvas key={level} />}
+      {!findDirection && !findItemExist && <Canvas key={level} />}
+      {findItemExist && config.itemExamples && !findDirection && (
+        <FindItemExist />
+      )}
       {findDirection && config.findDirection && <FindItemDirection />}
       <div className="flex justify-center space-x-4 mt-4">
         <CustomButton
@@ -67,7 +89,7 @@ export default function GamePage() {
           onClick={handleStart}
           type={gameState.start ? "done" : "ready"}
         />
-        {nextBtn && (
+        {nextLevelBtn && (
           <CustomButton
             text="다음 단계"
             onClick={handleNextLevel}

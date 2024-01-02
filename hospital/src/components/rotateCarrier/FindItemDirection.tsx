@@ -6,13 +6,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { DrawFindItem } from "./DrawFindItem";
-import { get } from "http";
 
 export default function FindItemDirection() {
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const setSubject = useSetRecoilState(SubjectTextState);
   const [answerDirection, setAnswerDirection] = useState(0);
+  const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
   const path = "/assets/rotateCarrier";
 
   useEffect(() => {
@@ -43,16 +43,20 @@ export default function FindItemDirection() {
       setGameState((prev) => {
         return { ...gameState, directionScore: prev.directionScore + 1 };
       });
+      if (currentGroupIndex < config.dirrectionExamples.length - 1) {
+        setCurrentGroupIndex((prev) => prev + 1);
+      }
     }
   };
 
   return (
     <div className="grid grid-cols-2 grid-rows-2 gap-10 p-20">
-      {config.examples.map((item, index) => {
+      {config.dirrectionExamples[currentGroupIndex].items.map((item, index) => {
         return (
           <DrawFindItem
-            image={`${path}/${item.imageKey}.png`}
+            image={`${path}/${item}.png`}
             index={index}
+            uniqueKey={index}
             key={index}
             handleAnswer={handleAnswer}
           />

@@ -11,7 +11,6 @@ function loadImage(
 ) {
   const img = new Image();
   img.src = `${path}/${file.imageKey}.png`;
-  console.log(img.src);
   img.onload = () => {
     if (!images.current) return;
     images.current[file.imageKey] = img;

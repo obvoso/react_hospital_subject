@@ -45,8 +45,6 @@ export const useMouseEvent = (
       isMouseOverRect(r, rotatedX, rotatedY)
     );
 
-    //setClickedRectIndex(rectIndex >= 0 ? rectIndex : -1);
-    console.log(rectIndex);
     setClickedRectIndex(rectIndex);
     //정답
     config.answerDirection.forEach((answer) => {
@@ -60,14 +58,6 @@ export const useMouseEvent = (
         });
       }
     });
-    //if (rectIndex === config.answerDirection) {
-    //  setGameState((prev) => {
-    //    return {
-    //      ...prev,
-    //      score: prev.score + 1,
-    //    };
-    //  });
-    //}
   };
 
   const handleMouseUp = () => {

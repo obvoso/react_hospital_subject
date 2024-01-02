@@ -4,6 +4,7 @@ import { atom } from "recoil";
 interface IRotateCarrierGame {
   score: number;
   directionScore: number;
+  itemScore: number;
   start: boolean;
   lastAngle: number;
   lastDirection: number;
@@ -19,6 +20,7 @@ export const RotateCarrierGameState = atom<IRotateCarrierGame>({
   default: {
     score: 0,
     directionScore: 0,
+    itemScore: 0,
     start: false,
     lastAngle: 0,
     lastDirection: 0,
@@ -42,6 +44,7 @@ export const RotateCarrierConfigState = atom<RotateCarrierLevelConfig>({
     carrier: { imageKey: "carrier", point: { x: 0, y: 0, w: 0, h: 0 } },
     questions: [],
     obstacles: [],
-    examples: [],
+    itemExamples: [],
+    dirrectionExamples: [],
   },
 });
