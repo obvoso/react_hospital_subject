@@ -3,16 +3,25 @@ import { atom } from "recoil";
 
 interface IRotateCarrierGame {
   score: number;
+  directionScore: number;
   start: boolean;
   lastAngle: number;
+  lastDirection: number;
 }
+
+export const SubjectTextState = atom({
+  key: "SubjectTextState",
+  default: "",
+});
 
 export const RotateCarrierGameState = atom<IRotateCarrierGame>({
   key: "RotateCarrierGameState",
   default: {
     score: 0,
+    directionScore: 0,
     start: false,
     lastAngle: 0,
+    lastDirection: 0,
   },
 });
 

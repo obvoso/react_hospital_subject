@@ -7,7 +7,6 @@ import { useAnimation } from "@/hooks/rotateCarrier/useAnimation";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [subject, setSubject] = useState<string>("");
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const config = useRecoilValue(RotateCarrierConfigState);
   const { clickedRectIndex } = useMouseEvent(canvasRef, config);
@@ -18,7 +17,6 @@ export default function Canvas() {
     images,
     config,
     clickedRectIndex,
-    setSubject,
   });
 
   useEffect(() => {
@@ -30,7 +28,6 @@ export default function Canvas() {
 
   return (
     <div>
-      <h3>{subject}</h3>
       <canvas width={700} height={700} ref={canvasRef} />
     </div>
   );

@@ -4,6 +4,24 @@ const enum ANGLE {
   ANGLE_270 = 3,
 }
 
+const carrier: RotateCarrierSpacePoint = {
+  x: 0,
+  y: 0,
+  w: 300,
+  h: 500,
+};
+
+const space: RotateCarrierSpacePoint[] = [
+  // 1 X 2
+  { x: -130, y: -120, w: 200, h: 130 },
+  { x: -130, y: 10, w: 200, h: 130 },
+  // 2 x 2
+  { x: -130, y: -120, w: 100, h: 130 },
+  { x: -130, y: 10, w: 100, h: 130 },
+  { x: -30, y: -120, w: 100, h: 130 },
+  { x: -30, y: 10, w: 100, h: 130 },
+];
+
 export interface RotateCarrierItemAssets {
   imageKey: string;
   point: RotateCarrierSpacePoint;
@@ -38,16 +56,11 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     obstacle: 0,
     findDirection: false,
     answerDirection: 0,
-    space: [
-      { x: -120, y: -150, w: 190, h: 95 },
-      { x: -120, y: -55, w: 190, h: 95 },
-    ],
+    space: [space[0], space[1]],
     rotation: 1,
     rotationAngle: [ANGLE.ANGLE_90],
-    carrier: { imageKey: "carrier", point: { x: 0, y: 0, w: 300, h: 400 } },
-    questions: [
-      { imageKey: "item1_0", point: { x: -120, y: -150, w: 190, h: 95 } },
-    ],
+    carrier: { imageKey: "carrier", point: carrier },
+    questions: [{ imageKey: "item1_0", point: space[0] }],
     obstacles: [],
     examples: [],
   },
@@ -57,22 +70,48 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     obstacle: 1,
     findDirection: false,
     answerDirection: 1,
-    space: [
-      { x: -120, y: -150, w: 190, h: 95 },
-      { x: -120, y: -55, w: 190, h: 95 },
-    ],
+    space: [space[0], space[1]],
     rotation: 1,
     rotationAngle: [ANGLE.ANGLE_90],
-    carrier: { imageKey: "carrier", point: { x: 0, y: 0, w: 300, h: 400 } },
+    carrier: { imageKey: "carrier", point: carrier },
+    questions: [{ imageKey: "item5_0", point: space[1] }],
+    obstacles: [{ imageKey: "item1_0", point: space[0] }],
+    examples: [],
+  },
+  {
+    level: 2,
+    findItems: 1,
+    obstacle: 0,
+    findDirection: true,
+    answerDirection: 0,
+    space: [space[2], space[3], space[4], space[5]],
+    rotation: 2,
+    rotationAngle: [ANGLE.ANGLE_90, ANGLE.ANGLE_90],
+    carrier: { imageKey: "carrier", point: carrier },
     questions: [
-      { imageKey: "item5_0", point: { x: -120, y: -55, w: 190, h: 95 } },
-    ],
-    obstacles: [
       {
         imageKey: "item1_0",
-        point: { x: -120, y: -150, w: 190, h: 95 },
+        point: { ...space[2], y: space[2].y + 10, h: 100 },
       },
     ],
-    examples: [],
+    obstacles: [],
+    examples: [
+      {
+        imageKey: "item1_0",
+        point: { ...space[2], y: space[2].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item1_90",
+        point: { ...space[3], y: space[3].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item1_180",
+        point: { ...space[4], y: space[4].y + 10, h: 100 },
+      },
+      {
+        imageKey: "item1_270",
+        point: { ...space[5], y: space[5].y + 10, h: 100 },
+      },
+    ],
   },
 ];

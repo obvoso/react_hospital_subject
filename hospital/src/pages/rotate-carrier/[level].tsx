@@ -5,35 +5,51 @@ import { RotateCarrierGameLevels } from "@/utils/carrierRotation/carrierRotateGa
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
+  SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import shuffleArray from "@/utils/arrayShuffle";
 import CustomButton from "@/utils/CustomButton";
+import FindItemDirection from "../../components/rotateCarrier/FindItemDirection";
 
 export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
+  const subject = useRecoilValue(SubjectTextState);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
   const [nextBtn, setNextBtn] = useState(false);
+  const [findDirection, setFindDirection] = useState(false);
 
   useEffect(() => {
     const levelConfig = RotateCarrierGameLevels[level];
     const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
     setConfig({ ...levelConfig, rotationAngle: shuffleAngle });
-    console.log(levelConfig);
   }, [level]);
+
+  useEffect(() => {
+    if (gameState.directionScore === config.findItems) {
+      setNextBtn(true);
+    }
+  }, [gameState.directionScore]);
 
   // 게임 클리어
   useEffect(() => {
-    if (gameState.score === config.findItems && level < 9) setNextBtn(true);
+    if (gameState.score === config.findItems && level < 9) {
+      if (config.findDirection && !gameState.directionScore) {
+        setFindDirection(true);
+        return;
+      }
+      setNextBtn(true);
+    }
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
     resetGameState(); // 상태 리셋
     if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
     setNextBtn(false);
+    setFindDirection(false);
   }, [nextBtn, level]);
 
   function handleStart() {
@@ -42,7 +58,9 @@ export default function GamePage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <Canvas key={level} />
+      <h3>{subject}</h3>
+      {!findDirection && <Canvas key={level} />}
+      {findDirection && config.findDirection && <FindItemDirection />}
       <div className="flex justify-center space-x-4 mt-4">
         <CustomButton
           text="게임 시작"

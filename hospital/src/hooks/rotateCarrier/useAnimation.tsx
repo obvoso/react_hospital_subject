@@ -1,6 +1,9 @@
 import { RefObject, useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  RotateCarrierGameState,
+  SubjectTextState,
+} from "@/atoms/rotateCarrier/config";
 import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
 import {
   drawRect,
@@ -14,7 +17,6 @@ interface params {
   images: RefObject<{ [key: string]: HTMLImageElement }>;
   config: RotateCarrierLevelConfig;
   clickedRectIndex: number;
-  setSubject: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const useAnimation = ({
@@ -23,9 +25,9 @@ export const useAnimation = ({
   images,
   config,
   clickedRectIndex,
-  setSubject,
 }: params) => {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+  const setSubject = useSetRecoilState(SubjectTextState);
 
   const draw = (angle: number) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
@@ -68,20 +70,31 @@ export const useAnimation = ({
       rotateCount++;
       rotateDirection = getRandomRotateDirection();
       const rotateAngle = config.rotationAngle[rotateCount];
+      if (!rotateAngle) return;
       rotateDirection === "right"
         ? (endAngle += rotateAngle)
         : (endAngle -= rotateAngle);
+
+      setGameState((prev) => {
+        return {
+          ...prev,
+          lastDirection:
+            rotateDirection === "right" && rotateAngle
+              ? prev.lastDirection + rotateAngle
+              : prev.lastDirection - rotateAngle,
+        };
+      });
     };
 
     initRotateInfo();
     const animateStep = () => {
       switch (rotateDirection) {
         case "right":
-          if (degree > endAngle) initRotateInfo();
+          if (degree >= endAngle) initRotateInfo();
           degree += 0.015;
           break;
         case "left":
-          if (degree < endAngle) initRotateInfo();
+          if (degree <= endAngle) initRotateInfo();
           degree -= 0.015;
           break;
       }
