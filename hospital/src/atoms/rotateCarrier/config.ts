@@ -30,7 +30,9 @@ export const RotateCarrierConfigState = atom<RotateCarrierLevelConfig>({
     ],
     rotation: 1,
     rotationAngle: [2],
-    item: [{ imageKey: "item1_0", point: { x: 0, y: 0, w: 0, h: 0 } }],
-    example: [{ imageKey: "item1_0", point: { x: 0, y: 0, w: 0, h: 0 } }],
+    carrier: { imageKey: "carrier", point: { x: 0, y: 0, w: 0, h: 0 } },
+    questions: [],
+    obstacles: [],
+    examples: [],
   },
 });

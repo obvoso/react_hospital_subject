@@ -37,12 +37,20 @@ export const useAnimation = ({
       images.current["carrier"],
       -images.current["carrier"].width / 2,
       -images.current["carrier"].height / 2,
-      config.item[0].point.w,
-      config.item[0].point.h
+      config.carrier.point.w,
+      config.carrier.point.h
     );
 
     config.space.forEach((rect, index) => {
-      const color = clickedRectIndex === index ? "#6CB4EE" : "white";
+      //정담 파랑, 오답 빨강
+      const color =
+        clickedRectIndex === config.answerDirection &&
+        index === config.answerDirection
+          ? "#6CB4EE"
+          : clickedRectIndex === index
+          ? "red"
+          : "white";
+
       drawRect(context, rect.x, rect.y, rect.w, rect.h, color);
     });
 
@@ -69,12 +77,12 @@ export const useAnimation = ({
     const animateStep = () => {
       switch (rotateDirection) {
         case "right":
+          if (degree > endAngle) initRotateInfo();
           degree += 0.015;
-          if (degree >= endAngle) initRotateInfo();
           break;
         case "left":
+          if (degree < endAngle) initRotateInfo();
           degree -= 0.015;
-          if (degree <= endAngle) initRotateInfo();
           break;
       }
       //종료조건
@@ -98,12 +106,13 @@ export const useAnimation = ({
 
   const animateQuestion = (context: CanvasRenderingContext2D) => {
     let duration = 0;
+
     const flash = () => {
       const progress = Math.min(duration, 1);
       const alpha = Math.sin(progress * Math.PI);
-      const question = config.item.slice(1, config.findItems + 1);
+
       duration += 0.015;
-      drawStaticElements(context, question, images, config, alpha);
+      drawStaticElements(context, images, config, alpha);
 
       if (progress < 1) {
         requestAnimationFrame(flash);

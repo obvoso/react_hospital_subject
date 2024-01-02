@@ -25,8 +25,10 @@ export interface RotateCarrierLevelConfig {
   space: RotateCarrierSpacePoint[];
   rotation: number;
   rotationAngle: number[];
-  item: RotateCarrierItemAssets[];
-  example: RotateCarrierItemAssets[];
+  carrier: RotateCarrierItemAssets;
+  questions: RotateCarrierItemAssets[];
+  obstacles: RotateCarrierItemAssets[];
+  examples: RotateCarrierItemAssets[];
 }
 
 export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
@@ -42,10 +44,35 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     ],
     rotation: 1,
     rotationAngle: [ANGLE.ANGLE_90],
-    item: [
-      { imageKey: "carrier", point: { x: 0, y: 0, w: 300, h: 400 } },
+    carrier: { imageKey: "carrier", point: { x: 0, y: 0, w: 300, h: 400 } },
+    questions: [
       { imageKey: "item1_0", point: { x: -120, y: -150, w: 190, h: 95 } },
     ],
-    example: [{ imageKey: "item1_0", point: { x: 0, y: 0, w: 0, h: 0 } }],
+    obstacles: [],
+    examples: [],
+  },
+  {
+    level: 1,
+    findItems: 1,
+    obstacle: 1,
+    findDirection: false,
+    answerDirection: 1,
+    space: [
+      { x: -120, y: -150, w: 190, h: 95 },
+      { x: -120, y: -55, w: 190, h: 95 },
+    ],
+    rotation: 1,
+    rotationAngle: [ANGLE.ANGLE_90],
+    carrier: { imageKey: "carrier", point: { x: 0, y: 0, w: 300, h: 400 } },
+    questions: [
+      { imageKey: "item5_0", point: { x: -120, y: -55, w: 190, h: 95 } },
+    ],
+    obstacles: [
+      {
+        imageKey: "item1_0",
+        point: { x: -120, y: -150, w: 190, h: 95 },
+      },
+    ],
+    examples: [],
   },
 ];
