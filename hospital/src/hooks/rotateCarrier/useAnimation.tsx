@@ -99,12 +99,14 @@ export const useAnimation = ({
       }
       //종료조건
       if (rotateCount === config.rotation) {
-        setGameState((prev) => {
-          return {
-            ...prev,
-            lastAngle: angle,
-          };
-        });
+        const lastDirection = ((gameState.lastDirection % 4) + 4) % 4; // -4 ~ 3 범위를 0 ~ 3으로 변환
+
+        setGameState((prev) => ({
+          ...prev,
+          lastAngle: angle,
+          lastDirection:
+            lastDirection === 3 ? 1 : lastDirection === 1 ? 3 : lastDirection,
+        }));
         setSubject("물건의 위치는 어디에 있을까요?");
         return;
       }
@@ -126,7 +128,7 @@ export const useAnimation = ({
       duration += 0.01;
       drawStaticElements(context, images, config, alpha);
 
-      if (progress <= 1.5) {
+      if (progress < 1.5) {
         requestAnimationFrame(flash);
       }
     };

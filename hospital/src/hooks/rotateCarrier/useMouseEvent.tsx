@@ -48,7 +48,6 @@ export const useMouseEvent = (
     setClickedRectIndex(rectIndex);
     //정답
     config.answerDirection.forEach((answer) => {
-      console.log(rectIndex, answer);
       if (rectIndex === answer) {
         setGameState((prev) => {
           return {

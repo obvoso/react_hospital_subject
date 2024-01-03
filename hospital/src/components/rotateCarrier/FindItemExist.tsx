@@ -7,21 +7,44 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { DrawFindItem } from "./index";
 
+interface answerItem {
+  isAnswer: boolean;
+  scored: boolean;
+}
+
 export default function FindItemExist() {
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const setSubject = useSetRecoilState(SubjectTextState);
+  const [answerItem, setAnswerItem] = useState<answerItem[]>([]);
   const path = "/assets/rotateCarrier";
+
+  const isAnswer = (itemName: string) =>
+    config.questions.some((question) => itemName === question.imageKey);
 
   useEffect(() => {
     setSubject("여기에는 어떤 물건이 들어 있었나요?");
+
+    const answerItems: answerItem[] = config.itemExamples.map((item, index) => {
+      return {
+        isAnswer: isAnswer(item),
+        scored: false,
+      };
+    });
+    console.log(answerItems);
+    setAnswerItem(answerItems);
   }, []);
 
-  const handleAnswer = (itemName: string) => {
-    const isAnswer = config.questions.some(
-      (question) => itemName === question.imageKey
-    );
-    if (isAnswer) {
+  const handleAnswer = (index: number) => {
+    if (answerItem[index].isAnswer && !answerItem[index].scored) {
+      setAnswerItem((prev) => {
+        return prev.map((item, i) => {
+          if (i === index) {
+            return { ...item, scored: true };
+          }
+          return item;
+        });
+      });
       setGameState((prev) => {
         return { ...gameState, itemScore: prev.itemScore + 1 };
       });
@@ -35,7 +58,7 @@ export default function FindItemExist() {
           <DrawFindItem
             image={`${path}/${item}.png`}
             index={index}
-            uniqueKey={item}
+            isAnswer={answerItem[index]?.isAnswer}
             handleAnswer={handleAnswer}
             key={index}
           />
