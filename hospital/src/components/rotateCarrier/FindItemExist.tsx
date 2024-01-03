@@ -18,14 +18,10 @@ export default function FindItemExist() {
   }, []);
 
   const handleAnswer = (itemName: string) => {
-    const isItemInQuestions = config.questions.some(
+    const isAnswer = config.questions.some(
       (question) => itemName === question.imageKey
     );
-
-    const isItemInObstacles = config.obstacles.some(
-      (obstacle) => itemName === obstacle.imageKey
-    );
-    if (isItemInQuestions || isItemInObstacles) {
+    if (isAnswer) {
       setGameState((prev) => {
         return { ...gameState, itemScore: prev.itemScore + 1 };
       });

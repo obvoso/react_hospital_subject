@@ -14,6 +14,7 @@ export const drawRect = (
 ) => {
   context.fillStyle = color;
   context.fillRect(x, y, w, h);
+  context.lineWidth = 5;
   context.strokeRect(x, y, w, h);
 };
 
@@ -37,7 +38,7 @@ export const drawStaticElements = (
     config.carrier.point.h
   );
   config.space.forEach((rect) => {
-    drawRect(context, rect.x, rect.y, rect.w, rect.h, "white");
+    drawRect(context, rect.x, rect.y, rect.w, rect.h, "rgb(243,244,246)");
   });
 
   config.obstacles.forEach((item) => {

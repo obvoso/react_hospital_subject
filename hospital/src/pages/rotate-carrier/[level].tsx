@@ -27,18 +27,22 @@ export default function GamePage() {
   const [findItemExist, setFindItemExist] = useState(false);
 
   useEffect(() => {
-    const levelConfig = RotateCarrierGameLevels[level];
-    const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
-    const shuffleExistItem = shuffleArray(levelConfig.itemExamples);
-    setConfig({
-      ...levelConfig,
-      rotationAngle: shuffleAngle,
-      itemExamples: shuffleExistItem,
-    });
+    const initConfig = () => {
+      const levelConfig = RotateCarrierGameLevels[level];
+      const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
+      const shuffleExistItem = shuffleArray(levelConfig.itemExamples);
+      setConfig({
+        ...levelConfig,
+        rotationAngle: shuffleAngle,
+        itemExamples: shuffleExistItem,
+      });
+    };
+
+    initConfig();
   }, [level]);
 
   useEffect(() => {
-    if (gameState.directionScore === config.findItems) {
+    if (gameState.directionScore === config.findItems && level < 9) {
       setNextLevelBtn(true);
     }
   }, [gameState.directionScore]);
@@ -51,7 +55,7 @@ export default function GamePage() {
 
   // 게임 클리어
   useEffect(() => {
-    if (gameState.score === config.findItems && level < 9) {
+    if (gameState.score === config.findItems) {
       if (config.itemExamples.length && !gameState.itemScore) {
         setFindItemExist(true);
         return;
@@ -60,7 +64,7 @@ export default function GamePage() {
         setFindDirection(true);
         return;
       }
-      setNextLevelBtn(true);
+      if (level < 9) setNextLevelBtn(true);
     }
   }, [gameState.score, router, level]);
 
@@ -77,7 +81,14 @@ export default function GamePage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h3>{subject}</h3>
+      <div className="flex flex-col items-center justify-center w-[30%] p-4 bg-white rounded-xl shadow-md">
+        <span className="font-bold text-xl mb-2">{level + 1} 단계</span>
+        <div className="flex items-center justify-center min-h-12 w-full">
+          <p className="whitespace-pre-line text-center align-middle">
+            {subject}
+          </p>
+        </div>
+      </div>
       {!findDirection && !findItemExist && <Canvas key={level} />}
       {findItemExist && config.itemExamples && !findDirection && (
         <FindItemExist />

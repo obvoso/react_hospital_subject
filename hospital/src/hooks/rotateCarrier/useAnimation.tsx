@@ -50,7 +50,7 @@ export const useAnimation = ({
           ? "#6CB4EE"
           : clickedRectIndex == index
           ? "red"
-          : "white";
+          : "rgb(243,244,246)";
 
       drawRect(context, rect.x, rect.y, rect.w, rect.h, color);
     });
@@ -120,13 +120,13 @@ export const useAnimation = ({
     let duration = 0;
 
     const flash = () => {
-      const progress = Math.min(duration, 1);
+      const progress = Math.min(duration, 1.5);
       const alpha = Math.sin(progress * Math.PI);
 
-      duration += 0.015;
+      duration += 0.01;
       drawStaticElements(context, images, config, alpha);
 
-      if (progress < 1) {
+      if (progress <= 1.5) {
         requestAnimationFrame(flash);
       }
     };
@@ -145,7 +145,7 @@ export const useAnimation = ({
       setSubject("물건의 위치를 잘 기억해주세요.");
       setTimeout(() => {
         animateRotation(), setSubject("캐리어가 회전합니다.");
-      }, 1000); // start 누르고 1초 후 애니메이션 시작
+      }, 1500); // start 누르고 1.5초 후 애니메이션 시작
     }
   }, [gameState.start]);
 
