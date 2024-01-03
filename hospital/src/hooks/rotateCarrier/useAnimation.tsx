@@ -66,32 +66,16 @@ export const useAnimation = ({
     let rotateDirection = "";
     let degree = 0; //증가량은 속도
     let rotateCount = -1;
-    let angle = 0;
     let endAngle = 0;
 
     const initRotateInfo = () => {
-      rotateCount++;
-      rotateDirection = getRandomRotateDirection();
-      const rotateAngle = RoundFloat(
-        config.rotationAngle[rotateCount] * (Math.PI / 2)
-      );
-      console.log(rotateAngle);
-      if (!rotateAngle || Number.isNaN(rotateAngle)) return;
+      const rotateAngle = config.rotationAngle[++rotateCount];
+      if (!rotateAngle) return;
 
+      rotateDirection = getRandomRotateDirection();
       rotateDirection === "right"
         ? (endAngle += rotateAngle)
         : (endAngle -= rotateAngle);
-      endAngle = RoundFloat(endAngle);
-
-      setGameState((prev) => {
-        return {
-          ...prev,
-          lastDirection:
-            rotateDirection === "right" && rotateAngle
-              ? prev.lastDirection + rotateAngle
-              : prev.lastDirection - rotateAngle,
-        };
-      });
     };
 
     initRotateInfo();
@@ -109,12 +93,10 @@ export const useAnimation = ({
       }
       //종료조건
       if (rotateCount === config.rotation) {
-        console.log(degree, endAngle);
-        const lastDirection = ((gameState.lastDirection % 4) + 4) % 4; // -4 ~ 3 범위를 0 ~ 3으로 변환
-
+        const lastDirection = ((endAngle % 4) + 4) % 4; // -4 ~ 3 범위를 0 ~ 3으로 변환
         setGameState((prev) => ({
           ...prev,
-          lastAngle: degree,
+          lastAngle: RoundFloat(degree * (Math.PI / 2)),
           lastDirection:
             lastDirection === 3 ? 1 : lastDirection === 1 ? 3 : lastDirection,
         }));
@@ -122,7 +104,7 @@ export const useAnimation = ({
         return;
       }
 
-      draw(degree);
+      draw(RoundFloat(degree * (Math.PI / 2)));
       requestAnimationFrame(animateStep);
     };
     requestAnimationFrame(animateStep);
