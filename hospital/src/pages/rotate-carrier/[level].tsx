@@ -19,6 +19,7 @@ export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
   const subject = useRecoilValue(SubjectTextState);
+  const resetSubjuect = useResetRecoilState(SubjectTextState);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
@@ -69,8 +70,9 @@ export default function GamePage() {
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
-    resetGameState(); // 상태 리셋
     if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
+    resetGameState(); // 상태 리셋
+    resetSubjuect();
     setNextLevelBtn(false);
     setFindDirection(false);
   }, [nextLevelBtn, level]);

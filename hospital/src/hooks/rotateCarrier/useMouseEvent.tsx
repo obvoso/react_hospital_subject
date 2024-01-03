@@ -46,9 +46,11 @@ export const useMouseEvent = (
     );
 
     setClickedRectIndex(rectIndex);
-    //정답
+  };
+
+  const handleMouseUp = () => {
     config.answerDirection.forEach((answer) => {
-      if (rectIndex === answer) {
+      if (clickedRectIndex === answer) {
         setGameState((prev) => {
           return {
             ...prev,
@@ -57,9 +59,6 @@ export const useMouseEvent = (
         });
       }
     });
-  };
-
-  const handleMouseUp = () => {
     setClickedRectIndex(-1);
   };
 
@@ -73,6 +72,6 @@ export const useMouseEvent = (
       canvasRef.current.removeEventListener("mousedown", handleMouseDown);
       canvasRef.current.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [gameState.start, gameState.lastAngle]);
+  }, [gameState.start, gameState.lastAngle, clickedRectIndex]);
   return { clickedRectIndex };
 };

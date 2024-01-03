@@ -29,6 +29,10 @@ export const useAnimation = ({
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const setSubject = useSetRecoilState(SubjectTextState);
 
+  const RoundFloat = (num: number) => {
+    return Math.round((num + Number.EPSILON) * 1000) / 1000;
+  };
+
   const draw = (angle: number) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.save();
@@ -37,7 +41,7 @@ export const useAnimation = ({
     if (!images.current) return;
     context.drawImage(
       images.current["carrier"],
-      -images.current["carrier"].width / 2,
+      -images.current["carrier"].width / 2 + 25,
       -images.current["carrier"].height / 2,
       config.carrier.point.w,
       config.carrier.point.h
@@ -68,11 +72,16 @@ export const useAnimation = ({
     const initRotateInfo = () => {
       rotateCount++;
       rotateDirection = getRandomRotateDirection();
-      const rotateAngle = config.rotationAngle[rotateCount];
-      if (!rotateAngle) return;
+      const rotateAngle = RoundFloat(
+        config.rotationAngle[rotateCount] * (Math.PI / 2)
+      );
+      console.log(rotateAngle);
+      if (!rotateAngle || Number.isNaN(rotateAngle)) return;
+
       rotateDirection === "right"
         ? (endAngle += rotateAngle)
         : (endAngle -= rotateAngle);
+      endAngle = RoundFloat(endAngle);
 
       setGameState((prev) => {
         return {
@@ -86,24 +95,26 @@ export const useAnimation = ({
     };
 
     initRotateInfo();
+
     const animateStep = () => {
       switch (rotateDirection) {
         case "right":
+          degree = RoundFloat(degree + 0.015);
           if (degree >= endAngle) initRotateInfo();
-          degree += 0.015;
           break;
         case "left":
+          degree = RoundFloat(degree - 0.015);
           if (degree <= endAngle) initRotateInfo();
-          degree -= 0.015;
           break;
       }
       //종료조건
       if (rotateCount === config.rotation) {
+        console.log(degree, endAngle);
         const lastDirection = ((gameState.lastDirection % 4) + 4) % 4; // -4 ~ 3 범위를 0 ~ 3으로 변환
 
         setGameState((prev) => ({
           ...prev,
-          lastAngle: angle,
+          lastAngle: degree,
           lastDirection:
             lastDirection === 3 ? 1 : lastDirection === 1 ? 3 : lastDirection,
         }));
@@ -111,8 +122,7 @@ export const useAnimation = ({
         return;
       }
 
-      angle = degree * (Math.PI / 2);
-      draw(angle);
+      draw(degree);
       requestAnimationFrame(animateStep);
     };
     requestAnimationFrame(animateStep);
@@ -151,7 +161,7 @@ export const useAnimation = ({
     }
   }, [gameState.start]);
 
-  // 클릭시 클릭한 rect에 색칠
+  //클릭시 클릭한 rect에 색칠
   useEffect(() => {
     if (!gameState.start) return;
     const canvas = canvasRef.current;

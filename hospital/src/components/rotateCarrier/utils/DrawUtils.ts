@@ -32,11 +32,12 @@ export const drawStaticElements = (
 
   context.drawImage(
     images.current["carrier"],
-    -images.current["carrier"].width / 2,
+    -images.current["carrier"].width / 2 + 25,
     -images.current["carrier"].height / 2,
     config.carrier.point.w,
     config.carrier.point.h
   );
+
   config.space.forEach((rect) => {
     drawRect(context, rect.x, rect.y, rect.w, rect.h, "rgb(243,244,246)");
   });
