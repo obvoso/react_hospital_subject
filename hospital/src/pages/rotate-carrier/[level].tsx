@@ -32,10 +32,19 @@ export default function GamePage() {
       const levelConfig = RotateCarrierGameLevels[level];
       const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
       const shuffleExistItem = shuffleArray(levelConfig.itemExamples);
+      const shuffleDirectionItem = levelConfig.dirrectionExamples.map(
+        (item) => {
+          return {
+            ...item,
+            items: shuffleArray(item.items),
+          };
+        }
+      );
       setConfig({
         ...levelConfig,
         rotationAngle: shuffleAngle,
         itemExamples: shuffleExistItem,
+        dirrectionExamples: shuffleDirectionItem,
       });
     };
 

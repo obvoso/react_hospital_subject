@@ -12,7 +12,12 @@ const carrier: RotateCarrierSpacePoint = {
 };
 
 interface DirectionGroup {
-  items: string[];
+  index: number;
+  imageKey: string;
+}
+
+interface DirectionGroups {
+  items: DirectionGroup[];
 }
 
 const space: RotateCarrierSpacePoint[] = [
@@ -58,7 +63,7 @@ export interface RotateCarrierLevelConfig {
   questions: RotateCarrierItemAssets[];
   obstacles: RotateCarrierItemAssets[];
   itemExamples: string[];
-  dirrectionExamples: DirectionGroup[];
+  dirrectionExamples: DirectionGroups[];
 }
 
 export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
@@ -111,7 +116,14 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     obstacles: [],
     itemExamples: [],
     dirrectionExamples: [
-      { items: ["item1_0", "item1_90", "item1_180", "item1_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item1_0" },
+          { index: 1, imageKey: "item1_90" },
+          { index: 2, imageKey: "item1_180" },
+          { index: 3, imageKey: "item1_270" },
+        ],
+      },
     ],
   },
   {
@@ -138,7 +150,14 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     ],
     itemExamples: [],
     dirrectionExamples: [
-      { items: ["item1_0", "item1_90", "item1_180", "item1_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item1_0" },
+          { index: 1, imageKey: "item1_90" },
+          { index: 2, imageKey: "item1_180" },
+          { index: 3, imageKey: "item1_270" },
+        ],
+      },
     ],
   },
   {
@@ -169,7 +188,14 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     ],
     itemExamples: [],
     dirrectionExamples: [
-      { items: ["item2_0", "item2_90", "item2_180", "item2_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item2_0" },
+          { index: 1, imageKey: "item2_90" },
+          { index: 2, imageKey: "item2_180" },
+          { index: 3, imageKey: "item2_270" },
+        ],
+      },
     ],
   },
   {
@@ -195,8 +221,22 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     obstacles: [],
     itemExamples: ["item0_0", "item1_0", "item2_0", "item4_0"],
     dirrectionExamples: [
-      { items: ["item2_0", "item2_90", "item2_180", "item2_270"] },
-      { items: ["item4_0", "item4_90", "item4_180", "item4_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item2_0" },
+          { index: 1, imageKey: "item2_90" },
+          { index: 2, imageKey: "item2_180" },
+          { index: 3, imageKey: "item2_270" },
+        ],
+      },
+      {
+        items: [
+          { index: 0, imageKey: "item4_0" },
+          { index: 1, imageKey: "item4_90" },
+          { index: 2, imageKey: "item4_180" },
+          { index: 3, imageKey: "item4_270" },
+        ],
+      },
     ],
   },
   {
@@ -237,8 +277,22 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     ],
     itemExamples: ["item0_90", "item1_0", "item2_0", "item4_0"],
     dirrectionExamples: [
-      { items: ["item2_0", "item2_90", "item2_180", "item2_270"] },
-      { items: ["item4_0", "item4_90", "item4_180", "item4_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item2_0" },
+          { index: 1, imageKey: "item2_90" },
+          { index: 2, imageKey: "item2_180" },
+          { index: 3, imageKey: "item2_270" },
+        ],
+      },
+      {
+        items: [
+          { index: 0, imageKey: "item4_0" },
+          { index: 1, imageKey: "item4_90" },
+          { index: 2, imageKey: "item4_180" },
+          { index: 3, imageKey: "item4_270" },
+        ],
+      },
     ],
   },
   {
@@ -288,8 +342,22 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     ],
     itemExamples: ["item0_90", "obstacle1", "item2_0", "item4_0"],
     dirrectionExamples: [
-      { items: ["item2_0", "item2_90", "item2_180", "item2_270"] },
-      { items: ["item4_0", "item4_90", "item4_180", "item4_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item2_0" },
+          { index: 1, imageKey: "item2_90" },
+          { index: 2, imageKey: "item2_180" },
+          { index: 3, imageKey: "item2_270" },
+        ],
+      },
+      {
+        items: [
+          { index: 0, imageKey: "item4_0" },
+          { index: 1, imageKey: "item4_90" },
+          { index: 2, imageKey: "item4_180" },
+          { index: 3, imageKey: "item4_270" },
+        ],
+      },
     ],
   },
   {
@@ -331,8 +399,22 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     ],
     itemExamples: ["item0_90", "obstacle1", "item2_0", "item4_0"],
     dirrectionExamples: [
-      { items: ["item2_0", "item2_90", "item2_180", "item2_270"] },
-      { items: ["item4_0", "item4_90", "item4_180", "item4_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item2_0" },
+          { index: 1, imageKey: "item2_90" },
+          { index: 2, imageKey: "item2_180" },
+          { index: 3, imageKey: "item2_270" },
+        ],
+      },
+      {
+        items: [
+          { index: 0, imageKey: "item4_0" },
+          { index: 1, imageKey: "item4_90" },
+          { index: 2, imageKey: "item4_180" },
+          { index: 3, imageKey: "item4_270" },
+        ],
+      },
     ],
   },
   {
@@ -383,8 +465,22 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     ],
     itemExamples: ["item0_90", "obstacle1", "item2_0", "item4_0"],
     dirrectionExamples: [
-      { items: ["item2_0", "item2_90", "item2_180", "item2_270"] },
-      { items: ["item4_0", "item4_90", "item4_180", "item4_270"] },
+      {
+        items: [
+          { index: 0, imageKey: "item2_0" },
+          { index: 1, imageKey: "item2_90" },
+          { index: 2, imageKey: "item2_180" },
+          { index: 3, imageKey: "item2_270" },
+        ],
+      },
+      {
+        items: [
+          { index: 0, imageKey: "item4_0" },
+          { index: 1, imageKey: "item4_90" },
+          { index: 2, imageKey: "item4_180" },
+          { index: 3, imageKey: "item4_270" },
+        ],
+      },
     ],
   },
 ];

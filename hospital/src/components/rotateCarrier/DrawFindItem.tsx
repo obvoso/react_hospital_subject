@@ -25,7 +25,7 @@ export const DrawFindItem = ({
     setIsActive(false);
   };
 
-  const activeColor = isAnswer ? "rgb(191 219 254" : "rgb(254 202 202)";
+  const activeColor = isAnswer ? "rgb(191 219 254)" : "rgb(254 202 202)";
 
   return (
     <div

@@ -24,9 +24,9 @@ export default function FindItemDirection() {
 
   const findAnswerItem = (idx: number) => {
     const answerItems: answerItem[] = config.dirrectionExamples[idx].items.map(
-      (item, index) => {
+      (item) => {
         return {
-          isAnswer: isAnwer(index),
+          isAnswer: isAnwer(item.index),
           scored: false,
         };
       }
@@ -70,10 +70,10 @@ export default function FindItemDirection() {
         return (
           answerItem[index] && (
             <DrawFindItem
-              image={`${path}/${item}.png`}
+              image={`${path}/${item.imageKey}.png`}
               index={index}
               isAnswer={answerItem[index].isAnswer}
-              key={item + index}
+              key={index}
               handleAnswer={handleAnswer}
             />
           )

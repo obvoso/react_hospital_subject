@@ -31,7 +31,6 @@ export default function FindItemExist() {
         scored: false,
       };
     });
-    console.log(answerItems);
     setAnswerItem(answerItems);
   }, []);
 
