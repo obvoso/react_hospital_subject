@@ -56,6 +56,11 @@ export default function GamePage() {
     setGameState({ ...gameState, start: true });
   }, [level]);
 
+  function handleGameClear() {
+    resetGameState(); // 상태 리셋
+    router.push("/");
+  }
+
   // 레벨 설정
   useEffect(() => {
     const levelConfig = baggageGameLevels[level];
@@ -84,6 +89,14 @@ export default function GamePage() {
               type="activate"
             />
           )}
+          {level === 11 &&
+            (gameState.score === config.items || timeLeft === 0) && (
+              <CustomButton
+                text="처음으로"
+                onClick={handleGameClear}
+                type="activate"
+              />
+            )}
         </div>
       </div>
     </div>
