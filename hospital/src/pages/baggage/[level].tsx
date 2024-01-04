@@ -31,13 +31,19 @@ export default function GamePage() {
 
   // 게임 오버
   useEffect(() => {
-    if (timeLeft === 0) if (level < 11) setNextBtn(true);
-  }, [timeLeft]);
+    if (timeLeft === 0 && gameState.start) {
+      if (level < 11) {
+        setNextBtn(true);
+      }
+    }
+  }, [timeLeft, gameState, level]);
 
   // 게임 클리어
   useEffect(() => {
-    if (gameState.score === config.items && level < 11) setNextBtn(true);
-  }, [gameState.score, router, level]);
+    if (gameState.score === config.items && level < 11 && gameState.start) {
+      setNextBtn(true);
+    }
+  }, [gameState, config, level]);
 
   const handleNextLevel = useCallback(() => {
     resetGameState(); // 상태 리셋
@@ -69,7 +75,7 @@ export default function GamePage() {
           <CustomButton
             text="게임 시작"
             onClick={handleStart}
-            type={gameState.start ? "activate" : "disabled"}
+            type={gameState.start ? "disabled" : "activate"}
           />
           {nextBtn && (
             <CustomButton
