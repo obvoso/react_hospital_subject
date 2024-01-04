@@ -22,6 +22,7 @@ export const useGameControls = (
   config: BaggageLevelConfig
 ) => {
   const [lastScoredItemIndex, setLastScoredItemIndex] = useState<number>(-1);
+  const endPositionY = cmToPixels(8.5) - 80; // 레일의 끝
 
   const handleScore = (direction: string) => {
     checkForMatchAndScore({
@@ -42,7 +43,7 @@ export const useGameControls = (
         (item) =>
           item.status === BaggageStatus.PASS &&
           !item.done &&
-          item.yPosition >= cmToPixels(8.5) - 80
+          item.yPosition >= endPositionY
       )
     ) {
       setItemAnimations((prev) =>
@@ -50,7 +51,7 @@ export const useGameControls = (
           if (
             item.status === BaggageStatus.PASS &&
             !item.done &&
-            item.yPosition >= cmToPixels(8.5) - 80
+            item.yPosition >= endPositionY
           ) {
             item.done = true;
             setGameState({ ...gameState, score: gameState.score + 1 });

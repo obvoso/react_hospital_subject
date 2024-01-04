@@ -37,12 +37,13 @@ const startAnimation = (
         if (!itemImage) return item;
 
         const startTime =
-          item.startTime === 0 ? timestamp + index * delay : item.startTime;
+          item.startTime === 0
+            ? timestamp + (index + 0.5) * delay
+            : item.startTime;
         const elapsed = timestamp - startTime;
         const progress =
           startTime > timestamp ? 0 : Math.min(1, elapsed / duration);
         const yPosition = progress * endPositionY;
-
         if (progress < 1 && 0 < progress)
           context.drawImage(
             itemImage,

@@ -32,8 +32,6 @@ const checkForMatchAndScore = ({
       item.yPosition <= endPositionY
   );
 
-  console.log(itemAnimations);
-
   if (currentItemIndex === -1 || currentItemIndex === lastScoredItemIndex)
     return;
 
