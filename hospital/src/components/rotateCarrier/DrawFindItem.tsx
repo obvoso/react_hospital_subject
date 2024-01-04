@@ -17,7 +17,6 @@ export const DrawFindItem = ({
   const [isActive, setIsActive] = useState(false);
 
   const handleMouseDown = () => {
-    console.log(activeColor);
     setIsActive(true);
   };
 

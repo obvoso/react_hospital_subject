@@ -6,6 +6,11 @@ export interface IGame {
   start: boolean;
 }
 
+export const CurrentItemIndex = atom({
+  key: "CurrentItemIndex",
+  default: 0,
+});
+
 export const BaggageGameState = atom({
   key: "BaggageGameState",
   default: {
@@ -17,12 +22,12 @@ export const BaggageGameState = atom({
 export const BaggageGameConfigState = atom<BaggageLevelConfig>({
   key: "BaggageGameConfigState",
   default: {
-    level: 0,
-    items: 5,
-    speed: 1000,
-    timeLimit: 30,
-    direction: "forward",
-    classification: 2,
+    level: -1,
+    items: 0,
+    speed: 0,
+    timeLimit: 0,
+    direction: "",
+    classification: 0,
     obstacle: 0,
     basket: [],
     item: [],
