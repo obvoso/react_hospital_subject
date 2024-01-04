@@ -26,6 +26,7 @@ const drawStaticElements = (
 
   config.basket.forEach((basket) => {
     if (!images.current) return;
+
     const basketImage = images.current[basket.imageKey];
 
     if (!basketImage) return;

@@ -1,18 +1,23 @@
 import { RefObject } from "react";
-import { ItemAnimation } from "../BaggageCanvas";
 import { BaggageStatus } from "@/utils/constEnum";
 import { shuffleArray } from "../index";
 import {
   BaggageLevelConfig,
   BaggageItemAssets,
 } from "@/utils/baggage/baggageGameConfig";
+import { ItemAnimation } from "@/atoms/baggage/animationItem";
 
 export const preloadImages = (
   canvasRef: RefObject<HTMLCanvasElement>,
   images: RefObject<{ [key: string]: HTMLImageElement }>,
   itemAnimations: ItemAnimation[],
   setItemAnimations: (item: ItemAnimation[]) => void,
-  config: BaggageLevelConfig
+  config: BaggageLevelConfig,
+  drawStaticElements: (
+    context: CanvasRenderingContext2D,
+    images: RefObject<{ [key: string]: HTMLImageElement }>,
+    config: BaggageLevelConfig
+  ) => void
 ) => {
   staticImagesPreload(images, config);
   let imagesToLoad = config.items;
@@ -39,9 +44,14 @@ export const preloadImages = (
             config.basket
           ),
           done: false,
+          scored: false,
           imageKey: config.item[i].imageKey,
         }));
         setItemAnimations(shuffleArray(newItems));
+        if (!canvasRef.current) return;
+        const context = canvasRef.current.getContext("2d");
+        if (!context) return;
+        drawStaticElements(context, images, config);
       }
     };
     img.onerror = () => {

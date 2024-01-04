@@ -4,50 +4,38 @@ import ArrowCircleLeftTwoToneIcon from "@mui/icons-material/ArrowCircleLeftTwoTo
 import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwoTone";
 import { cmToPixels } from "@/utils/unit";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
-import { BaggageStatus } from "@/utils/constEnum";
-import { preloadImages } from "./index";
+import { drawStaticElements, preloadImages } from "./index";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
+import { BaggageGameConfigState } from "@/atoms/baggage/game";
 import KeyDownButton from "./KeyDownButton";
-import { useGameControls } from "@/hooks/baggage/useGameControl";
-
-export interface ItemAnimation {
-  startTime: number;
-  yPosition: number;
-  status: BaggageStatus;
-  done: boolean;
-  imageKey: string;
-}
+import { ItemAnimationState } from "@/atoms/baggage/animationItem";
+import { useAnimation } from "@/hooks/baggage/useAnimation";
 
 export default function BaggageCanvas({ level }: { level: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
-  const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
-  const [gameState, setGameState] = useRecoilState(BaggageGameState);
+  const [itemAnimations, setItemAnimations] =
+    useRecoilState(ItemAnimationState);
   const config = useRecoilValue(BaggageGameConfigState);
-  const handleScore = useGameControls(
-    canvasRef,
-    images,
-    itemAnimations,
-    setItemAnimations,
-    gameState,
-    setGameState,
-    level,
-    config
-  );
-  const [leftPressed, rightPressed, downPressed] = useKeyPress([
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowDown",
-  ]);
+
+  useAnimation({ canvasRef, images });
+  const { keysPressed, checkForMatchAndScore } = useKeyPress();
+  const [leftPressed, rightPressed, downPressed] = keysPressed;
 
   useEffect(() => {
-    preloadImages(canvasRef, images, itemAnimations, setItemAnimations, config);
+    preloadImages(
+      canvasRef,
+      images,
+      itemAnimations,
+      setItemAnimations,
+      config,
+      drawStaticElements
+    );
     return () => {
       images.current = {};
       setItemAnimations([]);
     };
-  }, [config]);
+  }, [config, level]);
 
   return (
     <div className="flex flex-col items-center min-w-[500px]">
@@ -67,21 +55,39 @@ export default function BaggageCanvas({ level }: { level: number }) {
       <div className="flex mt-4">
         <KeyDownButton
           downPressed={leftPressed}
-          checkForMatchAndScore={() => handleScore("ArrowLeft")}
+          checkForMatchAndScore={() =>
+            checkForMatchAndScore(
+              "ArrowLeft",
+              itemAnimations,
+              setItemAnimations
+            )
+          }
         >
           <ArrowCircleLeftTwoToneIcon />
         </KeyDownButton>
         {level >= 6 && level !== 8 && level !== 9 && (
           <KeyDownButton
             downPressed={downPressed}
-            checkForMatchAndScore={() => handleScore("ArrowDown")}
+            checkForMatchAndScore={() =>
+              checkForMatchAndScore(
+                "ArrowDown",
+                itemAnimations,
+                setItemAnimations
+              )
+            }
           >
             <ArrowCircleDownTwoToneIcon />
           </KeyDownButton>
         )}
         <KeyDownButton
           downPressed={rightPressed}
-          checkForMatchAndScore={() => handleScore("ArrowRight")}
+          checkForMatchAndScore={() =>
+            checkForMatchAndScore(
+              "ArrowRight",
+              itemAnimations,
+              setItemAnimations
+            )
+          }
         >
           <ArrowCircleRightTwoToneIcon />
         </KeyDownButton>
