@@ -39,7 +39,7 @@ export default function BaggageCanvas({ level }: { level: number }) {
 
   return (
     <div className="flex flex-col items-center min-w-[500px]">
-      <div className="flex flex-col bg-blue-200 p-4 rounded-xl">
+      <div className="flex flex-col bg-white p-4 rounded-xl shadow-md">
         <span className="text-lg font-bold text-center">
           {level > 1 ? level - 1 + "단계" : "연습"}
         </span>
