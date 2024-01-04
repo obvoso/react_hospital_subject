@@ -97,8 +97,8 @@ export const useAnimation = ({
         setGameState((prev) => ({
           ...prev,
           lastAngle: RoundFloat(degree * (Math.PI / 2)),
-          lastDirection:
-            lastDirection === 3 ? 1 : lastDirection === 1 ? 3 : lastDirection,
+          lastDirection: lastDirection,
+          //lastDirection === 3 ? 1 : lastDirection === 1 ? 3 : lastDirection,
         }));
         setSubject("물건의 위치는 어디에 있을까요?");
         return;

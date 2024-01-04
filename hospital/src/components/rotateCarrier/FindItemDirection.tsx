@@ -22,17 +22,24 @@ export default function FindItemDirection() {
 
   const isAnwer = (index: number) => index === gameState.lastDirection;
 
+  const findAnswerItem = (idx: number) => {
+    const answerItems: answerItem[] = config.dirrectionExamples[idx].items.map(
+      (item, index) => {
+        return {
+          isAnswer: isAnwer(index),
+          scored: false,
+        };
+      }
+    );
+    setAnswerItem(answerItems);
+  };
+
+  useEffect(() => {
+    findAnswerItem(currentGroupIndex);
+  }, [currentGroupIndex]);
+
   useEffect(() => {
     setSubject("물건 모양은 어떻게 되어 있을까요?");
-    const answerItems: answerItem[] = config.dirrectionExamples[
-      currentGroupIndex
-    ].items.map((item, index) => {
-      return {
-        isAnswer: isAnwer(index),
-        scored: false,
-      };
-    });
-    setAnswerItem(answerItems);
   }, []);
 
   const handleAnswer = (index: number) => {
@@ -61,13 +68,15 @@ export default function FindItemDirection() {
     <div className="grid grid-cols-2 grid-rows-2 gap-10 p-20">
       {config.dirrectionExamples[currentGroupIndex].items.map((item, index) => {
         return (
-          <DrawFindItem
-            image={`${path}/${item}.png`}
-            index={index}
-            isAnswer={answerItem[index]?.isAnswer}
-            key={index}
-            handleAnswer={handleAnswer}
-          />
+          answerItem[index] && (
+            <DrawFindItem
+              image={`${path}/${item}.png`}
+              index={index}
+              isAnswer={answerItem[index].isAnswer}
+              key={item + index}
+              handleAnswer={handleAnswer}
+            />
+          )
         );
       })}
     </div>

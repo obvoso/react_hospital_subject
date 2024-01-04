@@ -55,13 +55,15 @@ export default function FindItemExist() {
     <div className="grid grid-cols-2 grid-rows-2 gap-10 p-20">
       {config.itemExamples.map((item, index) => {
         return (
-          <DrawFindItem
-            image={`${path}/${item}.png`}
-            index={index}
-            isAnswer={answerItem[index]?.isAnswer}
-            handleAnswer={handleAnswer}
-            key={index}
-          />
+          answerItem[index] && (
+            <DrawFindItem
+              image={`${path}/${item}.png`}
+              index={index}
+              isAnswer={answerItem[index].isAnswer}
+              handleAnswer={handleAnswer}
+              key={index}
+            />
+          )
         );
       })}
     </div>

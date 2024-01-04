@@ -56,7 +56,7 @@ export default function GamePage() {
 
   // 게임 클리어
   useEffect(() => {
-    if (gameState.score === config.findItems) {
+    if (gameState.score === config.findItems && gameState.start) {
       if (config.itemExamples.length && !gameState.itemScore) {
         setFindItemExist(true);
         return;
@@ -70,11 +70,12 @@ export default function GamePage() {
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
-    if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
     resetGameState(); // 상태 리셋
     resetSubjuect();
     setNextLevelBtn(false);
     setFindDirection(false);
+    setFindItemExist(false);
+    if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
   }, [nextLevelBtn, level]);
 
   function handleStart() {
@@ -92,10 +93,13 @@ export default function GamePage() {
         </div>
       </div>
       {!findDirection && !findItemExist && <Canvas key={level} />}
-      {findItemExist && config.itemExamples && !findDirection && (
-        <FindItemExist />
+      {findItemExist &&
+        config.itemExamples &&
+        !findDirection &&
+        gameState.start && <FindItemExist />}
+      {findDirection && config.findDirection && gameState.start && (
+        <FindItemDirection />
       )}
-      {findDirection && config.findDirection && <FindItemDirection />}
       <div className="flex justify-center space-x-4 mt-4">
         <CustomButton
           text="게임 시작"
