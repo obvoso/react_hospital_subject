@@ -52,9 +52,8 @@ export default function GamePage() {
   }, [level]);
 
   useEffect(() => {
-    if (gameState.directionScore === config.findItems && level < 9) {
+    if (gameState.directionScore === config.findItems && level < 9)
       setNextLevelBtn(true);
-    }
   }, [gameState.directionScore]);
 
   useEffect(() => {
@@ -91,6 +90,15 @@ export default function GamePage() {
     setGameState({ ...gameState, start: true });
   }
 
+  function handleGameClear() {
+    resetGameState(); // 상태 리셋
+    resetSubjuect();
+    setNextLevelBtn(false);
+    setFindDirection(false);
+    setFindItemExist(false);
+    router.push("/");
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="flex flex-col items-center justify-center w-[30%] p-4 bg-white rounded-xl shadow-md">
@@ -113,15 +121,24 @@ export default function GamePage() {
         <CustomButton
           text="게임 시작"
           onClick={handleStart}
-          type={gameState.start ? "done" : "ready"}
+          type={gameState.start ? "disabled" : "activate"}
         />
         {nextLevelBtn && (
           <CustomButton
             text="다음 단계"
             onClick={handleNextLevel}
-            type="next"
+            type="activate"
           />
         )}
+        {gameState.directionScore === config.findItems &&
+          gameState.start &&
+          level === 9 && (
+            <CustomButton
+              text="처음으로"
+              onClick={handleGameClear}
+              type="activate"
+            />
+          )}
       </div>
     </div>
   );
