@@ -69,13 +69,13 @@ export default function GamePage() {
           <CustomButton
             text="게임 시작"
             onClick={handleStart}
-            type={gameState.start ? "done" : "ready"}
+            type={gameState.start ? "activate" : "disabled"}
           />
           {nextBtn && (
             <CustomButton
               text="다음 단계"
               onClick={handleNextLevel}
-              type="next"
+              type="activate"
             />
           )}
         </div>
