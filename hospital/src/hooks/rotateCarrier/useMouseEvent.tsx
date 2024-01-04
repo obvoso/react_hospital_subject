@@ -12,6 +12,7 @@ export const useMouseEvent = (
 ) => {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const [clickedRectIndex, setClickedRectIndex] = useState<number>(-1);
+  const [lastScoredIndex, setLastScoredIndex] = useState<number>(-1);
 
   const isMouseOverRect = (
     rect: RotateCarrierSpacePoint,
@@ -50,13 +51,14 @@ export const useMouseEvent = (
 
   const handleMouseUp = () => {
     config.answerDirection.forEach((answer) => {
-      if (clickedRectIndex === answer) {
+      if (clickedRectIndex === answer && clickedRectIndex !== lastScoredIndex) {
         setGameState((prev) => {
           return {
             ...prev,
             score: prev.score + 1,
           };
         });
+        setLastScoredIndex(clickedRectIndex);
       }
     });
     setClickedRectIndex(-1);
