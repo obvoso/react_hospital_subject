@@ -2,7 +2,7 @@ import { RefObject } from "react";
 import { ItemAnimation } from "../BaggageCanvas";
 import { cmToPixels } from "@/utils/unit";
 import { drawStaticElements } from "../index";
-import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
+import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
 import { BaggageStatus } from "@/utils/constEnum";
 
 const startAnimation = (

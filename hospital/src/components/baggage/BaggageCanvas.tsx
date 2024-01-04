@@ -7,11 +7,7 @@ import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { BaggageStatus } from "@/utils/constEnum";
 import { preloadImages } from "./index";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  BaggageGameConfigState,
-  BaggageGameState,
-  DpiState,
-} from "@/atoms/baggage/game";
+import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
 import KeyDownButton from "./KeyDownButton";
 import { useGameControls } from "@/hooks/baggage/useGameControl";
 
@@ -29,7 +25,6 @@ export default function BaggageCanvas({ level }: { level: number }) {
   const [itemAnimations, setItemAnimations] = useState<ItemAnimation[]>([]);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const config = useRecoilValue(BaggageGameConfigState);
-  const dpi = useRecoilValue(DpiState);
   const handleScore = useGameControls(
     canvasRef,
     images,

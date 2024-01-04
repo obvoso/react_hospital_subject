@@ -1,13 +1,14 @@
 import { BaggageCanvas } from "@/components/baggage";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
-import { baggageGameLevels } from "@/utils/baggageGameLevels";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
-import { Button } from "@mui/material";
+import CustomButton from "@/utils/CustomButton";
 
 export default function GamePage() {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
+  const resetGameState = useResetRecoilState(BaggageGameState);
   const [config, setConfig] = useRecoilState(BaggageGameConfigState);
   const router = useRouter();
   const level = Number(router.query.level);
@@ -39,11 +40,15 @@ export default function GamePage() {
   }, [gameState.score, router, level]);
 
   const handleNextLevel = useCallback(() => {
-    setGameState({ start: false, score: 0 }); // 상태 리셋
+    resetGameState(); // 상태 리셋
     setTimeLeft(config.timeLimit); // 시간 리셋
     if (level < 11) router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
     setNextBtn(false);
-  }, [nextBtn, router, level]);
+  }, [nextBtn, level]);
+
+  const handleStart = useCallback(() => {
+    setGameState({ ...gameState, start: true });
+  }, [level]);
 
   // 레벨 설정
   useEffect(() => {
@@ -61,30 +66,17 @@ export default function GamePage() {
           <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
         </div>
         <div className="flex justify-center space-x-4 mt-4">
-          <Button
-            variant="contained"
-            className={`text-white font-bold py-2 px-4 rounded ${
-              gameState.start
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600"
-            }`}
-            onClick={() => {
-              if (!gameState.start) {
-                setGameState({ ...gameState, start: true });
-              }
-            }}
-            disabled={gameState.start}
-          >
-            게임 시작
-          </Button>
+          <CustomButton
+            text="게임 시작"
+            onClick={handleStart}
+            type={gameState.start ? "done" : "ready"}
+          />
           {nextBtn && (
-            <Button
-              variant="contained"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            <CustomButton
+              text="다음 단계"
               onClick={handleNextLevel}
-            >
-              다음 단계
-            </Button>
+              type="next"
+            />
           )}
         </div>
       </div>

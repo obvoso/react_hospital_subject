@@ -1,7 +1,7 @@
 import { startAnimation } from "@/components/baggage";
 import { ItemAnimation } from "@/components/baggage/BaggageCanvas";
 import checkForMatchAndScore from "@/components/baggage/utils/scoreUtils";
-import { BaggageLevelConfig } from "@/utils/baggageGameLevels";
+import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
 import { BaggageStatus } from "@/utils/constEnum";
 import { cmToPixels } from "@/utils/unit";
 import { useState, useEffect, RefObject } from "react";
