@@ -14,6 +14,11 @@ export default function Home() {
             캐리어 회전
           </button>
         </Link>
+        <Link href="/whack-a-mole/0">
+          <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mx-3">
+            두더지 잡기
+          </button>
+        </Link>
       </section>
     </main>
   );
