@@ -10,6 +10,6 @@ body {
   background: rgb(var(--background-rgb));
 }
 
-#__next {
-  min-width: 0 !important;
+.custom-cursor {
+  cursor: url("/assets/whackAmole/hammer.png"), auto;
 }

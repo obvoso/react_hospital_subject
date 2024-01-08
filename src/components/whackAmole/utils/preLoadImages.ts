@@ -28,22 +28,25 @@ export function preLoadImages(
   config: WhackAmoleGameConfig
 ) {
   const path = "/assets/whackAmole";
-  const background: WhackAmoleItem = {
-    id: -1,
-    position: { x: 0, y: 0 },
-    asset: "background",
-  };
-  const border: WhackAmoleItem = {
-    id: -2,
-    position: { x: 0, y: 0 },
-    asset: "border",
-  };
-  const itemsToLoad = [
-    background,
-    border,
-    config.moles[0],
-    ...config.findItems,
+  const staticImage: WhackAmoleItem[] = [
+    {
+      id: -1,
+      position: { x: 0, y: 0 },
+      asset: "background",
+    },
+    {
+      id: -2,
+      position: { x: 0, y: 0 },
+      asset: "border",
+    },
+    {
+      id: -3,
+      position: { x: 0, y: 0 },
+      asset: "hit",
+    },
   ];
+
+  const itemsToLoad = [...staticImage, config.moles[0], ...config.findItems];
   const loadPromises = itemsToLoad.map((item) => loadImage(images, path, item));
   return Promise.all(loadPromises);
 }
