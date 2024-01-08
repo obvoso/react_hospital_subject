@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background-rgb: 255, 255, 255;
+  --background-rgb: 243, 244, 246;
 }
 
 body {
   background: rgb(var(--background-rgb));
+}
+
+#__next {
+  min-width: 0 !important;
 }

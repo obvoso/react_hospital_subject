@@ -5,8 +5,8 @@ interface WhackAmoleItemPosition {
 
 const ItemPosition: WhackAmoleItemPosition[] = [
   //두더지 2마리
-  { x: 200, y: 150 },
-  { x: 600, y: 150 },
+  { x: 200, y: 80 },
+  { x: 500, y: 80 },
   //두더지  3마리
   { x: 100, y: 150 },
   { x: 400, y: 150 },
@@ -24,7 +24,7 @@ export interface WhackAmoleGameConfig {
   level: number;
   moles: WhackAmoleItem[];
   items: number;
-  speed: number;
+  speed: number[];
   disappearance: boolean;
   findItems: WhackAmoleItem[];
   answerItems: string[];
@@ -46,7 +46,7 @@ export const whackAmoleGameConfig: WhackAmoleGameConfig[] = [
       },
     ],
     items: 2,
-    speed: 1000,
+    speed: [1000, 2000],
     disappearance: false,
     findItems: [
       {
