@@ -28,7 +28,7 @@ export default function Canvas() {
   }, [config]);
 
   return (
-    <div className="bg-grass w-[800px] h-[450px] bg-cover flex flex-col items-center">
+    <div className="bg-grass w-[800px] h-[450px] bg-cover flex flex-col items-center custom-cursor">
       <div className="flex items-center justify-center px-12 mt-12 w-[50%] h-24 rounded-[2.5rem] bg-[rgba(255,255,255,0.5)]">
         {config.answerItems.map((item) => {
           return (
