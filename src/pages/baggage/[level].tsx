@@ -76,35 +76,33 @@ export default function GamePage() {
   }, [level]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
-        <BaggageCanvas level={level} key={level} />
-        <div className="text-center mt-4">
-          <div className="text-lg font-semibold">점수: {gameState.score}</div>
-          <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
-        </div>
-        <div className="flex justify-center space-x-4 mt-4">
+    <div className="min-w-[500px] mx-auto px-4 py-5 bg-gray-100">
+      <BaggageCanvas level={level} key={level} />
+      <div className="text-center mt-4">
+        <div className="text-lg font-semibold">점수: {gameState.score}</div>
+        <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
+      </div>
+      <div className="flex justify-center space-x-4 mt-4">
+        <CustomButton
+          text="게임 시작"
+          onClick={handleStart}
+          type={gameState.start ? "disabled" : "activate"}
+        />
+        {nextBtn && (
           <CustomButton
-            text="게임 시작"
-            onClick={handleStart}
-            type={gameState.start ? "disabled" : "activate"}
+            text="다음 단계"
+            onClick={handleNextLevel}
+            type="activate"
           />
-          {nextBtn && (
+        )}
+        {level === 11 &&
+          (gameState.score === config.items || timeLeft === 0) && (
             <CustomButton
-              text="다음 단계"
-              onClick={handleNextLevel}
+              text="처음으로"
+              onClick={handleGameClear}
               type="activate"
             />
           )}
-          {level === 11 &&
-            (gameState.score === config.items || timeLeft === 0) && (
-              <CustomButton
-                text="처음으로"
-                onClick={handleGameClear}
-                type="activate"
-              />
-            )}
-        </div>
       </div>
     </div>
   );

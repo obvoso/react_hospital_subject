@@ -33,7 +33,17 @@ export function preLoadImages(
     position: { x: 0, y: 0 },
     asset: "background",
   };
-  const itemsToLoad = [background, config.moles[0], ...config.findItems];
+  const border: WhackAmoleItem = {
+    id: -2,
+    position: { x: 0, y: 0 },
+    asset: "border",
+  };
+  const itemsToLoad = [
+    background,
+    border,
+    config.moles[0],
+    ...config.findItems,
+  ];
   const loadPromises = itemsToLoad.map((item) => loadImage(images, path, item));
   return Promise.all(loadPromises);
 }
