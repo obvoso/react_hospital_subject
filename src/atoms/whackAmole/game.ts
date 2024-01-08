@@ -8,3 +8,12 @@ export const whackAmoleGameState = atom<IGame>({
     start: false,
   },
 });
+
+export const whackAmoleMouseState = atom({
+  key: "whackAmoleMouseState",
+  default: {
+    x: 0,
+    y: 0,
+    visible: false,
+  },
+});

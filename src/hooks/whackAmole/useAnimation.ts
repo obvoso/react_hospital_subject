@@ -1,6 +1,8 @@
 import { whackAmoleConfigState } from "@/atoms/whackAmole/config";
-import { whackAmoleGameState } from "@/atoms/whackAmole/game";
-import { FunctionsOutlined } from "@mui/icons-material";
+import {
+  whackAmoleGameState,
+  whackAmoleMouseState,
+} from "@/atoms/whackAmole/game";
 import { useState, useEffect, RefObject, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -16,11 +18,7 @@ export const useAnimation = ({
   context,
 }: UseAnimationProps) => {
   const config = useRecoilValue(whackAmoleConfigState);
-  const [hammerPosition, setHammerPosition] = useState({
-    x: 0,
-    y: 0,
-    visible: false,
-  });
+  const hammerPosition = useRecoilValue(whackAmoleMouseState);
   const hammerRef = useRef(hammerPosition);
   const [gameState, setGameState] = useRecoilState(whackAmoleGameState);
   const appearY = 200; // 두더지 나타날 때
@@ -78,7 +76,7 @@ export const useAnimation = ({
     if (!canvasRef.current || !images.current) return;
     context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-    moles.forEach((mole) => {
+    moles.forEach((mole, index) => {
       if (images.current) {
         context.drawImage(
           images.current[mole.asset],
@@ -96,11 +94,11 @@ export const useAnimation = ({
             90
           );
           context.drawImage(
-            images.current[config.findItems[mole.id].asset],
-            mole.position.x + 25,
-            mole.position.y - 80,
-            70,
-            70
+            images.current[config.findItems[index].asset],
+            mole.position.x + 27.5,
+            mole.position.y - 77.5,
+            65,
+            65
           );
         }
         if (hammerRef.current.visible && images.current["hit"]) {
@@ -125,28 +123,4 @@ export const useAnimation = ({
   useEffect(() => {
     hammerRef.current = hammerPosition;
   }, [hammerPosition]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const handleMouseDown = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      setHammerPosition({ x, y, visible: true });
-    };
-
-    const handleMouseUp = () => {
-      setHammerPosition((prev) => ({ ...prev, visible: false }));
-    };
-
-    canvas.addEventListener("mousedown", handleMouseDown);
-    canvas.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      canvas.removeEventListener("mousedown", handleMouseDown);
-      canvas.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [canvasRef]);
 };

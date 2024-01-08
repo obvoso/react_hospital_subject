@@ -2,6 +2,7 @@ import { whackAmoleConfigState } from "@/atoms/whackAmole/config";
 import { whackAmoleGameState } from "@/atoms/whackAmole/game";
 import Canvas from "@/components/whackAmole/Canvas";
 import CustomButton from "@/utils/CustomButton";
+import shuffleArray from "@/utils/arrayShuffle";
 import { whackAmoleGameConfig } from "@/utils/whackAmole/whackAmoleGameConfig";
 
 import { useRouter } from "next/router";
@@ -16,7 +17,8 @@ export default function GamePage() {
 
   useEffect(() => {
     const levelConfig = whackAmoleGameConfig[level];
-    setConfig(levelConfig);
+    const shuffleItems = shuffleArray(levelConfig.findItems);
+    setConfig({ ...levelConfig, findItems: shuffleItems });
   }, [level]);
 
   function handleStart() {
