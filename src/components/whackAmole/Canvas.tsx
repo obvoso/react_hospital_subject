@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import { whackAmoleConfigState } from "@/atoms/whackAmole/config";
 import { useAnimation } from "@/hooks/whackAmole/useAnimation";
 import Image from "next/image";
+import { useMouseClick } from "@/hooks/whackAmole/useMouseClick";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,6 +17,8 @@ export default function Canvas() {
     context: canvasRef.current?.getContext("2d")!,
     images,
   });
+
+  useMouseClick(canvasRef);
 
   useEffect(() => {
     const fetchImages = async () => await preLoadImages(images, config);
