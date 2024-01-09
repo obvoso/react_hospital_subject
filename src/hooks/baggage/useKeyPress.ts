@@ -14,7 +14,6 @@ import {
 } from "@/atoms/baggage/game";
 
 export const useKeyPress = () => {
-  const config = useRecoilValue(BaggageGameConfigState);
   const targetKeys = ["ArrowLeft", "ArrowRight", "ArrowDown"];
   const [keysPressed, setKeysPressed] = useState<boolean[]>(
     targetKeys.map(() => false)
