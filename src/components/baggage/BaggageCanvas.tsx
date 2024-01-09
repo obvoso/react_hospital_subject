@@ -37,6 +37,7 @@ export default function BaggageCanvas({ level }: { level: number }) {
     };
   }, [config, level]);
 
+
   return (
     <div className="flex flex-col items-center min-w-[500px]">
       <div className="flex flex-col bg-white p-4 rounded-xl shadow-md">

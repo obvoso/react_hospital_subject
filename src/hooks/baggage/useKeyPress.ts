@@ -97,7 +97,6 @@ export const useKeyPress = () => {
         });
       }
     };
-
     const downHandler = ({ key }: KeyboardEvent) => {
       const index = targetKeys.indexOf(key);
       if (index > -1) {
@@ -119,6 +118,7 @@ export const useKeyPress = () => {
 
     window.addEventListener("keydown", downHandler);
     window.addEventListener("keyup", upHandler);
+
     incrementScoreForPassingItems();
 
     return () => {
