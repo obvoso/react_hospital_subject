@@ -14,6 +14,7 @@ export default function GamePage() {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const resetGameState = useResetRecoilState(BaggageGameState);
   const [config, setConfig] = useRecoilState(BaggageGameConfigState);
+  const resetConfig = useResetRecoilState(BaggageGameConfigState);
   const router = useRouter();
   const level = Number(router.query.level);
   const [timeLeft, setTimeLeft] = useState(config.timeLimit);
@@ -64,6 +65,8 @@ export default function GamePage() {
 
   function handleGameClear() {
     resetGameState(); // 상태 리셋
+    resetConfig(); // 설정 리셋
+    setCurrentItemIndex(0);
     router.push("/");
   }
 
