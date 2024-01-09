@@ -76,9 +76,9 @@ export default function GamePage() {
   }, [level]);
 
   return (
-    <div className="min-w-[500px] mx-auto px-4 py-5 bg-gray-100">
+    <div className="flex flex-col min-w-[500px] mx-auto px-4 py-5">
       <BaggageCanvas level={level} key={level} />
-      <div className="text-center mt-4">
+      <div className="flex flex-col items-center text-center mt-4">
         <div className="text-lg font-semibold">점수: {gameState.score}</div>
         <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
       </div>
