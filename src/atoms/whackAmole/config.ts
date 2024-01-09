@@ -7,7 +7,7 @@ export const whackAmoleConfigState = atom<WhackAmoleGameConfig>({
     level: -1,
     moles: [],
     items: 0,
-    speed: 0,
+    speed: [],
     disappearance: false,
     findItems: [],
     answerItems: [],
