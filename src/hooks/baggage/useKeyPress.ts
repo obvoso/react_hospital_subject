@@ -1,17 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
-
+import { useState, useEffect } from "react";
 import { BaggageStatus } from "@/utils/constEnum";
-import { cmToPixels } from "@/utils/unit";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   ItemAnimation,
   ItemAnimationState,
 } from "@/atoms/baggage/animationItem";
-import {
-  BaggageGameConfigState,
-  BaggageGameState,
-  CurrentItemIndex,
-} from "@/atoms/baggage/game";
+import { BaggageGameState, CurrentItemIndex } from "@/atoms/baggage/game";
 
 export const useKeyPress = () => {
   const targetKeys = ["ArrowLeft", "ArrowRight", "ArrowDown"];
