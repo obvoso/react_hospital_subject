@@ -31,7 +31,6 @@ export const useAnimation = ({ canvasRef, images }: params) => {
     const startPositionX = 190;
     const endPositionY = cmToPixels(8.5) - 60; // 레일의 끝
     const duration = config.speed; // 레일을 지나는데 걸리는 시간
-    const delay = duration; // 다음 아이템 등장 시간
     const itemSize = 80;
 
     let startTime = 0;
@@ -88,7 +87,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
           if (currentItemIndex < config.items - 1) {
             setTimeout(() => {
               setCurrentItemIndex((prev) => prev + 1);
-            }, delay);
+            }, config.speed);
           }
           startTime = 0;
         }
@@ -99,8 +98,14 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   };
 
   useEffect(() => {
-    if (config.level !== -1 && currentItemIndex <= config.items) {
-      startAnimation();
+    if (config.level !== -1 && currentItemIndex < config.items) {
+      if (currentItemIndex === 0) {
+        setTimeout(() => {
+          startAnimation();
+        }, config.speed);
+      } else {
+        startAnimation();
+      }
     }
   }, [config, gameState.start, currentItemIndex]);
 
