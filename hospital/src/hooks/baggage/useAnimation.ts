@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { cmToPixels } from "@/utils/unit";
 import { drawStaticElements } from "../../components/baggage/index";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
@@ -17,6 +17,7 @@ interface params {
 export const useAnimation = ({ canvasRef, images }: params) => {
   const [itemAnimations, setItemAnimations] =
     useRecoilState(ItemAnimationState);
+  const itemAnimationsRef = useRef(itemAnimations);
   const [currentItemIndex, setCurrentItemIndex] =
     useRecoilState(CurrentItemIndex);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
@@ -26,7 +27,6 @@ export const useAnimation = ({ canvasRef, images }: params) => {
     if (!canvasRef.current) return;
     const context = canvasRef.current.getContext("2d");
     if (!context) return;
-    console.log(itemAnimations);
 
     const startPositionX = 190;
     const endPositionY = cmToPixels(8.5) - 60; // 레일의 끝
@@ -45,14 +45,11 @@ export const useAnimation = ({ canvasRef, images }: params) => {
         canvasRef.current.height
       );
       drawStaticElements(context, images, config);
-      if (
-        currentItemIndex >= itemAnimations.length ||
-        itemAnimations[currentItemIndex].done
-      ) {
+      if (currentItemIndex >= config.items) {
         return;
       }
       if (gameState.start) {
-        const currentItem = itemAnimations[currentItemIndex];
+        const currentItem = itemAnimationsRef.current[currentItemIndex];
         if (!currentItem) return;
 
         if (!images.current) return;
@@ -65,7 +62,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
           startTime > timestamp ? 0 : Math.min(1, elapsed / duration);
         const yPosition = progress * endPositionY;
 
-        if (yPosition < endPositionY) {
+        if (yPosition < endPositionY && !currentItem.done) {
           context.drawImage(
             itemImage,
             startPositionX,
@@ -88,10 +85,11 @@ export const useAnimation = ({ canvasRef, images }: params) => {
               return item;
             })
           );
-          setTimeout(() => {
-            if (currentItemIndex === itemAnimations.length - 1) return;
-            setCurrentItemIndex((prev) => prev + 1);
-          }, delay);
+          if (currentItemIndex < config.items - 1) {
+            setTimeout(() => {
+              setCurrentItemIndex((prev) => prev + 1);
+            }, delay);
+          }
           startTime = 0;
         }
       }
@@ -101,9 +99,12 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   };
 
   useEffect(() => {
-    if (config.level !== -1 && currentItemIndex <= itemAnimations.length) {
-      console.log(currentItemIndex);
+    if (config.level !== -1 && currentItemIndex <= config.items) {
       startAnimation();
     }
   }, [config, gameState.start, currentItemIndex]);
+
+  useEffect(() => {
+    itemAnimationsRef.current = itemAnimations;
+  }, [itemAnimations]);
 };
