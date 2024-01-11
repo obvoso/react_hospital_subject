@@ -48,8 +48,8 @@ export default function GamePage() {
       });
     };
 
-    initConfig();
-  }, [level]);
+    if (router.isReady) initConfig();
+  }, [router.isReady, level]);
 
   useEffect(() => {
     if (gameState.directionScore === config.findItems && level < 9)
@@ -101,7 +101,7 @@ export default function GamePage() {
 
   return (
     <div className="flex flex-col min-w-[500px] mx-auto px-4 py-5 items-center">
-      <div className="flex flex-col items-center justify-center w-[30%] p-4 bg-white rounded-xl shadow-md">
+      <div className="flex flex-col items-center justify-center w-[60%] p-4 bg-white rounded-xl shadow-md">
         <span className="font-bold text-xl mb-2">{level + 1} 단계</span>
         <div className="flex items-center justify-center min-h-12 w-full">
           <p className="whitespace-pre-line text-center align-middle">
@@ -117,7 +117,7 @@ export default function GamePage() {
       {findDirection && config.findDirection && gameState.start && (
         <FindItemDirection />
       )}
-      <div className="flex justify-center space-x-4 mt-4">
+      <div className="flex justify-center items-center space-x-4">
         <CustomButton
           text="게임 시작"
           onClick={handleStart}
@@ -143,31 +143,3 @@ export default function GamePage() {
     </div>
   );
 }
-
-export const getStaticPaths = async () => {
-  const paths = RotateCarrierGameLevels.map((level) => ({
-    params: { level: level.level.toString() },
-  }));
-
-  return { paths, fallback: false };
-};
-
-export const getStaticProps = async ({
-  params,
-}: {
-  params: { level: string };
-}) => {
-  const levelConfig = RotateCarrierGameLevels.find(
-    (level) => level.level.toString() === params.level
-  );
-
-  if (!levelConfig) {
-    return { notFound: true };
-  }
-
-  return {
-    props: {
-      levelConfig,
-    },
-  };
-};

@@ -1,8 +1,8 @@
-import { BaggageCanvas } from "@/components/baggage";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
+import { BaggageCanvas } from "@/components/baggage";
 import {
   BaggageGameConfigState,
   BaggageGameState,
@@ -19,8 +19,17 @@ export default function GamePage() {
   const level = Number(router.query.level);
   const [timeLeft, setTimeLeft] = useState(config.timeLimit);
   const [nextBtn, setNextBtn] = useState(false);
-  const [currentItemIndex, setCurrentItemIndex] =
-    useRecoilState(CurrentItemIndex);
+  const resetCurrentItemIndex = useResetRecoilState(CurrentItemIndex);
+
+  // 레벨 설정
+  useEffect(() => {
+    if (!router.isReady) return;
+    const levelConfig = baggageGameLevels[level];
+    setConfig(levelConfig);
+    setTimeLeft(levelConfig.timeLimit);
+    resetGameState();
+  }, [router.isReady, level]);
+
   // 타이머
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -53,8 +62,8 @@ export default function GamePage() {
 
   const handleNextLevel = useCallback(() => {
     resetGameState(); // 상태 리셋
+    resetCurrentItemIndex(); // 현재 아이템 인덱스 리셋
     setTimeLeft(config.timeLimit); // 시간 리셋
-    setCurrentItemIndex(0);
     if (level < 11) router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
     setNextBtn(false);
   }, [nextBtn, level]);
@@ -66,17 +75,9 @@ export default function GamePage() {
   function handleGameClear() {
     resetGameState(); // 상태 리셋
     resetConfig(); // 설정 리셋
-    setCurrentItemIndex(0);
+    resetCurrentItemIndex(); // 현재 아이템 인덱스 리셋
     router.push("/");
   }
-
-  // 레벨 설정
-  useEffect(() => {
-    const levelConfig = baggageGameLevels[level];
-    setConfig(levelConfig);
-    setTimeLeft(levelConfig.timeLimit);
-    resetGameState();
-  }, [level]);
 
   return (
     <div className="flex flex-col min-w-[500px] mx-auto px-4 py-5">
@@ -110,31 +111,3 @@ export default function GamePage() {
     </div>
   );
 }
-
-export const getStaticPaths = async () => {
-  const paths = baggageGameLevels.map((level) => ({
-    params: { level: level.level.toString() },
-  }));
-
-  return { paths, fallback: false };
-};
-
-export const getStaticProps = async ({
-  params,
-}: {
-  params: { level: string };
-}) => {
-  const levelConfig = baggageGameLevels.find(
-    (level) => level.level.toString() === params.level
-  );
-
-  if (!levelConfig) {
-    return { notFound: true };
-  }
-
-  return {
-    props: {
-      levelConfig,
-    },
-  };
-};

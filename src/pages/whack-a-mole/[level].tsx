@@ -4,7 +4,6 @@ import Canvas from "@/components/whackAmole/Canvas";
 import CustomButton from "@/utils/CustomButton";
 import shuffleArray from "@/utils/arrayShuffle";
 import { whackAmoleGameConfig } from "@/utils/whackAmole/whackAmoleGameConfig";
-
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -16,10 +15,11 @@ export default function GamePage() {
   const [config, setConfig] = useRecoilState(whackAmoleConfigState);
 
   useEffect(() => {
+    if (!router.isReady) return;
     const levelConfig = whackAmoleGameConfig[level];
     const shuffleItems = shuffleArray(levelConfig.findItems);
     setConfig({ ...levelConfig, findItems: shuffleItems });
-  }, [level]);
+  }, [router.isReady, level]);
 
   function handleStart() {
     setGameState({ ...gameState, start: true });
@@ -39,31 +39,3 @@ export default function GamePage() {
     </div>
   );
 }
-
-export const getStaticPaths = async () => {
-  const paths = whackAmoleGameConfig.map((level) => ({
-    params: { level: level.level.toString() },
-  }));
-
-  return { paths, fallback: false };
-};
-
-export const getStaticProps = async ({
-  params,
-}: {
-  params: { level: string };
-}) => {
-  const levelConfig = whackAmoleGameConfig.find(
-    (level) => level.level.toString() === params.level
-  );
-
-  if (!levelConfig) {
-    return { notFound: true };
-  }
-
-  return {
-    props: {
-      levelConfig,
-    },
-  };
-};
