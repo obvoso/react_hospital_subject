@@ -9,6 +9,7 @@ import {
   CurrentItemIndex,
 } from "@/atoms/baggage/game";
 import CustomButton from "@/utils/CustomButton";
+import LevelNav from "@/utils/LevelNav";
 
 export default function GamePage() {
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
@@ -80,33 +81,38 @@ export default function GamePage() {
   }
 
   return (
-    <div className="flex flex-col min-w-[500px] mx-auto px-4 py-5">
-      <BaggageCanvas level={level} key={level} />
-      <div className="flex flex-col items-center text-center mt-4">
-        <div className="text-lg font-semibold">점수: {gameState.score}</div>
-        <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
-      </div>
-      <div className="flex justify-center space-x-4 mt-4">
-        <CustomButton
-          text="게임 시작"
-          onClick={handleStart}
-          type={gameState.start ? "disabled" : "activate"}
-        />
-        {nextBtn && (
-          <CustomButton
-            text="다음 단계"
-            onClick={handleNextLevel}
-            type="activate"
-          />
-        )}
-        {level === 11 &&
-          (gameState.score === config.items || timeLeft === 0) && (
+    <div className="flex flex-col-reverse sm:flex-row justify-between min-w-[500px] mx-auto px-4 py-5">
+      <div className="flex flex-col items-center sm:items-start">
+        <BaggageCanvas level={level} key={level} />
+        <div className="flex flex-col items-center text-center mx-auto mt-4">
+          <div className="text-lg font-semibold">점수: {gameState.score}</div>
+          <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
+          <div className="flex justify-center space-x-4 mt-4">
             <CustomButton
-              text="처음으로"
-              onClick={handleGameClear}
-              type="activate"
+              text="게임 시작"
+              onClick={handleStart}
+              type={gameState.start ? "disabled" : "activate"}
             />
-          )}
+            {nextBtn && (
+              <CustomButton
+                text="다음 단계"
+                onClick={handleNextLevel}
+                type="activate"
+              />
+            )}
+            {level === 11 &&
+              (gameState.score === config.items || timeLeft === 0) && (
+                <CustomButton
+                  text="처음으로"
+                  onClick={handleGameClear}
+                  type="activate"
+                />
+              )}
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center justify-center h-fit md:ml-32 sm:ml-20 sm:mt-20 mb-10">
+        <LevelNav game="baggage" />
       </div>
     </div>
   );
