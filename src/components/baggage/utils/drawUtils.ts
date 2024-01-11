@@ -9,6 +9,8 @@ const drawStaticElements = (
 ) => {
   if (!context || !images.current) return;
 
+  context.clearRect(0, 0, 1000, 1000);
+
   const conveyorImage = images.current["conveyor"];
   const personImage = images.current["person"];
 

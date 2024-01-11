@@ -106,6 +106,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   }, [config, gameState.start, currentItemIndex]);
 
   useEffect(() => {
+    console.log(itemAnimations);
     itemAnimationsRef.current = itemAnimations;
   }, [itemAnimations]);
 };
