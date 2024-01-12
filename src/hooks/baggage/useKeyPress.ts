@@ -33,7 +33,6 @@ export const useKeyPress = () => {
     const currentItem = itemAnimation[currentItemIndex];
     if (currentItem.done) return;
 
-    console.log(itemAnimation);
     const pressKey =
       pressedKey === "ArrowLeft"
         ? BaggageStatus.LEFT
@@ -42,7 +41,7 @@ export const useKeyPress = () => {
         : pressedKey === "ArrowDown"
         ? BaggageStatus.DOWN
         : BaggageStatus.PASS;
-
+    console.log(currentItem, pressKey, currentItemIndex);
     if (
       currentItem.status === pressKey &&
       currentItem.status !== BaggageStatus.PASS &&

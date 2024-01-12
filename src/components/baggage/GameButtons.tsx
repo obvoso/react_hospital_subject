@@ -1,16 +1,14 @@
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
 import CustomButton from "@/utils/CustomButton";
-import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
+import {
+  BaggageLevelConfig,
+  baggageGameLevels,
+} from "@/utils/baggage/baggageGameConfig";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import { shuffleArray } from ".";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { setShuffleItems } from "./utils/setShuffleItems";
 
 interface GameButtonsProps {
   reset: () => void;
@@ -28,7 +26,6 @@ export default function GameButtons({
   const router = useRouter();
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const resetConfig = useResetRecoilState(BaggageGameConfigState);
-  //const config = useRecoilValue(BaggageGameConfigState);
   const [config, setConfig] = useRecoilState(BaggageGameConfigState);
   const setItemAnimations = useSetRecoilState(ItemAnimationState);
   const handleStart = useCallback(() => {
@@ -43,9 +40,9 @@ export default function GameButtons({
   const handleReStart = useCallback(() => {
     reset();
     setGameState({ score: 0, start: true });
-    const levelConfig = baggageGameLevels[level];
+    const levelConfig: BaggageLevelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
-    setItemAnimations(shuffleArray(levelConfig.item));
+    setShuffleItems({ config: levelConfig, setItemAnimations });
   }, [level]);
 
   function handleGameClear() {

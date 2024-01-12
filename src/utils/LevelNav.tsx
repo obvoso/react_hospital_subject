@@ -6,7 +6,13 @@ interface LevelNavProps {
   game: string;
 }
 
-function LevelButton(game: string, level: number, isClicked: boolean) {
+interface LevelButtonProps {
+  game: string;
+  level: number;
+  isClicked: boolean;
+}
+
+function LevelButton({ game, level, isClicked }: LevelButtonProps) {
   const buttonColor = isClicked ? "bg-blue-500" : "bg-blue-200";
   const text = level === 0 ? "연습 1" : level === 1 ? "연습 2" : level - 1;
   return (
@@ -31,9 +37,14 @@ export default function LevelNav({ game }: LevelNavProps) {
 
   return (
     <div className="flex sm:flex-col flex-row bg-white shadow-lg rounded-2xl p-3 w-fit h-fit">
-      {[...Array(12).keys()].map((level) =>
-        LevelButton(game, level, level === currentLevel)
-      )}
+      {[...Array(12).keys()].map((level) => (
+        <LevelButton
+          game={game}
+          level={level}
+          isClicked={level === currentLevel}
+          key={level}
+        />
+      ))}
     </div>
   );
 }
