@@ -1,5 +1,9 @@
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
-import { BaggageGameConfigState, BaggageGameState } from "@/atoms/baggage/game";
+import {
+  BaggageGameConfigState,
+  BaggageGameState,
+  BaggageItemScore,
+} from "@/atoms/baggage/game";
 import CustomButton from "@/utils/CustomButton";
 import {
   BaggageLevelConfig,
@@ -39,7 +43,12 @@ export default function GameControlButtons({
 
   const handleReStart = useCallback(() => {
     reset();
-    setGameState({ score: 0, start: true, gameOver: false });
+    setGameState({
+      score: 0,
+      start: true,
+      gameOver: false,
+      itemScore: BaggageItemScore.INIT,
+    });
     const levelConfig: BaggageLevelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
     setShuffleItems({ config: levelConfig, setItemAnimations });

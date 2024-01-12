@@ -47,7 +47,9 @@ export default function GamePage() {
       <div className="flex flex-col items-center sm:items-start">
         <BaggageCanvas level={level} key={level} />
         <div className="flex flex-col items-center text-center mx-auto mt-4">
-          <div className="text-lg font-semibold">점수: {gameState.score}</div>
+          <div className="text-lg font-semibold">
+            점수: {gameState.score} / {config.items}
+          </div>
           <Timer />
           <GameControlButtons
             reset={reset}

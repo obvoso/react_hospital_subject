@@ -2,6 +2,31 @@ import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
 import { cmToPixels } from "@/utils/unit";
 import { RefObject } from "react";
 
+const drawScoreZone = (context: CanvasRenderingContext2D) => {
+  const x = 130;
+  const y = cmToPixels(5);
+  const width = 200;
+  const height = 120;
+  const borderRadius = 20;
+
+  context.globalAlpha = 0.4;
+  context.fillStyle = "#FFFFFF";
+  context.strokeStyle = "green";
+  context.lineWidth = 5;
+
+  context.beginPath();
+  context.moveTo(x + borderRadius, y);
+  context.arcTo(x + width, y, x + width, y + height, borderRadius);
+  context.arcTo(x + width, y + height, x, y + height, borderRadius);
+  context.arcTo(x, y + height, x, y, borderRadius);
+  context.arcTo(x, y, x + width, y, borderRadius);
+  context.closePath();
+
+  context.fill();
+  context.globalAlpha = 1.0;
+  context.stroke();
+};
+
 const drawStaticElements = (
   context: CanvasRenderingContext2D,
   images: RefObject<{ [key: string]: HTMLImageElement }>,
@@ -26,6 +51,7 @@ const drawStaticElements = (
       cmToPixels(3)
     );
 
+  drawScoreZone(context);
   config.basket.forEach((basket) => {
     if (!images.current) return;
 

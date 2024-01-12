@@ -13,11 +13,17 @@ interface KeyDownButtonsProps {
 export default function KeyDownButtons({ level }: KeyDownButtonsProps) {
   const [itemAnimations, setItemAnimations] =
     useRecoilState(ItemAnimationState);
-  const { keysPressed, checkForMatchAndScore } = useKeyPress();
+  const { keysPressed, checkForMatchAndScore, scoreText } = useKeyPress();
   const [leftPressed, rightPressed, downPressed] = keysPressed;
 
   return (
     <div className="flex">
+      <div className="flex flex-col items-center justify-center bg-red-300">
+        <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
+          {scoreText}
+        </div>
+        <div className="text-sm text-gray-500">점수</div>
+      </div>
       <KeyDownButton
         downPressed={leftPressed}
         checkForMatchAndScore={() =>

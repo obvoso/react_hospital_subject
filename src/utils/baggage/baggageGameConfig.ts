@@ -33,7 +33,8 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     timeLimit: 30,
     direction: "forward",
     obstacle: 0,
-    subject: "왼쪽, 오른쪽 버튼을 사용하여 같은 색깔의 짐을 챙겨 주세요!",
+    subject:
+      "왼쪽, 오른쪽 버튼을 사용하여 같은 색깔의 짐을 챙겨 주세요!\n하단의 검역소에 정확히 도착하면 점수가 올라갑니다.",
     basket: [
       { imageKey: "carrier_blue", x: 20, y: 300 },
       { imageKey: "carrier_yellow", x: 350, y: 300 },
