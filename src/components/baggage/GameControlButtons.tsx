@@ -17,7 +17,7 @@ interface GameButtonsProps {
   setNextBtn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function GameButtons({
+export default function GameControlButtons({
   reset,
   level,
   nextBtn,
@@ -39,7 +39,7 @@ export default function GameButtons({
 
   const handleReStart = useCallback(() => {
     reset();
-    setGameState({ score: 0, start: true });
+    setGameState({ score: 0, start: true, gameOver: false });
     const levelConfig: BaggageLevelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
     setShuffleItems({ config: levelConfig, setItemAnimations });
@@ -53,9 +53,12 @@ export default function GameButtons({
 
   // 게임 클리어
   useEffect(() => {
-    if (gameState.score === config.items && level < 11 && gameState.start) {
+    if (
+      (gameState.score === config.items && level < 11 && gameState.start) ||
+      gameState.gameOver
+    ) {
       setNextBtn(true);
-      setGameState({ ...gameState, start: false });
+      setGameState({ ...gameState, start: false, gameOver: false });
     }
   }, [gameState, config, level]);
 

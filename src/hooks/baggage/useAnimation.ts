@@ -8,6 +8,7 @@ import {
   CurrentItemIndex,
 } from "@/atoms/baggage/game";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { BaggageSpeed } from "@/utils/baggage/baggageGameConfig";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -22,6 +23,8 @@ export const useAnimation = ({ canvasRef, images }: params) => {
     useRecoilState(CurrentItemIndex);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const config = useRecoilValue(BaggageGameConfigState);
+  const showNextItemTime =
+    config.speed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 7.5 : 500;
 
   const startAnimation = () => {
     if (!canvasRef.current) return;
@@ -34,10 +37,9 @@ export const useAnimation = ({ canvasRef, images }: params) => {
 
     let startTime = 0;
     let yPosition = 0;
-    const increaseY =
-      config.speed === 1000 ? 5 : config.speed === 750 ? 7.5 : 10; // 1초에 5px, 750ms에 7.5px, 500ms에 10px
+    const increaseY = config.speed;
 
-    const animate = (timestamp: number) => {
+    const animate = () => {
       if (!gameState.start) return;
       if (!canvasRef.current) return;
 
@@ -84,7 +86,12 @@ export const useAnimation = ({ canvasRef, images }: params) => {
         if (currentItemIndex < config.items - 1) {
           setTimeout(() => {
             setCurrentItemIndex((prev) => prev + 1);
-          }, config.speed);
+          }, showNextItemTime);
+        } else {
+          setGameState((prev) => ({
+            ...prev,
+            gameOver: true,
+          }));
         }
         startTime = 0;
       }
@@ -98,7 +105,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
       if (currentItemIndex === 0) {
         setTimeout(() => {
           startAnimation();
-        }, config.speed);
+        }, showNextItemTime);
       } else {
         startAnimation();
       }
@@ -106,7 +113,6 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   }, [config, gameState.start, currentItemIndex]);
 
   useEffect(() => {
-    console.log(itemAnimations);
     itemAnimationsRef.current = itemAnimations;
   }, [itemAnimations]);
 };

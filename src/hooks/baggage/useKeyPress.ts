@@ -41,7 +41,6 @@ export const useKeyPress = () => {
         : pressedKey === "ArrowDown"
         ? BaggageStatus.DOWN
         : BaggageStatus.PASS;
-    console.log(currentItem, pressKey, currentItemIndex);
     if (
       currentItem.status === pressKey &&
       currentItem.status !== BaggageStatus.PASS &&

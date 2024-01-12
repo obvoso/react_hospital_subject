@@ -4,6 +4,7 @@ import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
 export interface IGame {
   score: number;
   start: boolean;
+  gameOver: boolean;
 }
 
 export const CurrentItemIndex = atom({
@@ -16,6 +17,7 @@ export const BaggageGameState = atom({
   default: {
     score: 0,
     start: false,
+    gameOver: false,
   },
 });
 
