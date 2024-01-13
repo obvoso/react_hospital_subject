@@ -11,7 +11,6 @@ import {
 } from "@/atoms/baggage/game";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { BaggageSpeed } from "@/utils/baggage/baggageGameConfig";
-import { start } from "repl";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -32,8 +31,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   const gameRef = useRef<IGame>(gameState);
   const config = useRecoilValue(BaggageGameConfigState);
   const showNextItemTime =
-    config.speed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 7.5 : 500;
-
+    config.speed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 750 : 500;
   const updateItemScore = ({ yPosition }: updateItemScoreParams) => {
     const startScoreZoneY = cmToPixels(5);
     const endScoreZoneY = cmToPixels(5) + 120;
@@ -63,7 +61,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
       return;
     }
     if (
-      currentItemScoreText === BaggageItemScore.MISS &&
+      currentItemScoreText === BaggageItemScore.BAD &&
       yPosition <= 100 &&
       yPosition > 0
     ) {
@@ -126,8 +124,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
       const itemImage = images.current[currentItem.imageKey];
       if (!itemImage) return;
       if (yPosition < endPositionY && !currentItem.done) {
-        updateItemScore({ yPosition });
-
+        //console.log("yPosition", yPosition);
         context.drawImage(
           itemImage,
           startPositionX,
@@ -136,6 +133,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
           itemSize
         );
         yPosition += increaseY;
+        updateItemScore({ yPosition });
         requestAnimationFrame(animate);
       } else {
         setItemAnimations((prev) =>
@@ -151,7 +149,16 @@ export const useAnimation = ({ canvasRef, images }: params) => {
             return item;
           })
         );
-        setCurrentItemIndex((prev) => prev + 1);
+        // ... 마지막 일 때 인덱스 바로 올리면 마지막 아이템 점수 인정이 안됨
+        // ... 그렇다고 showNextItemTime을 늘리면 그 시간 뒤에 게임 종료됨
+        if (currentItemIndex === config.items - 1)
+          setTimeout(() => {
+            setCurrentItemIndex((prev) => prev + 1);
+          }, 50);
+        else
+          setTimeout(() => {
+            setCurrentItemIndex((prev) => prev + 1);
+          }, showNextItemTime);
         startTime = 0;
       }
     };
@@ -161,10 +168,12 @@ export const useAnimation = ({ canvasRef, images }: params) => {
 
   useEffect(() => {
     if (!gameState.start) return;
-    if (config.level !== -1 && currentItemIndex < config.items) {
+    if (currentItemIndex === 0) {
       setTimeout(() => {
         startAnimation();
       }, showNextItemTime);
+    } else if (config.level !== -1 && currentItemIndex < config.items) {
+      startAnimation();
     } else if (config.level !== -1 && currentItemIndex === config.items) {
       setGameState((prev) => ({
         ...prev,

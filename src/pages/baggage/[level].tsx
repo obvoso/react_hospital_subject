@@ -59,7 +59,7 @@ export default function GamePage() {
           />
         </div>
       </div>
-      <div className="flex items-center justify-center h-fit md:ml-32 sm:ml-20 sm:mt-20 mb-10">
+      <div className="flex items-center justify-center h-fit md:ml-32 sm:ml-10 sm:mt-20 mb-10">
         <LevelNav game="baggage" />
       </div>
     </div>

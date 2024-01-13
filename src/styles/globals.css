@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "./baggage.css";
 
 :root {
   --background-rgb: 243, 244, 246;

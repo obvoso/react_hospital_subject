@@ -16,18 +16,41 @@ export default function KeyDownButtons({ level }: KeyDownButtonsProps) {
   const { keysPressed, checkForMatchAndScore, scoreText } = useKeyPress();
   const [leftPressed, rightPressed, downPressed] = keysPressed;
 
+  const getScoreClass = (score: string) => {
+    switch (score) {
+      case "PERFECT":
+        return "perfect";
+      case "FAST":
+        return "fast";
+      case "SLOW":
+        return "slow";
+      case "BAD":
+        return "bad";
+      case "MISS":
+        return "miss";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className="flex">
-      <div className="flex flex-col items-center justify-center bg-red-300">
-        <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
-          {scoreText}
+      <div className="flex absolute inset-0 items-center justify-center">
+        <div className="flex relative mb-8 sm:mb-48 ml-4 sm:ml-[-130px] md:ml-[-220px] h-20 min-w-[300px] justify-center">
+          <span
+            key={scoreText}
+            className={`animate-scoreAnimation neonText font-semibold text-lg ${getScoreClass(
+              scoreText
+            )}`}
+          >
+            {scoreText}
+          </span>
         </div>
-        <div className="text-sm text-gray-500">점수</div>
       </div>
       <KeyDownButton
         downPressed={leftPressed}
         checkForMatchAndScore={() =>
-          checkForMatchAndScore("ArrowLeft", itemAnimations, setItemAnimations)
+          checkForMatchAndScore("ArrowLeft", itemAnimations)
         }
       >
         <ArrowCircleLeftTwoToneIcon />
@@ -36,11 +59,7 @@ export default function KeyDownButtons({ level }: KeyDownButtonsProps) {
         <KeyDownButton
           downPressed={downPressed}
           checkForMatchAndScore={() =>
-            checkForMatchAndScore(
-              "ArrowDown",
-              itemAnimations,
-              setItemAnimations
-            )
+            checkForMatchAndScore("ArrowDown", itemAnimations)
           }
         >
           <ArrowCircleDownTwoToneIcon />
@@ -49,7 +68,7 @@ export default function KeyDownButtons({ level }: KeyDownButtonsProps) {
       <KeyDownButton
         downPressed={rightPressed}
         checkForMatchAndScore={() =>
-          checkForMatchAndScore("ArrowRight", itemAnimations, setItemAnimations)
+          checkForMatchAndScore("ArrowRight", itemAnimations)
         }
       >
         <ArrowCircleRightTwoToneIcon />

@@ -36,7 +36,7 @@ export default function LevelNav({ game }: LevelNavProps) {
   }, [router.isReady, level]);
 
   return (
-    <div className="flex sm:flex-col flex-row bg-white shadow-lg rounded-2xl p-3 w-fit h-fit">
+    <div className="flex sm:flex-col flex-row bg-white shadow-lg rounded-2xl p-3 w-fit h-fit z-10">
       {[...Array(12).keys()].map((level) => (
         <LevelButton
           game={game}

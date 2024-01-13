@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes growAndShrink {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+:root {
+  --perfect-color: rgb(142, 229, 60);
+  --fast-color: rgba(248, 248, 59, 0.972);
+  --slow-color: #f90;
+  --bad-color: rgba(193, 113, 214, 0.889);
+  --miss-color: #fff;
+}
+
+.neonText {
+  text-shadow: 0 0 5px #c8c8c8, 0 0 10px #969696, 0 0 20px #525252;
+}
+
+.perfect {
+  color: var(--perfect-color);
+  text-shadow: 0 0 5px var(--perfect-color), 0 0 10px var(--perfect-color),
+    0 0 20px var(--perfect-color);
+}
+
+.fast {
+  color: var(--fast-color);
+  text-shadow: 0 0 5px var(--fast-color), 0 0 10px var(--fast-color),
+    0 0 20px var(--fast-color);
+}
+
+.slow {
+  color: var(--slow-color);
+  text-shadow: 0 0 5px var(--slow-color), 0 0 10px var(--slow-color),
+    0 0 20px var(--slow-color);
+}
+
+.bad {
+  color: var(--bad-color);
+  text-shadow: 0 0 5px var(--bad-color), 0 0 10px var(--bad-color),
+    0 0 20px var(--bad-color);
+}
+
+.miss {
+  color: var(--miss-color);
+  text-shadow: 0 0 5px var(--miss-color), 0 0 10px var(--miss-color),
+    0 0 20px var(--miss-color);
+}
+
+.scoreAnimation {
+  animation: growAndShrink 0.3s ease-in-out;
+}
