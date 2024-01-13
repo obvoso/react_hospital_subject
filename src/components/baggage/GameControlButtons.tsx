@@ -69,7 +69,7 @@ export default function GameControlButtons({
       setNextBtn(true);
       setGameState({ ...gameState, start: false, gameOver: false });
     }
-  }, [gameState, config, level]);
+  }, [gameState.score, gameState.gameOver, gameState.start, config, level]);
 
   return (
     <div className="flex justify-center space-x-4 mt-4">

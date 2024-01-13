@@ -119,8 +119,6 @@ export const useAnimation = ({ canvasRef, images }: params) => {
       );
       drawStaticElements(context, images, config);
 
-      if (currentItemIndex >= config.items) return;
-
       const currentItem = itemAnimationsRef.current[currentItemIndex];
       if (!currentItem) return;
 
@@ -153,17 +151,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
             return item;
           })
         );
-        if (currentItemIndex < config.items - 1) {
-          //setTimeout(() => {
-          //  console.log(currentItemIndex);
-          setCurrentItemIndex((prev) => prev + 1);
-          //}, showNextItemTime);
-        } else {
-          setGameState((prev) => ({
-            ...prev,
-            gameOver: true,
-          }));
-        }
+        setCurrentItemIndex((prev) => prev + 1);
         startTime = 0;
       }
     };
@@ -172,17 +160,16 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   };
 
   useEffect(() => {
+    if (!gameState.start) return;
     if (config.level !== -1 && currentItemIndex < config.items) {
-      //if (currentItemIndex === 0) {
-      //  setTimeout(() => {
-      //    startAnimation();
-      //  }, showNextItemTime);
-      //} else {
-      //  startAnimation();
-      //}
       setTimeout(() => {
         startAnimation();
       }, showNextItemTime);
+    } else if (config.level !== -1 && currentItemIndex === config.items) {
+      setGameState((prev) => ({
+        ...prev,
+        gameOver: true,
+      }));
     }
   }, [config, gameState.start, currentItemIndex]);
 

@@ -56,7 +56,6 @@ export const useKeyPress = () => {
       return;
     const currentItem = itemAnimation[currentItemIndex];
     if (currentItem.done) return;
-    console.log(currentItemIndex, currentItem, gameState);
 
     const pressKey =
       pressedKey === "ArrowLeft"
@@ -83,8 +82,9 @@ export const useKeyPress = () => {
       let targetIndex = 0;
 
       if (currentItemIndex === 0) return;
-      if (currentItemIndex === config.items - 1) targetIndex = currentItemIndex;
-      else targetIndex = currentItemIndex - 1;
+
+      targetIndex = currentItemIndex - 1;
+
       itemAnimations.forEach((item, index) => {
         if (item.done && !item.scored && targetIndex === index) {
           if (item.status === BaggageStatus.PASS) pass = true;
@@ -97,7 +97,6 @@ export const useKeyPress = () => {
           ...prev,
           score: prev.score + BaggageItemScore.PERFECT[1],
         }));
-        console.log(gameState.score + BaggageItemScore.PERFECT[1]);
         setItemAnimations((prevItems) => {
           return prevItems.map((item) => {
             if (
