@@ -1,12 +1,8 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { cmToPixels } from "@/utils/unit";
 import { drawStaticElements, preloadImages } from "./index";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  BaggageGameConfigState,
-  BaggageGameState,
-  BaggageItemScore,
-} from "@/atoms/baggage/game";
+import { BaggageGameConfigState } from "@/atoms/baggage/game";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import { useAnimation } from "@/hooks/baggage/useAnimation";
 import KeyDownButtons from "./KeyDownButtons";
@@ -17,7 +13,6 @@ export default function BaggageCanvas({ level }: { level: number }) {
   const config = useRecoilValue(BaggageGameConfigState);
   const [itemAnimations, setItemAnimations] =
     useRecoilState(ItemAnimationState);
-  const [gameState, setGameState] = useRecoilState(BaggageGameState);
 
   useAnimation({ canvasRef, images });
 

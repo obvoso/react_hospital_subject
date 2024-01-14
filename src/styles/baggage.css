@@ -4,8 +4,8 @@
 
 @keyframes growAndShrink {
   0% {
-    transform: scale(0.9);
-    opacity: 0.8;
+    transform: scale(0.95);
+    opacity: 0.9;
   }
   100% {
     transform: scale(1);
@@ -13,48 +13,66 @@
   }
 }
 
-:root {
-  --perfect-color: rgb(142, 229, 60);
-  --fast-color: rgba(248, 248, 59, 0.972);
-  --slow-color: #f90;
-  --bad-color: rgba(193, 113, 214, 0.889);
-  --miss-color: #fff;
-}
-
-.neonText {
-  text-shadow: 0 0 5px #c8c8c8, 0 0 10px #969696, 0 0 20px #525252;
-}
-
 .perfect {
-  color: var(--perfect-color);
-  text-shadow: 0 0 5px var(--perfect-color), 0 0 10px var(--perfect-color),
-    0 0 20px var(--perfect-color);
+  background: linear-gradient(
+    90deg,
+    violet,
+    skyblue,
+    yellowgreen,
+    yellow,
+    orange
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 5px white;
 }
 
-.fast {
-  color: var(--fast-color);
-  text-shadow: 0 0 5px var(--fast-color), 0 0 10px var(--fast-color),
-    0 0 20px var(--fast-color);
-}
-
+.fast,
 .slow {
-  color: var(--slow-color);
-  text-shadow: 0 0 5px var(--slow-color), 0 0 10px var(--slow-color),
-    0 0 20px var(--slow-color);
+  background: linear-gradient(
+    90deg,
+    rgb(102, 226, 102),
+    yellowgreen,
+    yellow,
+    rgb(255, 239, 58),
+    orange
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 5px yellow;
 }
 
 .bad {
-  color: var(--bad-color);
-  text-shadow: 0 0 5px var(--bad-color), 0 0 10px var(--bad-color),
-    0 0 20px var(--bad-color);
+  background: linear-gradient(
+    90deg,
+    purple,
+    violet,
+    rgb(208, 0, 255),
+    rgb(255, 89, 0),
+    rgb(255, 128, 0)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 5px rgb(240, 101, 136);
 }
 
 .miss {
-  color: var(--miss-color);
-  text-shadow: 0 0 5px var(--miss-color), 0 0 10px var(--miss-color),
-    0 0 20px var(--miss-color);
+  background: linear-gradient(90deg, lightgrey, darkgrey, darkgrey, lightgrey);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 5px white;
 }
 
 .scoreAnimation {
   animation: growAndShrink 0.3s ease-in-out;
+}
+
+@media screen and (min-width: 1790px) and (min-height: 900px) {
+  .full-screen-mb {
+    margin-top: -5%;
+  }
 }

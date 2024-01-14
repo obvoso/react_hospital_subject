@@ -35,11 +35,11 @@ export default function KeyDownButtons({ level }: KeyDownButtonsProps) {
 
   return (
     <div className="flex">
-      <div className="flex absolute inset-0 items-center justify-center">
-        <div className="flex relative mb-8 sm:mb-48 ml-4 sm:ml-[-130px] md:ml-[-220px] h-20 min-w-[300px] justify-center">
+      <div className="flex absolute inset-0 items-center justify-center min-h-[850px]">
+        <div className="flex relative mb-8 sm:mb-52 full-screen-mb ml-4 sm:ml-[-130px] md:ml-[-220px] h-20 min-w-[300px] justify-center">
           <span
             key={scoreText}
-            className={`animate-scoreAnimation neonText font-semibold text-lg ${getScoreClass(
+            className={`scoreAnimation font-semibold text-lg ${getScoreClass(
               scoreText
             )}`}
           >
