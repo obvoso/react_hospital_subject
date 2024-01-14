@@ -2,7 +2,6 @@ import { BaggageStatus } from "@/utils/constEnum";
 import { atom, useRecoilState } from "recoil";
 
 export interface ItemAnimation {
-  startTime: number;
   yPosition: number;
   status: BaggageStatus;
   done: boolean;

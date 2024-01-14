@@ -48,7 +48,6 @@ function keyType(
 
 export const setShuffleItems = ({ config, setItemAnimations }: params) => {
   const newItems = Array.from({ length: config.items }, (_, i) => ({
-    startTime: 0,
     yPosition: 0,
     status: keyType(
       config.item[i].imageKey,

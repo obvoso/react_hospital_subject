@@ -1,6 +1,5 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 import { cmToPixels } from "@/utils/unit";
-import { drawStaticElements } from "../../components/baggage/index";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import {
   BaggageGameConfigState,
@@ -32,59 +31,77 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   const config = useRecoilValue(BaggageGameConfigState);
   const showNextItemTime =
     config.speed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 750 : 500;
+
   const updateItemScore = ({ yPosition }: updateItemScoreParams) => {
-    const startScoreZoneY = cmToPixels(5);
-    const endScoreZoneY = cmToPixels(5) + 120;
-    const itemSize = 80;
+    const startBadZoneY = 1;
+    const endBadZoneY = 80;
+    const startFastZoneY = 80;
+    const endFastZoneY = 125;
+    const startPerfectZoneY = 125;
+    const endPerfectZoneY = 180;
+    const startSlowZoneY = 180;
+    const itemSize = 50;
 
     if (!gameRef.current) return;
     const currentItemScoreText = gameRef.current.itemScore;
 
+    console.log(yPosition);
     if (
       currentItemScoreText === BaggageItemScore.PERFECT &&
-      yPosition >= startScoreZoneY &&
-      yPosition + itemSize <= endScoreZoneY
+      yPosition >= startPerfectZoneY &&
+      yPosition + itemSize <= endPerfectZoneY
     ) {
       return;
     }
     if (
       currentItemScoreText === BaggageItemScore.FAST &&
-      yPosition < startScoreZoneY &&
-      yPosition > 100
+      yPosition >= startFastZoneY &&
+      yPosition + itemSize <= endFastZoneY
     ) {
       return;
     }
     if (
       currentItemScoreText === BaggageItemScore.SLOW &&
-      yPosition + itemSize > endScoreZoneY
+      yPosition >= startSlowZoneY
     ) {
       return;
     }
     if (
       currentItemScoreText === BaggageItemScore.BAD &&
-      yPosition <= 100 &&
-      yPosition > 0
+      yPosition >= startBadZoneY &&
+      yPosition + itemSize <= endBadZoneY
     ) {
       return;
     }
-
-    // 새로운 itemScore를 설정
-    if (yPosition >= startScoreZoneY && yPosition + itemSize <= endScoreZoneY) {
+    if (
+      yPosition >= startPerfectZoneY &&
+      yPosition + itemSize <= endPerfectZoneY
+    ) {
+      console.log("perfect", yPosition);
       setGameState((prev) => ({
         ...prev,
         itemScore: BaggageItemScore.PERFECT,
       }));
-    } else if (yPosition < startScoreZoneY && yPosition > 100) {
+    } else if (
+      yPosition >= startFastZoneY &&
+      yPosition + itemSize <= endFastZoneY
+    ) {
+      console.log("fast", yPosition);
       setGameState((prev) => ({
         ...prev,
         itemScore: BaggageItemScore.FAST,
       }));
-    } else if (yPosition + itemSize > endScoreZoneY) {
+    } else if (yPosition >= startSlowZoneY) {
+      console.log("slow", yPosition);
       setGameState((prev) => ({
         ...prev,
         itemScore: BaggageItemScore.SLOW,
       }));
-    } else if (yPosition <= 100 && yPosition > 0) {
+    } else if (
+      yPosition >= startBadZoneY &&
+      yPosition + itemSize <= endBadZoneY
+    ) {
+      console.log("bad", yPosition);
       setGameState((prev) => ({
         ...prev,
         itemScore: BaggageItemScore.BAD,
@@ -97,11 +114,10 @@ export const useAnimation = ({ canvasRef, images }: params) => {
     const context = canvasRef.current.getContext("2d");
     if (!context) return;
 
-    const startPositionX = 190;
-    const endPositionY = cmToPixels(8.5) - 60; // 레일의 끝
-    const itemSize = 80;
+    const startPositionX = 30;
+    const endPositionY = cmToPixels(4.5); // 레일의 끝
+    const itemSize = 50;
 
-    let startTime = 0;
     let yPosition = 0;
     const increaseY = config.speed;
 
@@ -109,22 +125,17 @@ export const useAnimation = ({ canvasRef, images }: params) => {
       if (!gameState.start) return;
       if (!canvasRef.current) return;
 
-      context.clearRect(
-        0,
-        0,
-        canvasRef.current.width,
-        canvasRef.current.height
-      );
-      drawStaticElements(context, images, config);
-
       const currentItem = itemAnimationsRef.current[currentItemIndex];
       if (!currentItem) return;
 
       if (!images.current) return;
       const itemImage = images.current[currentItem.imageKey];
-      if (!itemImage) return;
+      if (!itemImage) {
+        return;
+      }
+
+      context.clearRect(0, 0, cmToPixels(3), cmToPixels(8));
       if (yPosition < endPositionY && !currentItem.done) {
-        //console.log("yPosition", yPosition);
         context.drawImage(
           itemImage,
           startPositionX,
@@ -132,8 +143,8 @@ export const useAnimation = ({ canvasRef, images }: params) => {
           itemSize,
           itemSize
         );
-        yPosition += increaseY;
         updateItemScore({ yPosition });
+        yPosition += increaseY;
         requestAnimationFrame(animate);
       } else {
         setItemAnimations((prev) =>
@@ -142,7 +153,6 @@ export const useAnimation = ({ canvasRef, images }: params) => {
               return {
                 ...item,
                 yPosition,
-                startTime,
                 done: true,
               };
             }
@@ -159,7 +169,6 @@ export const useAnimation = ({ canvasRef, images }: params) => {
           setTimeout(() => {
             setCurrentItemIndex((prev) => prev + 1);
           }, showNextItemTime);
-        startTime = 0;
       }
     };
 
