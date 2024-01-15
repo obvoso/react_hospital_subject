@@ -12,7 +12,6 @@ import {
   BaggageItemAssets,
   BaggageLevelConfig,
   BaggageSpeed,
-  baggageGameLevels,
 } from "@/utils/baggage/baggageGameConfig";
 import { Timer } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
