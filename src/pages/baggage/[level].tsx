@@ -13,6 +13,7 @@ import LevelNav from "@/utils/LevelNav";
 import GameControlButtons from "@/components/baggage/GameControlButtons";
 import Timer from "@/components/baggage/Timer";
 import CurrentScore from "@/components/baggage/CurrentScore";
+import SpeedButton from "@/components/baggage/SpeedButton";
 
 export default function GamePage() {
   const router = useRouter();
@@ -60,8 +61,11 @@ export default function GamePage() {
           />
         </div>
       </div>
-      <div className="flex items-center justify-center h-fit md:ml-32 sm:ml-10 sm:mt-20 mb-10">
+      <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
         <LevelNav game="baggage" />
+        <div className="flex mt-2 sm:mt-0 sm:ml-8 ">
+          <SpeedButton />
+        </div>
       </div>
     </div>
   );

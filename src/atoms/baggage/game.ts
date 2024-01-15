@@ -1,5 +1,8 @@
 import { atom } from "recoil";
-import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
+import {
+  BaggageLevelConfig,
+  BaggageSpeed,
+} from "@/utils/baggage/baggageGameConfig";
 
 export const BaggageItemScore = {
   PERFECT: ["PERFECT", 1] as [string, number],
@@ -14,6 +17,11 @@ export interface IGame {
   start: boolean;
   gameOver: boolean;
 }
+
+export const GameSpeed = atom<BaggageSpeed>({
+  key: "GameSpeed",
+  default: BaggageSpeed.SLOW,
+});
 
 export const ItemScoreState = atom({
   key: "ItemScoreState",

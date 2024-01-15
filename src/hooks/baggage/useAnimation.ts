@@ -6,6 +6,7 @@ import {
   BaggageGameState,
   BaggageItemScore,
   CurrentItemIndex,
+  GameSpeed,
   ItemScoreState,
 } from "@/atoms/baggage/game";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -31,9 +32,10 @@ export const useAnimation = ({ canvasRef, images, imagesLoaded }: params) => {
   const config = useRecoilValue(BaggageGameConfigState);
   const setItemScore = useSetRecoilState(ItemScoreState);
   const itemScoreRef = useRef(BaggageItemScore.BAD);
+  const gameSpeed = useRecoilValue(GameSpeed);
 
   const showNextItemTime =
-    config.speed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 750 : 500;
+    gameSpeed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 750 : 500;
 
   useEffect(() => {
     itemAnimationsRef.current = itemAnimations;
@@ -92,7 +94,7 @@ export const useAnimation = ({ canvasRef, images, imagesLoaded }: params) => {
     const itemSize = 40;
     const startPositionX = 30;
     const endPositionY = 220; // 레일의 끝
-    const increaseY = config.speed;
+    const increaseY = gameSpeed;
     let yPosition = 0;
 
     const animate = () => {
