@@ -11,11 +11,19 @@ export const BaggageItemScore = {
 };
 
 export interface IGame {
-  score: number;
   start: boolean;
   gameOver: boolean;
-  itemScore: [string, number];
 }
+
+export const ItemScoreState = atom({
+  key: "ItemScoreState",
+  default: BaggageItemScore.INIT,
+});
+
+export const BaggageScore = atom({
+  key: "BaggageScore",
+  default: 0,
+});
 
 export const CurrentItemIndex = atom({
   key: "CurrentItemIndex",
@@ -25,10 +33,8 @@ export const CurrentItemIndex = atom({
 export const BaggageGameState = atom({
   key: "BaggageGameState",
   default: {
-    score: 0,
     start: false,
     gameOver: false,
-    itemScore: BaggageItemScore.INIT,
   },
 });
 

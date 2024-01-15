@@ -1,18 +1,23 @@
+import React, { useCallback, useEffect } from "react";
+import { useRouter } from "next/router";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
+import { setShuffleItems } from "./utils/setShuffleItems";
+import CustomButton from "@/utils/CustomButton";
 import {
   BaggageGameConfigState,
   BaggageGameState,
-  BaggageItemScore,
+  BaggageScore,
 } from "@/atoms/baggage/game";
-import CustomButton from "@/utils/CustomButton";
 import {
   BaggageLevelConfig,
   baggageGameLevels,
 } from "@/utils/baggage/baggageGameConfig";
-import { useRouter } from "next/router";
-import React, { useCallback, useEffect } from "react";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { setShuffleItems } from "./utils/setShuffleItems";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 
 interface GameButtonsProps {
   reset: () => void;
@@ -32,6 +37,9 @@ export default function GameControlButtons({
   const resetConfig = useResetRecoilState(BaggageGameConfigState);
   const [config, setConfig] = useRecoilState(BaggageGameConfigState);
   const setItemAnimations = useSetRecoilState(ItemAnimationState);
+  const score = useRecoilValue(BaggageScore);
+  const resetScore = useResetRecoilState(BaggageScore);
+
   const handleStart = useCallback(() => {
     setGameState({ ...gameState, start: true });
   }, [level]);
@@ -43,12 +51,12 @@ export default function GameControlButtons({
 
   const handleReStart = useCallback(() => {
     reset();
+    resetScore();
     setGameState({
-      score: 0,
       start: true,
       gameOver: false,
-      itemScore: BaggageItemScore.INIT,
     });
+
     const levelConfig: BaggageLevelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
     setShuffleItems({ config: levelConfig, setItemAnimations });
@@ -62,25 +70,23 @@ export default function GameControlButtons({
 
   // 게임 클리어
   useEffect(() => {
-    if (
-      (gameState.score === config.items && level < 11 && gameState.start) ||
-      gameState.gameOver
-    ) {
+    if (!gameState.start) return;
+    if (score === config.items || gameState.gameOver) {
+      setGameState({ start: false, gameOver: false });
       setNextBtn(true);
-      setGameState({ ...gameState, start: false, gameOver: false });
     }
-  }, [gameState.score, gameState.gameOver, gameState.start, config, level]);
+  }, [score, gameState.gameOver, gameState.start, config, level]);
 
   return (
     <div className="flex justify-center space-x-4 mt-4">
-      {!nextBtn && (
+      {!nextBtn && !gameState.gameOver && (
         <CustomButton
           text="게임 시작"
           onClick={handleStart}
           type={gameState.start ? "disabled" : "activate"}
         />
       )}
-      {nextBtn && (
+      {nextBtn && level < 11 && (
         <>
           <CustomButton
             text="다시 시작"
@@ -94,12 +100,19 @@ export default function GameControlButtons({
           />
         </>
       )}
-      {level === 11 && gameState.score === config.items && (
-        <CustomButton
-          text="처음으로"
-          onClick={handleGameClear}
-          type="activate"
-        />
+      {nextBtn && level === 11 && (
+        <>
+          <CustomButton
+            text="다시 시작"
+            onClick={handleReStart}
+            type="activate"
+          />
+          <CustomButton
+            text="처음으로"
+            onClick={handleGameClear}
+            type="activate"
+          />
+        </>
       )}
     </div>
   );

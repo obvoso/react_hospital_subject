@@ -1,28 +1,18 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { cmToPixels } from "@/utils/unit";
-import { preloadImages } from "./index";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { BaggageGameConfigState } from "@/atoms/baggage/game";
-import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import { useAnimation } from "@/hooks/baggage/useAnimation";
 import KeyDownButtons from "./KeyDownButtons";
+import React from "react";
+import usePreLoadImages from "@/hooks/baggage/usePreLoadImages";
 
-export default function BaggageCanvas({ level }: { level: number }) {
+function BaggageCanvas({ level }: { level: number }) {
+  if (Number.isNaN(level)) return null;
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const config = useRecoilValue(BaggageGameConfigState);
-  const [itemAnimations, setItemAnimations] =
-    useRecoilState(ItemAnimationState);
-
-  useAnimation({ canvasRef, images });
-
-  useEffect(() => {
-    preloadImages(canvasRef, images, itemAnimations, setItemAnimations, config);
-    return () => {
-      images.current = {};
-      setItemAnimations([]);
-    };
-  }, [config, level]);
+  const { images, imagesLoaded } = usePreLoadImages({ level, canvasRef });
+  useAnimation({ canvasRef, images, imagesLoaded });
 
   return (
     <div className="flex flex-col items-center min-w-[500px]">
@@ -34,12 +24,24 @@ export default function BaggageCanvas({ level }: { level: number }) {
           {config.subject}
         </span>
       </div>
-      <div className="flex bg-bg1 bg-cover w-[480px] h-[650px] justify-center">
-        <canvas
-          ref={canvasRef}
-          width={cmToPixels(3)}
-          height={cmToPixels(8)}
-        ></canvas>
+      <div
+        className={`flex w-[480px] h-[650px] justify-center ${
+          level <= 5
+            ? "bg-bg0"
+            : level <= 7
+            ? "bg-bg1"
+            : level <= 9
+            ? "bg-bg2"
+            : "bg-bg3"
+        } bg-cover`}
+      >
+        <div className="flex mt-[-110px]">
+          <canvas
+            ref={canvasRef}
+            width={cmToPixels(3)}
+            height={cmToPixels(8)}
+          ></canvas>
+        </div>
       </div>
       <div className="flex mt-4">
         <KeyDownButtons level={level} key={level} />
@@ -47,3 +49,5 @@ export default function BaggageCanvas({ level }: { level: number }) {
     </div>
   );
 }
+
+export default React.memo(BaggageCanvas);

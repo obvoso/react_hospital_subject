@@ -1,7 +1,7 @@
 export const enum BaggageSpeed {
   SLOW = 3.5,
   MEDIUM = 5,
-  FAST = 7.5,
+  FAST = 7,
 }
 
 export interface BaggageItemAssets {

@@ -1,26 +1,28 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
 import { BaggageCanvas } from "@/components/baggage";
 import {
   BaggageGameConfigState,
   BaggageGameState,
+  BaggageScore,
   CurrentItemIndex,
 } from "@/atoms/baggage/game";
 import LevelNav from "@/utils/LevelNav";
 import GameControlButtons from "@/components/baggage/GameControlButtons";
 import Timer from "@/components/baggage/Timer";
+import CurrentScore from "@/components/baggage/CurrentScore";
 
 export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
-  const [gameState, setGameState] = useRecoilState(BaggageGameState);
-  const [config, setConfig] = useRecoilState(BaggageGameConfigState);
+  const setConfig = useSetRecoilState(BaggageGameConfigState);
   const resetCurrentItemState = useResetRecoilState(CurrentItemIndex);
   const resetGameState = useResetRecoilState(BaggageGameState);
   const resetCurrentItemIndex = useResetRecoilState(CurrentItemIndex);
   const resetConfig = useResetRecoilState(BaggageGameConfigState);
+  const resetScore = useResetRecoilState(BaggageScore);
   const [nextBtn, setNextBtn] = useState(false);
 
   const reset = () => {
@@ -28,6 +30,7 @@ export default function GamePage() {
     resetCurrentItemIndex(); // 현재 아이템 인덱스 리셋
     setNextBtn(false);
     resetCurrentItemState();
+    resetScore();
   };
 
   // 레벨 설정
@@ -47,9 +50,7 @@ export default function GamePage() {
       <div className="flex flex-col items-center sm:items-start">
         <BaggageCanvas level={level} key={level} />
         <div className="flex flex-col items-center text-center mx-auto mt-4">
-          <div className="text-lg font-semibold">
-            점수: {gameState.score} / {config.items}
-          </div>
+          <CurrentScore />
           <Timer />
           <GameControlButtons
             reset={reset}

@@ -1,7 +1,6 @@
 import { atom } from "recoil";
-import { IGame } from "../baggage/game";
 
-export const whackAmoleGameState = atom<IGame>({
+export const whackAmoleGameState = atom({
   key: "whackAmoleGameState",
   default: {
     score: 0,

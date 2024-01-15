@@ -1,34 +1,32 @@
 import { useState, useEffect } from "react";
 import { BaggageStatus } from "@/utils/constEnum";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ItemAnimation,
   ItemAnimationState,
 } from "@/atoms/baggage/animationItem";
 import {
-  BaggageGameState,
   BaggageItemScore,
+  BaggageScore,
   CurrentItemIndex,
+  ItemScoreState,
 } from "@/atoms/baggage/game";
 
 export const useKeyPress = () => {
+  const itemScoreState = useRecoilValue(ItemScoreState);
   const targetKeys = ["ArrowLeft", "ArrowRight", "ArrowDown"];
   const [keysPressed, setKeysPressed] = useState<boolean[]>(
     targetKeys.map(() => false)
   );
-  const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const [lastScoredItemIndex, setLastScoredItemIndex] = useState<number>(-1);
   const [scoreText, setScoreText] = useState<string>("");
   const [itemAnimations, setItemAnimations] =
     useRecoilState(ItemAnimationState);
-  const [currentItemIndex, setCurrentItemIndex] =
-    useRecoilState(CurrentItemIndex);
+  const currentItemIndex = useRecoilValue(CurrentItemIndex);
+  const setScore = useSetRecoilState(BaggageScore);
 
   const updateScoreAndItem = (newScore: number, newText: string) => {
-    setGameState((prev) => ({
-      ...prev,
-      score: prev.score + newScore,
-    }));
+    setScore((prev) => prev + newScore);
     setLastScoredItemIndex(currentItemIndex);
     setScoreText(newText);
     setItemAnimations((prevItems) => {
@@ -68,7 +66,7 @@ export const useKeyPress = () => {
       !currentItem.scored &&
       currentItem.status !== BaggageStatus.PASS
     )
-      updateScoreAndItem(gameState.itemScore[1], gameState.itemScore[0]);
+      updateScoreAndItem(itemScoreState[1], itemScoreState[0]);
     else updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
   };
 
@@ -121,7 +119,7 @@ export const useKeyPress = () => {
       window.removeEventListener("keydown", downHandler);
       window.removeEventListener("keyup", upHandler);
     };
-  }, [keysPressed, itemAnimations, currentItemIndex, gameState]);
+  }, [currentItemIndex, itemAnimations, itemScoreState]);
 
   useEffect(() => {
     if (scoreText)
