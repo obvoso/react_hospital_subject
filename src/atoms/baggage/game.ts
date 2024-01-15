@@ -52,7 +52,6 @@ export const BaggageGameConfigState = atom<BaggageLevelConfig>({
     level: -1,
     items: 0,
     speed: 0,
-    timeLimit: 0,
     direction: "",
     classification: 0,
     obstacle: 0,

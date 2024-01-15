@@ -14,7 +14,6 @@ export interface BaggageLevelConfig {
   level: number;
   items: number;
   speed: number;
-  timeLimit: number;
   direction: string;
   classification: number;
   obstacle: number;
@@ -30,7 +29,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.SLOW,
     items: 5,
-    timeLimit: 30,
     direction: "forward",
     obstacle: 0,
     subject:
@@ -52,7 +50,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.SLOW,
     items: 5,
-    timeLimit: 30,
     direction: "forward",
     obstacle: 1,
     subject:
@@ -75,7 +72,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.MEDIUM,
     items: 10,
-    timeLimit: 30,
     direction: "forward",
     obstacle: 0,
     subject: "이번에는 속도가 조금 빨라집니다.",
@@ -101,7 +97,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.MEDIUM,
     items: 10,
-    timeLimit: 30,
     direction: "forward",
     obstacle: 2,
     subject: "이번에도 다른 색깔의 짐은 무시하세요.",
@@ -127,7 +122,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.MEDIUM,
     items: 10,
-    timeLimit: 30,
     direction: "backward",
     obstacle: 0,
     subject: "이번에는 반대의 색깔로 짐을 챙겨야합니다.",
@@ -153,7 +147,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.MEDIUM,
     items: 10,
-    timeLimit: 30,
     direction: "backward",
     obstacle: 2,
     subject:
@@ -180,7 +173,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 3,
     speed: BaggageSpeed.FAST,
     items: 10,
-    timeLimit: 40,
     direction: "forward",
     obstacle: 0,
     subject: "이번에는 색깔이 하나 더 많습니다.",
@@ -207,7 +199,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 3,
     speed: BaggageSpeed.FAST,
     items: 10,
-    timeLimit: 40,
     direction: "forward",
     obstacle: 3,
     subject: "이번에도 다른 색깔의 짐은 무시하세요.",
@@ -234,7 +225,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.FAST,
     items: 10,
-    timeLimit: 40,
     direction: "forward",
     obstacle: 0,
     subject:
@@ -261,7 +251,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 2,
     speed: BaggageSpeed.FAST,
     items: 10,
-    timeLimit: 40,
     direction: "forward",
     obstacle: 3,
     subject: "이번에도 옷과 음식을 챙겨주세요!\n단 장난감은 무시하세요.",
@@ -287,7 +276,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 3,
     speed: BaggageSpeed.FAST,
     items: 10,
-    timeLimit: 45,
     direction: "forward",
     obstacle: 0,
     subject:
@@ -315,7 +303,6 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
     classification: 3,
     speed: BaggageSpeed.FAST,
     items: 10,
-    timeLimit: 45,
     direction: "forward",
     obstacle: 2,
     subject:
