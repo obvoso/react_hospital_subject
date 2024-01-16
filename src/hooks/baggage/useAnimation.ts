@@ -1,17 +1,24 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { cmToPixels } from "@/utils/unit";
-import { drawStaticElements } from "../../components/baggage/index";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import {
   BaggageGameConfigState,
   BaggageGameState,
+  BaggageItemScore,
   CurrentItemIndex,
+  GameSpeed,
+  ItemScoreState,
 } from "@/atoms/baggage/game";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { BaggageSpeed } from "@/utils/baggage/baggageGameConfig";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   images: RefObject<{ [key: string]: HTMLImageElement }>;
+}
+
+interface updateItemScoreParams {
+  yPosition: number;
 }
 
 export const useAnimation = ({ canvasRef, images }: params) => {
@@ -22,51 +29,92 @@ export const useAnimation = ({ canvasRef, images }: params) => {
     useRecoilState(CurrentItemIndex);
   const [gameState, setGameState] = useRecoilState(BaggageGameState);
   const config = useRecoilValue(BaggageGameConfigState);
+  const setItemScore = useSetRecoilState(ItemScoreState);
+  const itemScoreRef = useRef(BaggageItemScore.BAD);
+  const gameSpeed = useRecoilValue(GameSpeed);
+
+  const showNextItemTime =
+    gameSpeed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 750 : 500;
+
+  useEffect(() => {
+    itemAnimationsRef.current = itemAnimations;
+  }, [itemAnimations]);
+
+  const updateItemScore = ({ yPosition }: updateItemScoreParams) => {
+    const startFastZoneY = 100;
+    const startPerfectZoneY = 165;
+    const startSlowZoneY = 190;
+    const currentItemScoreText = itemScoreRef.current;
+
+    if (
+      currentItemScoreText === BaggageItemScore.BAD &&
+      yPosition < startFastZoneY
+    ) {
+      return;
+    }
+    if (
+      currentItemScoreText === BaggageItemScore.PERFECT &&
+      yPosition >= startPerfectZoneY &&
+      yPosition <= startSlowZoneY
+    ) {
+      return;
+    }
+    if (
+      currentItemScoreText === BaggageItemScore.FAST &&
+      yPosition >= startFastZoneY &&
+      yPosition < startPerfectZoneY
+    ) {
+      return;
+    }
+    if (
+      currentItemScoreText === BaggageItemScore.SLOW &&
+      yPosition >= startSlowZoneY
+    ) {
+      return;
+    }
+
+    if (yPosition < startFastZoneY) {
+      itemScoreRef.current = BaggageItemScore.BAD;
+    } else if (yPosition >= startPerfectZoneY && yPosition <= startSlowZoneY) {
+      itemScoreRef.current = BaggageItemScore.PERFECT;
+    } else if (yPosition >= startFastZoneY && yPosition < startPerfectZoneY) {
+      itemScoreRef.current = BaggageItemScore.FAST;
+    } else if (yPosition >= startSlowZoneY) {
+      itemScoreRef.current = BaggageItemScore.SLOW;
+    }
+    setItemScore(itemScoreRef.current);
+  };
 
   const startAnimation = () => {
     if (!canvasRef.current) return;
     const context = canvasRef.current.getContext("2d");
     if (!context) return;
 
-    const startPositionX = 190;
-    const endPositionY = cmToPixels(8.5) - 60; // 레일의 끝
-    const itemSize = 80;
-
-    let startTime = 0;
+    const itemSize = 40;
+    const startPositionX = 30;
+    const endPositionY = 220; // 레일의 끝
+    const increaseY = gameSpeed;
     let yPosition = 0;
-    const increaseY =
-      config.speed === 1000 ? 5 : config.speed === 750 ? 7.5 : 10; // 1초에 5px, 750ms에 7.5px, 500ms에 10px
 
-    const animate = (timestamp: number) => {
+    const animate = () => {
       if (!gameState.start) return;
       if (!canvasRef.current) return;
-
-      context.clearRect(
-        0,
-        0,
-        canvasRef.current.width,
-        canvasRef.current.height
-      );
-      drawStaticElements(context, images, config);
-
-      if (currentItemIndex >= config.items) return;
 
       const currentItem = itemAnimationsRef.current[currentItemIndex];
       if (!currentItem) return;
 
       if (!images.current) return;
       const itemImage = images.current[currentItem.imageKey];
-      if (!itemImage) return;
+      if (!itemImage) {
+        return;
+      }
+
+      context.clearRect(0, 0, cmToPixels(3), cmToPixels(8));
       if (yPosition < endPositionY && !currentItem.done) {
-        context.drawImage(
-          itemImage,
-          startPositionX,
-          yPosition,
-          itemSize,
-          itemSize
-        );
-        yPosition += increaseY;
+        context.drawImage(itemImage, startPositionX, yPosition, 80, itemSize);
+        updateItemScore({ yPosition });
         requestAnimationFrame(animate);
+        yPosition += increaseY;
       } else {
         setItemAnimations((prev) =>
           prev.map((item, index) => {
@@ -74,19 +122,22 @@ export const useAnimation = ({ canvasRef, images }: params) => {
               return {
                 ...item,
                 yPosition,
-                startTime,
                 done: true,
               };
             }
             return item;
           })
         );
-        if (currentItemIndex < config.items - 1) {
+        // ... 마지막 일 때 인덱스 바로 올리면 마지막 아이템 점수 인정이 안됨
+        // ... 그렇다고 showNextItemTime을 늘리면 그 시간 뒤에 게임 종료됨
+        if (currentItemIndex === config.items - 1)
           setTimeout(() => {
             setCurrentItemIndex((prev) => prev + 1);
-          }, config.speed);
-        }
-        startTime = 0;
+          }, 50);
+        else
+          setTimeout(() => {
+            setCurrentItemIndex((prev) => prev + 1);
+          }, showNextItemTime);
       }
     };
 
@@ -94,18 +145,22 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   };
 
   useEffect(() => {
-    if (config.level !== -1 && currentItemIndex < config.items) {
-      if (currentItemIndex === 0) {
-        setTimeout(() => {
-          startAnimation();
-        }, config.speed);
-      } else {
+    if (!gameState.start) return;
+    if (currentItemIndex === 0) {
+      setTimeout(() => {
         startAnimation();
-      }
+      }, showNextItemTime);
+    } else if (config.level !== -1 && currentItemIndex < config.items) {
+      startAnimation();
+    } else if (config.level !== -1 && currentItemIndex === config.items) {
+      setGameState((prev) => ({
+        ...prev,
+        gameOver: true,
+      }));
     }
+    return () => {
+      itemScoreRef.current = BaggageItemScore.BAD;
+      setItemScore(itemScoreRef.current);
+    };
   }, [config, gameState.start, currentItemIndex]);
-
-  useEffect(() => {
-    itemAnimationsRef.current = itemAnimations;
-  }, [itemAnimations]);
 };

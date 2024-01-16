@@ -1,97 +1,63 @@
-import React, { useRef, useEffect, useState } from "react";
-import ArrowCircleDownTwoToneIcon from "@mui/icons-material/ArrowCircleDownTwoTone";
-import ArrowCircleLeftTwoToneIcon from "@mui/icons-material/ArrowCircleLeftTwoTone";
-import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwoTone";
+import { useRef } from "react";
 import { cmToPixels } from "@/utils/unit";
-import { useKeyPress } from "@/hooks/baggage/useKeyPress";
-import { drawStaticElements, preloadImages } from "./index";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { BaggageGameConfigState } from "@/atoms/baggage/game";
-import KeyDownButton from "./KeyDownButton";
-import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import { useAnimation } from "@/hooks/baggage/useAnimation";
+import KeyDownButtons from "./KeyDownButtons";
+import React from "react";
+import usePreLoadImages from "@/hooks/baggage/usePreLoadImages";
+import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
 
-export default function BaggageCanvas({ level }: { level: number }) {
+interface BaggageCanvasProps {
+  level: number;
+}
+
+function BaggageCanvas({ level }: BaggageCanvasProps) {
+  if (Number.isNaN(level)) return null;
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const images = useRef<{ [key: string]: HTMLImageElement }>({});
-  const [itemAnimations, setItemAnimations] =
-    useRecoilState(ItemAnimationState);
   const config = useRecoilValue(BaggageGameConfigState);
-
+  const { images } = usePreLoadImages({ level, canvasRef });
+  const custom = useRecoilValue(BaggageCustomState);
   useAnimation({ canvasRef, images });
-  const { keysPressed, checkForMatchAndScore } = useKeyPress();
-  const [leftPressed, rightPressed, downPressed] = keysPressed;
-
-  useEffect(() => {
-    preloadImages(
-      canvasRef,
-      images,
-      itemAnimations,
-      setItemAnimations,
-      config,
-      drawStaticElements
-    );
-    return () => {
-      images.current = {};
-      setItemAnimations([]);
-    };
-  }, [config, level]);
+  const leveling =
+    level > 11
+      ? "버튼을 사용해 선택해주세요."
+      : level > 1
+      ? level - 1 + "단계"
+      : "연습";
 
   return (
     <div className="flex flex-col items-center min-w-[500px]">
-      <div className="flex flex-col bg-white p-4 rounded-xl shadow-md">
-        <span className="text-lg font-bold text-center">
-          {level > 1 ? level - 1 + "단계" : "연습"}
-        </span>
+      <div className="flex flex-col z-10 bg-white p-4 rounded-xl shadow-md">
+        <span className="text-lg font-bold text-center">{leveling}</span>
         <span className="font-semibold text-center whitespace-pre-line">
           {config.subject}
         </span>
       </div>
-      <canvas
-        ref={canvasRef}
-        width={cmToPixels(10)}
-        height={cmToPixels(14)}
-      ></canvas>
+      <div
+        className={`flex w-[480px] h-[650px] justify-center ${
+          level <= 5 || (level > 11 && custom === Custom.COLOR_2)
+            ? "bg-bg0"
+            : level <= 7 || (level > 11 && custom === Custom.COLOR_3)
+            ? "bg-bg1"
+            : level <= 9 || (level > 11 && custom === Custom.TYPE_2)
+            ? "bg-bg2"
+            : "bg-bg3"
+        } bg-cover`}
+      >
+        <div className="flex mt-[-110px]">
+          <canvas
+            ref={canvasRef}
+            width={cmToPixels(3)}
+            height={cmToPixels(8)}
+          ></canvas>
+        </div>
+      </div>
       <div className="flex mt-4">
-        <KeyDownButton
-          downPressed={leftPressed}
-          checkForMatchAndScore={() =>
-            checkForMatchAndScore(
-              "ArrowLeft",
-              itemAnimations,
-              setItemAnimations
-            )
-          }
-        >
-          <ArrowCircleLeftTwoToneIcon />
-        </KeyDownButton>
-        {level >= 6 && level !== 8 && level !== 9 && (
-          <KeyDownButton
-            downPressed={downPressed}
-            checkForMatchAndScore={() =>
-              checkForMatchAndScore(
-                "ArrowDown",
-                itemAnimations,
-                setItemAnimations
-              )
-            }
-          >
-            <ArrowCircleDownTwoToneIcon />
-          </KeyDownButton>
-        )}
-        <KeyDownButton
-          downPressed={rightPressed}
-          checkForMatchAndScore={() =>
-            checkForMatchAndScore(
-              "ArrowRight",
-              itemAnimations,
-              setItemAnimations
-            )
-          }
-        >
-          <ArrowCircleRightTwoToneIcon />
-        </KeyDownButton>
+        <KeyDownButtons level={level} key={level} />
       </div>
     </div>
   );
 }
+
+export default React.memo(BaggageCanvas);

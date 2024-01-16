@@ -11,6 +11,10 @@ const config: Config = {
     extend: {
       backgroundImage: {
         grass: "url('/assets/whackAmole/background.png')",
+        bg0: "url('/assets/baggage/background0.png')",
+        bg1: "url('/assets/baggage/background1.png')",
+        bg2: "url('/assets/baggage/background2.png')",
+        bg3: "url('/assets/baggage/background3.png')",
       },
     },
   },

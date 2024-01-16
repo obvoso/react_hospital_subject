@@ -1,59 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BaggageStatus } from "@/utils/constEnum";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ItemAnimation,
   ItemAnimationState,
 } from "@/atoms/baggage/animationItem";
-import { BaggageGameState, CurrentItemIndex } from "@/atoms/baggage/game";
+import {
+  BaggageItemScore,
+  BaggageScore,
+  CurrentItemIndex,
+  ItemScoreState,
+} from "@/atoms/baggage/game";
 
 export const useKeyPress = () => {
+  const itemScoreState = useRecoilValue(ItemScoreState);
   const targetKeys = ["ArrowLeft", "ArrowRight", "ArrowDown"];
   const [keysPressed, setKeysPressed] = useState<boolean[]>(
     targetKeys.map(() => false)
   );
+  const [lastScoredItemIndex, setLastScoredItemIndex] = useState<number>(-1);
+  const [scoreText, setScoreText] = useState<string>("");
   const [itemAnimations, setItemAnimations] =
     useRecoilState(ItemAnimationState);
-  const [gameState, setGameState] = useRecoilState(BaggageGameState);
-  const [lastScoredItemIndex, setLastScoredItemIndex] = useState<number>(-1);
-  const [currentItemIndex, setCurrentItemIndex] =
-    useRecoilState(CurrentItemIndex);
+  const currentItemIndex = useRecoilValue(CurrentItemIndex);
+  const setScore = useSetRecoilState(BaggageScore);
 
-  const checkForMatchAndScore = (
-    pressedKey: string,
-    itemAnimation: ItemAnimation[],
-    setItemAnimation: React.Dispatch<React.SetStateAction<ItemAnimation[]>>
-  ) => {
-    if (
-      currentItemIndex === -1 ||
-      currentItemIndex === lastScoredItemIndex ||
-      currentItemIndex >= itemAnimation.length
-    )
-      return;
-    const currentItem = itemAnimation[currentItemIndex];
-    if (currentItem.done) return;
-
-    const pressKey =
-      pressedKey === "ArrowLeft"
-        ? BaggageStatus.LEFT
-        : pressedKey === "ArrowRight"
-        ? BaggageStatus.RIGHT
-        : pressedKey === "ArrowDown"
-        ? BaggageStatus.DOWN
-        : BaggageStatus.PASS;
-
-    if (
-      currentItem.status === pressKey &&
-      currentItem.status !== BaggageStatus.PASS &&
-      !currentItem.done &&
-      !currentItem.scored
-    ) {
-      setGameState((prev) => ({ ...prev, score: prev.score + 1 }));
-      setLastScoredItemIndex(currentItemIndex);
-    }
-    setItemAnimation((prevItems) => {
-      return prevItems.map((item) => {
-        if (item === currentItem) {
+  const updateScoreAndItem = (newScore: number, newText: string) => {
+    setScore((prev) => prev + newScore);
+    setLastScoredItemIndex(currentItemIndex);
+    setScoreText(newText);
+    setItemAnimations((prevItems) => {
+      return prevItems.map((item, index) => {
+        if (index === currentItemIndex) {
           return { ...item, done: true, scored: true };
         }
         return item;
@@ -61,44 +39,45 @@ export const useKeyPress = () => {
     });
   };
 
+  const checkForMatchAndScore = useCallback(
+    (pressedKey: string, itemAnimation: ItemAnimation[]) => {
+      if (
+        currentItemIndex === -1 ||
+        currentItemIndex === lastScoredItemIndex ||
+        currentItemIndex >= itemAnimation.length
+      )
+        return;
+      const currentItem = itemAnimation[currentItemIndex];
+      if (currentItem.done) return;
+
+      const pressKey =
+        pressedKey === "ArrowLeft"
+          ? BaggageStatus.LEFT
+          : pressedKey === "ArrowRight"
+          ? BaggageStatus.RIGHT
+          : pressedKey === "ArrowDown"
+          ? BaggageStatus.DOWN
+          : BaggageStatus.PASS;
+      if (
+        currentItem.status === pressKey &&
+        !currentItem.done &&
+        !currentItem.scored &&
+        currentItem.status !== BaggageStatus.PASS
+      )
+        updateScoreAndItem(itemScoreState[1], itemScoreState[0]);
+      else updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
+    },
+    [currentItemIndex, itemAnimations, itemScoreState, lastScoredItemIndex]
+  );
+
   useEffect(() => {
-    const incrementScoreForPassingItems = () => {
-      let increaseScore = false;
-      itemAnimations.forEach((item) => {
-        if (
-          item.status === BaggageStatus.PASS &&
-          item.done &&
-          !item.scored &&
-          currentItemIndex > 0
-        ) {
-          increaseScore = true;
-        }
-      });
-
-      if (increaseScore) {
-        setGameState((prev) => ({ ...prev, score: prev.score + 1 }));
-        setItemAnimations((prevItems) => {
-          return prevItems.map((item) => {
-            if (
-              item.status === BaggageStatus.PASS &&
-              item.done &&
-              !item.scored
-            ) {
-              return { ...item, scored: true };
-            }
-            return item;
-          });
-        });
-      }
-    };
-
     const downHandler = ({ key }: KeyboardEvent) => {
       const index = targetKeys.indexOf(key);
       if (index > -1) {
         setKeysPressed((prevKeys) =>
           prevKeys.map((pressed, i) => (i === index ? true : pressed))
         );
-        checkForMatchAndScore(key, itemAnimations, setItemAnimations);
+        checkForMatchAndScore(key, itemAnimations);
       }
     };
 
@@ -111,6 +90,27 @@ export const useKeyPress = () => {
       }
     };
 
+    const incrementScoreForPassingItems = () => {
+      let pass = false;
+      let miss = false;
+
+      itemAnimations.forEach((item, index) => {
+        if (item.done && !item.scored && currentItemIndex === index) {
+          if (item.status === BaggageStatus.PASS) pass = true;
+          else miss = true;
+        }
+      });
+
+      if (pass) {
+        updateScoreAndItem(
+          BaggageItemScore.PERFECT[1],
+          BaggageItemScore.PERFECT[0]
+        );
+      }
+      if (miss)
+        updateScoreAndItem(BaggageItemScore.MISS[1], BaggageItemScore.MISS[0]);
+    };
+
     window.addEventListener("keydown", downHandler);
     window.addEventListener("keyup", upHandler);
     incrementScoreForPassingItems();
@@ -119,10 +119,18 @@ export const useKeyPress = () => {
       window.removeEventListener("keydown", downHandler);
       window.removeEventListener("keyup", upHandler);
     };
-  }, [keysPressed, itemAnimations, currentItemIndex]);
+  }, [currentItemIndex, itemAnimations, itemScoreState]);
+
+  useEffect(() => {
+    if (scoreText)
+      setTimeout(() => {
+        setScoreText("");
+      }, 500);
+  }, [scoreText]);
 
   return {
     keysPressed,
     checkForMatchAndScore,
+    scoreText,
   };
 };

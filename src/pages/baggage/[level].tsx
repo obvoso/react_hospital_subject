@@ -1,112 +1,71 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
 import { BaggageCanvas } from "@/components/baggage";
 import {
   BaggageGameConfigState,
   BaggageGameState,
+  BaggageScore,
   CurrentItemIndex,
 } from "@/atoms/baggage/game";
-import CustomButton from "@/utils/CustomButton";
+import LevelNav from "@/utils/LevelNav";
+import GameControlButtons from "@/components/baggage/GameControlButtons";
+import Timer from "@/components/baggage/Timer";
+import CurrentScore from "@/components/baggage/CurrentScore";
+import SpeedButton from "@/components/baggage/SpeedButton";
 
 export default function GamePage() {
-  const [gameState, setGameState] = useRecoilState(BaggageGameState);
-  const resetGameState = useResetRecoilState(BaggageGameState);
-  const [config, setConfig] = useRecoilState(BaggageGameConfigState);
-  const resetConfig = useResetRecoilState(BaggageGameConfigState);
   const router = useRouter();
   const level = Number(router.query.level);
-  const [timeLeft, setTimeLeft] = useState(config.timeLimit);
-  const [nextBtn, setNextBtn] = useState(false);
+  const setConfig = useSetRecoilState(BaggageGameConfigState);
+  const resetCurrentItemState = useResetRecoilState(CurrentItemIndex);
+  const resetGameState = useResetRecoilState(BaggageGameState);
   const resetCurrentItemIndex = useResetRecoilState(CurrentItemIndex);
+  const resetConfig = useResetRecoilState(BaggageGameConfigState);
+  const resetScore = useResetRecoilState(BaggageScore);
+  const [nextBtn, setNextBtn] = useState(false);
+
+  const reset = () => {
+    resetGameState(); // 상태 리셋
+    resetCurrentItemIndex(); // 현재 아이템 인덱스 리셋
+    setNextBtn(false);
+    resetCurrentItemState();
+    resetScore();
+  };
 
   // 레벨 설정
   useEffect(() => {
     if (!router.isReady) return;
     const levelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
-    setTimeLeft(levelConfig.timeLimit);
-    resetGameState();
-  }, [router.isReady, level]);
-
-  // 타이머
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (gameState.start) {
-      timer = setInterval(() => {
-        setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-      }, 1000);
-    }
 
     return () => {
-      if (timer) clearInterval(timer);
+      reset();
+      resetConfig();
     };
-  }, [gameState.start]);
-
-  // 게임 오버
-  useEffect(() => {
-    if (timeLeft === 0 && gameState.start) {
-      if (level < 11) {
-        setNextBtn(true);
-      }
-    }
-  }, [timeLeft, gameState, level]);
-
-  // 게임 클리어
-  useEffect(() => {
-    if (gameState.score === config.items && level < 11 && gameState.start) {
-      setNextBtn(true);
-    }
-  }, [gameState, config, level]);
-
-  const handleNextLevel = useCallback(() => {
-    resetGameState(); // 상태 리셋
-    resetCurrentItemIndex(); // 현재 아이템 인덱스 리셋
-    setTimeLeft(config.timeLimit); // 시간 리셋
-    if (level < 11) router.push(`/baggage/${level + 1}`); // 다음 레벨로 이동
-    setNextBtn(false);
-  }, [nextBtn, level]);
-
-  const handleStart = useCallback(() => {
-    setGameState({ ...gameState, start: true });
-  }, [level]);
-
-  function handleGameClear() {
-    resetGameState(); // 상태 리셋
-    resetConfig(); // 설정 리셋
-    resetCurrentItemIndex(); // 현재 아이템 인덱스 리셋
-    router.push("/");
-  }
+  }, [router.isReady, level]);
 
   return (
-    <div className="flex flex-col min-w-[500px] mx-auto px-4 py-5">
-      <BaggageCanvas level={level} key={level} />
-      <div className="flex flex-col items-center text-center mt-4">
-        <div className="text-lg font-semibold">점수: {gameState.score}</div>
-        <div className="text-lg font-semibold">제한시간: {timeLeft}</div>
-      </div>
-      <div className="flex justify-center space-x-4 mt-4">
-        <CustomButton
-          text="게임 시작"
-          onClick={handleStart}
-          type={gameState.start ? "disabled" : "activate"}
-        />
-        {nextBtn && (
-          <CustomButton
-            text="다음 단계"
-            onClick={handleNextLevel}
-            type="activate"
+    <div className="flex flex-col-reverse sm:flex-row justify-between min-w-[500px] mx-auto px-4 py-5">
+      <div className="flex flex-col items-center sm:items-start">
+        <BaggageCanvas level={level} key={level} />
+        <div className="flex flex-col items-center text-center mx-auto mt-4">
+          <CurrentScore />
+          <Timer />
+          <GameControlButtons
+            reset={reset}
+            level={level}
+            nextBtn={nextBtn}
+            setNextBtn={setNextBtn}
           />
-        )}
-        {level === 11 &&
-          (gameState.score === config.items || timeLeft === 0) && (
-            <CustomButton
-              text="처음으로"
-              onClick={handleGameClear}
-              type="activate"
-            />
-          )}
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
+        <LevelNav game="baggage" />
+        <div className="flex mt-2 sm:mt-0 sm:ml-8 ">
+          <SpeedButton />
+        </div>
       </div>
     </div>
   );

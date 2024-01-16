@@ -7,7 +7,7 @@ interface Props {
   checkForMatchAndScore: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function KeyDownButton({
+function KeyDownButton({
   downPressed,
   children,
   checkForMatchAndScore,
@@ -40,3 +40,5 @@ export default function KeyDownButton({
     </div>
   );
 }
+
+export default React.memo(KeyDownButton);
