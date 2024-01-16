@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { cmToPixels } from "@/utils/unit";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import {
@@ -48,6 +48,12 @@ export const useAnimation = ({ canvasRef, images, imagesLoaded }: params) => {
     const currentItemScoreText = itemScoreRef.current;
 
     if (
+      currentItemScoreText === BaggageItemScore.BAD &&
+      yPosition < startFastZoneY
+    ) {
+      return;
+    }
+    if (
       currentItemScoreText === BaggageItemScore.PERFECT &&
       yPosition >= startPerfectZoneY &&
       yPosition <= startSlowZoneY
@@ -67,26 +73,20 @@ export const useAnimation = ({ canvasRef, images, imagesLoaded }: params) => {
     ) {
       return;
     }
-    if (
-      currentItemScoreText === BaggageItemScore.BAD &&
-      yPosition < startFastZoneY
-    ) {
-      return;
-    }
 
-    if (yPosition >= startPerfectZoneY && yPosition <= startSlowZoneY) {
+    if (yPosition < startFastZoneY) {
+      itemScoreRef.current = BaggageItemScore.BAD;
+    } else if (yPosition >= startPerfectZoneY && yPosition <= startSlowZoneY) {
       itemScoreRef.current = BaggageItemScore.PERFECT;
     } else if (yPosition >= startFastZoneY && yPosition < startPerfectZoneY) {
       itemScoreRef.current = BaggageItemScore.FAST;
     } else if (yPosition >= startSlowZoneY) {
       itemScoreRef.current = BaggageItemScore.SLOW;
-    } else if (yPosition < startFastZoneY) {
-      itemScoreRef.current = BaggageItemScore.BAD;
     }
     setItemScore(itemScoreRef.current);
   };
 
-  const startAnimation = useCallback(() => {
+  const startAnimation = () => {
     if (!canvasRef.current) return;
     const context = canvasRef.current.getContext("2d");
     if (!context) return;
@@ -143,7 +143,7 @@ export const useAnimation = ({ canvasRef, images, imagesLoaded }: params) => {
     };
 
     requestAnimationFrame(animate);
-  }, [currentItemIndex, gameState.start, config]);
+  };
 
   useEffect(() => {
     if (!gameState.start) return;
@@ -161,6 +161,7 @@ export const useAnimation = ({ canvasRef, images, imagesLoaded }: params) => {
     }
     return () => {
       itemScoreRef.current = BaggageItemScore.BAD;
+      setItemScore(itemScoreRef.current);
     };
   }, [config, gameState.start, currentItemIndex]);
 };

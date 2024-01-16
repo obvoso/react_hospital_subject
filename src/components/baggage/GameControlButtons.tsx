@@ -42,7 +42,7 @@ export default function GameControlButtons({
 
   const handleStart = useCallback(() => {
     setGameState({ ...gameState, start: true });
-  }, [level]);
+  }, [level, config]);
 
   const handleNextLevel = useCallback(() => {
     reset();
@@ -58,8 +58,12 @@ export default function GameControlButtons({
     });
 
     const levelConfig: BaggageLevelConfig = baggageGameLevels[level];
-    setConfig(levelConfig);
-    setShuffleItems({ config: levelConfig, setItemAnimations });
+    if (levelConfig) {
+      setConfig(levelConfig);
+      setShuffleItems({ config: levelConfig, setItemAnimations });
+    } else {
+      setShuffleItems({ config, setItemAnimations });
+    }
   }, [level]);
 
   function handleGameClear() {
@@ -84,6 +88,13 @@ export default function GameControlButtons({
           text="게임 시작"
           onClick={handleStart}
           type={gameState.start ? "disabled" : "activate"}
+        />
+      )}
+      {nextBtn && level > 11 && (
+        <CustomButton
+          text="다시 시작"
+          onClick={handleReStart}
+          type="activate"
         />
       )}
       {nextBtn && level < 11 && (

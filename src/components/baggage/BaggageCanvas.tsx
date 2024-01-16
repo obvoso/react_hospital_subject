@@ -8,7 +8,11 @@ import React from "react";
 import usePreLoadImages from "@/hooks/baggage/usePreLoadImages";
 import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
 
-function BaggageCanvas({ level }: { level: number }) {
+interface BaggageCanvasProps {
+  level: number;
+}
+
+function BaggageCanvas({ level }: BaggageCanvasProps) {
   if (Number.isNaN(level)) return null;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const config = useRecoilValue(BaggageGameConfigState);

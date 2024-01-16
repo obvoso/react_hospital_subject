@@ -25,7 +25,7 @@ export const GameSpeed = atom<BaggageSpeed>({
 
 export const ItemScoreState = atom({
   key: "ItemScoreState",
-  default: BaggageItemScore.INIT,
+  default: BaggageItemScore.BAD,
 });
 
 export const BaggageScore = atom({

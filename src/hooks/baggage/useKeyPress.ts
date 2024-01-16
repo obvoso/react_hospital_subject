@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BaggageStatus } from "@/utils/constEnum";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -39,36 +39,36 @@ export const useKeyPress = () => {
     });
   };
 
-  const checkForMatchAndScore = (
-    pressedKey: string,
-    itemAnimation: ItemAnimation[]
-  ) => {
-    if (
-      currentItemIndex === -1 ||
-      currentItemIndex === lastScoredItemIndex ||
-      currentItemIndex >= itemAnimation.length
-    )
-      return;
-    const currentItem = itemAnimation[currentItemIndex];
-    if (currentItem.done) return;
+  const checkForMatchAndScore = useCallback(
+    (pressedKey: string, itemAnimation: ItemAnimation[]) => {
+      if (
+        currentItemIndex === -1 ||
+        currentItemIndex === lastScoredItemIndex ||
+        currentItemIndex >= itemAnimation.length
+      )
+        return;
+      const currentItem = itemAnimation[currentItemIndex];
+      if (currentItem.done) return;
 
-    const pressKey =
-      pressedKey === "ArrowLeft"
-        ? BaggageStatus.LEFT
-        : pressedKey === "ArrowRight"
-        ? BaggageStatus.RIGHT
-        : pressedKey === "ArrowDown"
-        ? BaggageStatus.DOWN
-        : BaggageStatus.PASS;
-    if (
-      currentItem.status === pressKey &&
-      !currentItem.done &&
-      !currentItem.scored &&
-      currentItem.status !== BaggageStatus.PASS
-    )
-      updateScoreAndItem(itemScoreState[1], itemScoreState[0]);
-    else updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
-  };
+      const pressKey =
+        pressedKey === "ArrowLeft"
+          ? BaggageStatus.LEFT
+          : pressedKey === "ArrowRight"
+          ? BaggageStatus.RIGHT
+          : pressedKey === "ArrowDown"
+          ? BaggageStatus.DOWN
+          : BaggageStatus.PASS;
+      if (
+        currentItem.status === pressKey &&
+        !currentItem.done &&
+        !currentItem.scored &&
+        currentItem.status !== BaggageStatus.PASS
+      )
+        updateScoreAndItem(itemScoreState[1], itemScoreState[0]);
+      else updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
+    },
+    [currentItemIndex, itemAnimations, itemScoreState, lastScoredItemIndex]
+  );
 
   useEffect(() => {
     const downHandler = ({ key }: KeyboardEvent) => {

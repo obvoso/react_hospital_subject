@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { BaggageGameConfigState } from "@/atoms/baggage/game";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { BaggageGameConfigState, GameSpeed } from "@/atoms/baggage/game";
 import {
-  BaggageSpeed,
   BaggageLevelConfig,
   BaggageItemAssets,
 } from "@/utils/baggage/baggageGameConfig";
@@ -12,12 +11,8 @@ import {
   Custom,
 } from "@/atoms/baggage/custom";
 
-interface params {
-  reset: () => void;
-}
-
-export function useCustom({ reset }: params) {
-  const [speed, setSpeed] = useState(BaggageSpeed.SLOW);
+export function useCustom() {
+  const [speed, setSpeed] = useRecoilState(GameSpeed);
   const [classification, setClassification] = useState(2);
   const [classificationCriteria, setClassificationCriteria] = useState(
     Classification.COLOR
@@ -25,7 +20,6 @@ export function useCustom({ reset }: params) {
   const [obstacle, setObstacle] = useState(0);
   const [custom, setCustom] = useRecoilState(BaggageCustomState);
   const [level, setLevel] = useState(12);
-  const resetConfig = useResetRecoilState(BaggageGameConfigState);
   const setConfig = useSetRecoilState(BaggageGameConfigState);
 
   useEffect(() => {
@@ -46,10 +40,6 @@ export function useCustom({ reset }: params) {
     };
     setConfig(levelConfig);
     setLevel(levelConfig.level);
-    return () => {
-      reset();
-      resetConfig();
-    };
   }, [speed, obstacle, custom]);
 
   const clasificationCustom = () => {

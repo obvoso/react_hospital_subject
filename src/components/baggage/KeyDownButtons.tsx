@@ -5,17 +5,22 @@ import KeyDownButton from "./KeyDownButton";
 import ArrowCircleDownTwoToneIcon from "@mui/icons-material/ArrowCircleDownTwoTone";
 import ArrowCircleLeftTwoToneIcon from "@mui/icons-material/ArrowCircleLeftTwoTone";
 import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwoTone";
-import React from "react";
+import React, { useEffect } from "react";
 import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
 
 interface KeyDownButtonsProps {
   level: number;
 }
+
 function KeyDownButtons({ level }: KeyDownButtonsProps) {
   const itemAnimations = useRecoilValue(ItemAnimationState);
   const { keysPressed, checkForMatchAndScore, scoreText } = useKeyPress();
   const [leftPressed, rightPressed, downPressed] = keysPressed;
   const custom = useRecoilValue(BaggageCustomState);
+  const scoreTextStyle =
+    level > 11
+      ? "  sm:ml-[-80px] md:ml-[-145px]"
+      : " sm:ml-[-130px] md:ml-[-280px]";
 
   const getScoreClass = (score: string) => {
     switch (score) {
@@ -37,7 +42,9 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
   return (
     <div className="flex">
       <div className="flex absolute inset-0 items-center justify-center min-h-[850px]">
-        <div className="flex relative mb-8 sm:mb-52 full-screen-mb ml-8 sm:ml-[-130px] md:ml-[-280px] h-20 min-w-[200px] justify-center">
+        <div
+          className={`flex relative mb-[-50px] sm:mb-52 full-screen-mb ml-8 h-20 min-w-[200px] justify-center ${scoreTextStyle}`}
+        >
           <span
             key={scoreText}
             className={`scoreAnimation font-semibold text-lg ${getScoreClass(

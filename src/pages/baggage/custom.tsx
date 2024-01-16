@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CurrentItemIndex,
   BaggageGameState,
@@ -20,6 +20,13 @@ export default function CustomGamePage() {
   const resetCurrentItemIndex = useResetRecoilState(CurrentItemIndex);
   const resetScore = useResetRecoilState(BaggageScore);
   const [nextBtn, setNextBtn] = useState(false);
+  const {
+    setSpeed,
+    setClassification,
+    setClassificationCriteria,
+    setObstacle,
+    level,
+  } = useCustom();
 
   const reset = () => {
     resetGameState(); // 상태 리셋
@@ -28,14 +35,6 @@ export default function CustomGamePage() {
     resetCurrentItemState();
     resetScore();
   };
-
-  const {
-    setSpeed,
-    setClassification,
-    setClassificationCriteria,
-    setObstacle,
-    level,
-  } = useCustom({ reset });
 
   const speedOptions = [
     { label: "느림", value: BaggageSpeed.SLOW },
@@ -58,6 +57,7 @@ export default function CustomGamePage() {
     { label: "있음", value: 1 },
   ];
 
+  if (level === 12) return null;
   return (
     <div className="flex flex-col-reverse sm:flex-row justify-between min-w-[500px] mx-auto px-4 py-5">
       <div className="flex flex-col items-center sm:items-start">
