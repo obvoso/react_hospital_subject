@@ -4,7 +4,7 @@ import React from "react";
 interface DropDownButtonProps {
   label: string;
   options: { label: string; value: any }[];
-  onChange: (value: any) => void;
+  onChange: (value: number) => void;
 }
 
 export const DropDownButton = ({
@@ -13,11 +13,11 @@ export const DropDownButton = ({
   onChange,
 }: DropDownButtonProps) => {
   const handleChange = (event: any) => {
-    onChange(event.target.value);
+    onChange(Number(event.target.value));
   };
 
   return (
-    <div className="mb-4 w-fit">
+    <div className="mb-4 w-fit px-3 ">
       <label
         className="block text-gray-500 text-base font-semibold mb-2 text-center"
         htmlFor={label}

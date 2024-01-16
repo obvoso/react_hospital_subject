@@ -6,6 +6,7 @@ import ArrowCircleDownTwoToneIcon from "@mui/icons-material/ArrowCircleDownTwoTo
 import ArrowCircleLeftTwoToneIcon from "@mui/icons-material/ArrowCircleLeftTwoTone";
 import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwoTone";
 import React from "react";
+import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
 
 interface KeyDownButtonsProps {
   level: number;
@@ -14,6 +15,7 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
   const itemAnimations = useRecoilValue(ItemAnimationState);
   const { keysPressed, checkForMatchAndScore, scoreText } = useKeyPress();
   const [leftPressed, rightPressed, downPressed] = keysPressed;
+  const custom = useRecoilValue(BaggageCustomState);
 
   const getScoreClass = (score: string) => {
     switch (score) {
@@ -54,7 +56,9 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
       >
         <ArrowCircleLeftTwoToneIcon />
       </KeyDownButton>
-      {level >= 6 && level !== 8 && level !== 9 && (
+      {((level >= 6 && level !== 8 && level !== 9 && level <= 11) ||
+        (level > 11 &&
+          (custom === Custom.COLOR_3 || custom === Custom.TYPE_3))) && (
         <KeyDownButton
           downPressed={downPressed}
           checkForMatchAndScore={() =>
