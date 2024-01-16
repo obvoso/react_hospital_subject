@@ -13,6 +13,7 @@ export const preloadImages = (
 ) => {
   let imagesToLoad = config.items;
 
+  if (itemAnimations.length > 0) return;
   config.item.forEach((file) => {
     const img = new Image();
     img.onload = () => {

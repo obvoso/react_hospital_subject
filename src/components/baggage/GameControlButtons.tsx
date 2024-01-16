@@ -18,6 +18,7 @@ import {
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
+import next from "next";
 
 interface GameButtonsProps {
   reset: () => void;
@@ -90,40 +91,26 @@ export default function GameControlButtons({
           type={gameState.start ? "disabled" : "activate"}
         />
       )}
-      {nextBtn && level > 11 && (
-        <CustomButton
-          text="다시 시작"
-          onClick={handleReStart}
-          type="activate"
-        />
-      )}
-      {nextBtn && level < 11 && (
+      {nextBtn && (
         <>
-          <CustomButton
-            text="다시 시작"
-            onClick={handleReStart}
-            type="activate"
-          />
-          <CustomButton
-            text="다음 단계"
-            onClick={handleNextLevel}
-            type="activate"
-          />
-        </>
-      )}
-      {nextBtn && level === 11 && (
-        <>
-          <CustomButton
-            text="다시 시작"
-            onClick={handleReStart}
-            type="activate"
-          />
           <CustomButton
             text="처음으로"
             onClick={handleGameClear}
             type="activate"
           />
+          <CustomButton
+            text="다시 시작"
+            onClick={handleReStart}
+            type="activate"
+          />
         </>
+      )}
+      {nextBtn && level < 11 && (
+        <CustomButton
+          text="다음 단계"
+          onClick={handleNextLevel}
+          type="activate"
+        />
       )}
     </div>
   );

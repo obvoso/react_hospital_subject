@@ -16,11 +16,15 @@ function BaggageCanvas({ level }: BaggageCanvasProps) {
   if (Number.isNaN(level)) return null;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const config = useRecoilValue(BaggageGameConfigState);
-  const { images, imagesLoaded } = usePreLoadImages({ level, canvasRef });
+  const { images } = usePreLoadImages({ level, canvasRef });
   const custom = useRecoilValue(BaggageCustomState);
-  useAnimation({ canvasRef, images, imagesLoaded });
+  useAnimation({ canvasRef, images });
   const leveling =
-    level > 11 ? "커스텀" : level > 1 ? level - 1 + "단계" : "연습";
+    level > 11
+      ? "버튼을 사용해 선택해주세요."
+      : level > 1
+      ? level - 1 + "단계"
+      : "연습";
 
   return (
     <div className="flex flex-col items-center min-w-[500px]">

@@ -28,7 +28,7 @@ export function useCustom() {
 
   useEffect(() => {
     const levelConfig: BaggageLevelConfig = {
-      level: 11 + speed + classification + obstacle,
+      level: 11 + speed + custom + obstacle,
       items: 10,
       speed,
       direction: "forward",
@@ -36,7 +36,7 @@ export function useCustom() {
       obstacle,
       basket: basketCustum(),
       item: itemCustum(),
-      subject: "커스텀 레벨입니다.\n버튼을 사용해서 설정해주세요.",
+      subject: subjectCustom(),
     };
     setConfig(levelConfig);
     setLevel(levelConfig.level);
@@ -168,6 +168,27 @@ export function useCustom() {
       );
     }
     return item;
+  }, [custom, obstacle]);
+
+  const subjectCustom = useCallback(() => {
+    if (custom === Custom.COLOR_2) {
+      if (obstacle)
+        return "같은 색깔의 물건을 캐리어에 담아주세요\n다른 색깔의 물건은 피해주세요.";
+      return "컨베이어 벨트에서 파란색, 노란색 물건이 내려옵니다.\n같은 색깔의 물건을 캐리어에 담아주세요\n";
+    } else if (custom === Custom.TYPE_2) {
+      if (obstacle)
+        return "옷은 캐리어에, 음식은 바구니에 담아주세요.\n장난감은 피해주세요.";
+      return "컨베이어 벨트에서 옷과 음식이 내려옵니다.\n옷은 캐리어에, 음식은 바구니에 담아주세요.";
+    } else if (custom === Custom.COLOR_3) {
+      if (obstacle)
+        return "같은 색깔의 물건을 캐리어에 담아주세요\n다른 색깔의 물건은 피해주세요.";
+      return "컨베이어 벨트에서 물건이 내려옵니다.\n같은 색깔의 물건을 캐리어에 담아주세요\n";
+    } else if (custom === Custom.TYPE_3) {
+      if (obstacle)
+        return "옷은 캐리어에, 음식은 바구니에, 악세서리는 가방에 담아주세요.\n장난감은 피해주세요.";
+      return "컨베이어 벨트에서 3가지 종류의 물건이 내려옵니다.\n옷은 캐리어에, 음식은 바구니에, 악세서리는 가방에 담아주세요.";
+    }
+    return "";
   }, [custom, obstacle]);
 
   return {

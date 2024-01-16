@@ -15,14 +15,13 @@ import { BaggageSpeed } from "@/utils/baggage/baggageGameConfig";
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   images: RefObject<{ [key: string]: HTMLImageElement }>;
-  imagesLoaded: boolean;
 }
 
 interface updateItemScoreParams {
   yPosition: number;
 }
 
-export const useAnimation = ({ canvasRef, images, imagesLoaded }: params) => {
+export const useAnimation = ({ canvasRef, images }: params) => {
   const [itemAnimations, setItemAnimations] =
     useRecoilState(ItemAnimationState);
   const itemAnimationsRef = useRef(itemAnimations);
