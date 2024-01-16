@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 export default function CurrentScore() {
   const score = useRecoilValue(BaggageScore);
   const config = useRecoilValue(BaggageGameConfigState);
+  if (!config) return;
 
   return (
     <div className="text-lg font-semibold">

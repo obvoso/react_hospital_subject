@@ -14,6 +14,7 @@ import {
   FindItemDirection,
   FindItemExist,
 } from "@/components/rotateCarrier/index";
+import LevelNav from "@/utils/LevelNav";
 
 export default function GamePage() {
   const router = useRouter();
@@ -48,6 +49,10 @@ export default function GamePage() {
       });
     };
 
+    if (level > 9) {
+      router.push("/404");
+      return;
+    }
     if (router.isReady) initConfig();
   }, [router.isReady, level]);
 
@@ -100,45 +105,48 @@ export default function GamePage() {
   }
 
   return (
-    <div className="flex flex-col min-w-[500px] mx-auto px-4 py-5 items-center">
-      <div className="flex flex-col items-center justify-center w-[60%] p-4 bg-white rounded-xl shadow-md">
-        <span className="font-bold text-xl mb-2">{level + 1} 단계</span>
-        <div className="flex items-center justify-center min-h-12 w-full">
+    <div className="flex flex-col-reverse sm:flex-row  min-w-[500px] mx-auto px-4 py-5 items-center">
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center w-[60%] p-4 bg-white rounded-xl shadow-md">
+          <span className="font-bold text-xl mb-2">{level + 1} 단계</span>
           <p className="whitespace-pre-line text-center align-middle">
             {subject}
           </p>
         </div>
-      </div>
-      {!findDirection && !findItemExist && <Canvas key={level} />}
-      {findItemExist &&
-        config.itemExamples &&
-        !findDirection &&
-        gameState.start && <FindItemExist />}
-      {findDirection && config.findDirection && gameState.start && (
-        <FindItemDirection />
-      )}
-      <div className="flex justify-center items-center space-x-4">
-        <CustomButton
-          text="게임 시작"
-          onClick={handleStart}
-          type={gameState.start ? "disabled" : "activate"}
-        />
-        {nextLevelBtn && (
-          <CustomButton
-            text="다음 단계"
-            onClick={handleNextLevel}
-            type="activate"
-          />
+        {!findDirection && !findItemExist && <Canvas key={level} />}
+        {findItemExist &&
+          config.itemExamples &&
+          !findDirection &&
+          gameState.start && <FindItemExist />}
+        {findDirection && config.findDirection && gameState.start && (
+          <FindItemDirection />
         )}
-        {gameState.directionScore === config.findItems &&
-          gameState.start &&
-          level === 9 && (
+        <div className="flex justify-center items-center space-x-4">
+          <CustomButton
+            text="게임 시작"
+            onClick={handleStart}
+            type={gameState.start ? "disabled" : "activate"}
+          />
+          {nextLevelBtn && (
             <CustomButton
-              text="처음으로"
-              onClick={handleGameClear}
+              text="다음 단계"
+              onClick={handleNextLevel}
               type="activate"
             />
           )}
+          {gameState.directionScore === config.findItems &&
+            gameState.start &&
+            level === 9 && (
+              <CustomButton
+                text="처음으로"
+                onClick={handleGameClear}
+                type="activate"
+              />
+            )}
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
+        <LevelNav game="rotate-carrier" />
       </div>
     </div>
   );

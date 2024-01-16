@@ -14,7 +14,14 @@ interface LevelButtonProps {
 
 function LevelButton({ game, level, isClicked }: LevelButtonProps) {
   const buttonColor = isClicked ? "bg-blue-500" : "bg-blue-200";
-  const text = level === 0 ? "연습 1" : level === 1 ? "연습 2" : level - 1;
+  const text =
+    level === 0 && game === "bagage"
+      ? "연습 1"
+      : level === 1 && game === "bagage"
+      ? "연습 2"
+      : game === "bagage"
+      ? level - 1
+      : level + 1;
   return (
     <Link href={`/${game}/${level}`}>
       <button
@@ -30,6 +37,8 @@ export default function LevelNav({ game }: LevelNavProps) {
   const router = useRouter();
   const level = Number(router.query.level);
   const [currentLevel, setCurrentLevel] = useState(level);
+  const arrNum = game === "baggage" ? 12 : 10;
+  console.log(arrNum);
 
   useEffect(() => {
     if (router.isReady) setCurrentLevel(level);
@@ -37,7 +46,7 @@ export default function LevelNav({ game }: LevelNavProps) {
 
   return (
     <div className="flex sm:flex-col flex-row bg-white shadow-lg rounded-2xl p-3 w-fit h-fit z-10">
-      {[...Array(12).keys()].map((level) => (
+      {[...Array(arrNum).keys()].map((level) => (
         <LevelButton
           game={game}
           level={level}

@@ -37,6 +37,10 @@ export default function GamePage() {
   // 레벨 설정
   useEffect(() => {
     if (!router.isReady) return;
+    if (level > 11 || isNaN(level)) {
+      router.push("/404");
+      return;
+    }
     const levelConfig = baggageGameLevels[level];
     setConfig(levelConfig);
 
