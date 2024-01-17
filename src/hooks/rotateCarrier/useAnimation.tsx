@@ -34,11 +34,13 @@ export const useAnimation = ({
   };
 
   const draw = (angle: number) => {
+    if (!context) return;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.save();
     context.translate(context.canvas.width / 2, context.canvas.height / 2);
     context.rotate(angle);
     if (!images.current) return;
+    if (!images.current["carrier"]) return;
     context.drawImage(
       images.current["carrier"],
       -images.current["carrier"].width / 2 + 25,
@@ -98,7 +100,6 @@ export const useAnimation = ({
           ...prev,
           lastAngle: RoundFloat(degree * (Math.PI / 2)),
           lastDirection: lastDirection,
-          //lastDirection === 3 ? 1 : lastDirection === 1 ? 3 : lastDirection,
         }));
         setSubject("물건의 위치는 어디에 있을까요?");
         return;

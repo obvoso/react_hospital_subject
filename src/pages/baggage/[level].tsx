@@ -66,7 +66,7 @@ export default function GamePage() {
         </div>
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
-        <LevelNav game="baggage" />
+        <LevelNav game="baggage" curLevel={level} />
         <div className="flex mt-2 sm:mt-0 sm:ml-8 ">
           <SpeedButton />
         </div>
