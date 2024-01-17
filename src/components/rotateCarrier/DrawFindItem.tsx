@@ -34,7 +34,13 @@ export const DrawFindItem = ({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      <Image src={image} alt="findItems" width={200} height={200} />
+      <Image
+        src={image}
+        alt="findItems"
+        width={150}
+        height={150}
+        className="w-[100px] h-[100px] sm:w-[150px] sm:h-[150px]"
+      />
       <span className="w-12 bg-black text-white text-center">{index + 1}</span>
     </div>
   );

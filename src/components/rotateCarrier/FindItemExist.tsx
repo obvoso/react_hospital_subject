@@ -45,13 +45,13 @@ export default function FindItemExist() {
         });
       });
       setGameState((prev) => {
-        return { ...gameState, itemScore: prev.itemScore + 1 };
+        return { ...gameState, itemScore: prev.existScore + 1 };
       });
     }
   };
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-20">
+    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-5 sm:p-10">
       {config.itemExamples.map((item, index) => {
         return (
           answerItem[index] && (

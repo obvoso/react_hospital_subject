@@ -55,6 +55,7 @@ export interface RotateCarrierLevelConfig {
   findItems: number;
   obstacle: number;
   findDirection: boolean;
+  findExist: boolean;
   answerDirection: number[];
   space: RotateCarrierSpacePoint[];
   rotation: number;
@@ -72,6 +73,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 1,
     obstacle: 0,
     findDirection: false,
+    findExist: false,
     answerDirection: [0],
     space: [space[0], space[1]],
     rotation: 1,
@@ -79,14 +81,24 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     carrier: { imageKey: "carrier", point: carrier },
     questions: [{ imageKey: "item1_0", point: space[0] }],
     obstacles: [],
-    itemExamples: [],
-    dirrectionExamples: [],
+    itemExamples: ["item0_90", "item1_0", "item2_0", "item4_0"],
+    dirrectionExamples: [
+      {
+        items: [
+          { index: 0, imageKey: "item1_0" },
+          { index: 1, imageKey: "item1_90" },
+          { index: 2, imageKey: "item1_180" },
+          { index: 3, imageKey: "item1_270" },
+        ],
+      },
+    ],
   },
   {
     level: 1,
     findItems: 1,
     obstacle: 1,
     findDirection: false,
+    findExist: false,
     answerDirection: [1],
     space: [space[0], space[1]],
     rotation: 1,
@@ -94,14 +106,24 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     carrier: { imageKey: "carrier", point: carrier },
     questions: [{ imageKey: "item5_0", point: space[1] }],
     obstacles: [{ imageKey: "item1_0", point: space[0] }],
-    itemExamples: [],
-    dirrectionExamples: [],
+    itemExamples: ["item0_90", "item1_0", "item5_0", "item4_0"],
+    dirrectionExamples: [
+      {
+        items: [
+          { index: 0, imageKey: "item5_0" },
+          { index: 1, imageKey: "item5_90" },
+          { index: 2, imageKey: "item5_180" },
+          { index: 3, imageKey: "item5_270" },
+        ],
+      },
+    ],
   },
   {
     level: 2,
     findItems: 1,
     obstacle: 0,
     findDirection: true,
+    findExist: false,
     answerDirection: [0],
     space: [space[2], space[3], space[4], space[5]],
     rotation: 2,
@@ -114,7 +136,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
       },
     ],
     obstacles: [],
-    itemExamples: [],
+    itemExamples: ["item0_90", "item1_0", "item2_0", "item4_0"],
     dirrectionExamples: [
       {
         items: [
@@ -131,6 +153,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 1,
     obstacle: 0,
     findDirection: true,
+    findExist: false,
     answerDirection: [0],
     space: [space[2], space[3], space[4], space[5]],
     rotation: 2,
@@ -148,7 +171,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         point: { ...space[4], y: space[4].y + 20, h: 90 },
       },
     ],
-    itemExamples: [],
+    itemExamples: ["obstacle0", "item1_0", "item2_0", "item4_0"],
     dirrectionExamples: [
       {
         items: [
@@ -165,6 +188,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 1,
     obstacle: 0,
     findDirection: true,
+    findExist: false,
     answerDirection: [0],
     space: [space[2], space[3], space[4], space[5]],
     rotation: 3,
@@ -186,7 +210,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         point: { ...space[5], y: space[5].y + 20, h: 90 },
       },
     ],
-    itemExamples: [],
+    itemExamples: ["item0_90", "item1_0", "item2_0", "item4_0"],
     dirrectionExamples: [
       {
         items: [
@@ -203,6 +227,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 2,
     obstacle: 0,
     findDirection: true,
+    findExist: true,
     answerDirection: [0, 3],
     space: [space[2], space[3], space[4], space[5]],
     rotation: 3,
@@ -244,6 +269,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 2,
     obstacle: 1,
     findDirection: true,
+    findExist: true,
     answerDirection: [0, 3],
     space: [space[2], space[3], space[4], space[5]],
     rotation: 4,
@@ -300,6 +326,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 2,
     obstacle: 2,
     findDirection: true,
+    findExist: true,
     answerDirection: [0, 3],
     space: [space[2], space[3], space[4], space[5]],
     rotation: 4,
@@ -365,6 +392,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 2,
     obstacle: 2,
     findDirection: true,
+    findExist: true,
     answerDirection: [1, 5],
     space: [space[6], space[7], space[8], space[9], space[10], space[11]],
     rotation: 5,
@@ -422,6 +450,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     findItems: 2,
     obstacle: 2,
     findDirection: true,
+    findExist: true,
     answerDirection: [1, 5],
     space: [space[6], space[7], space[8], space[9], space[10], space[11]],
     rotation: 5,

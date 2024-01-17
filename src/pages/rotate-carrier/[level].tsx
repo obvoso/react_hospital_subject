@@ -5,6 +5,7 @@ import { RotateCarrierGameLevels } from "@/utils/carrierRotation/carrierRotateGa
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
+  RotateCarrierStage,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
 import {
@@ -28,8 +29,8 @@ export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
   const subject = useRecoilValue(SubjectTextState);
-  const setConfig = useSetRecoilState(RotateCarrierConfigState);
-  const gameState = useRecoilValue(RotateCarrierGameState);
+  const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
+  const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const { findDirection, findItemExist, setFindDirection, setFindItemExist } =
     useGameControl(level);
 
@@ -61,6 +62,11 @@ export default function GamePage() {
     if (router.isReady) {
       initConfig();
     }
+
+    return () => {
+      setFindDirection(false);
+      setFindItemExist(false);
+    };
   }, [router.isReady, level]);
 
   return (
@@ -79,7 +85,16 @@ export default function GamePage() {
           setFindItemExist={setFindItemExist}
           disabled={gameState.start}
         />
-        <Canvas key={level} />
+        {gameState.stage === RotateCarrierStage.FIND_ITEM && (
+          <Canvas key={level} />
+        )}
+        {gameState.stage === RotateCarrierStage.FIND_DIRECTION && (
+          <FindItemDirection key={level} />
+        )}
+        {gameState.stage === RotateCarrierStage.FIND_EXIST && (
+          <FindItemExist key={level} />
+        )}
+
         <GameContolButton level={level} />
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
