@@ -1,24 +1,41 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 interface LevelNavProps {
   game: string;
+  curLevel: number;
+  disabled?: boolean;
 }
 
 interface LevelButtonProps {
   game: string;
   level: number;
   isClicked: boolean;
+  disabled?: boolean;
 }
 
-function LevelButton({ game, level, isClicked }: LevelButtonProps) {
-  const buttonColor = isClicked ? "bg-blue-500" : "bg-blue-200";
-  const text = level === 0 ? "연습 1" : level === 1 ? "연습 2" : level - 1;
+function LevelButton({ game, level, isClicked, disabled }: LevelButtonProps) {
+  const buttonColor = isClicked
+    ? "bg-blue-500"
+    : disabled
+    ? "bg-gray-300"
+    : "bg-blue-200";
+  const text =
+    level === 0 && game === "bagage"
+      ? "연습 1"
+      : level === 1 && game === "bagage"
+      ? "연습 2"
+      : game === "bagage"
+      ? level - 1
+      : level + 1;
+
   return (
     <Link href={`/${game}/${level}`}>
       <button
-        className={` ${buttonColor} hover:bg-blue-400 text-white text-sm font-semibold py-1 px-2 sm:my-1 mx-1 rounded sm:w-16 shadow-md`}
+        className={` ${buttonColor} hover:bg-blue-400 text-white text-sm font-semibold py-1 px-2 sm:my-1 mx-1 rounded sm:w-16 shadow-md ${
+          disabled && "cursor-not-allowed"
+        }`}
+        disabled={disabled}
       >
         {text}
       </button>
@@ -26,25 +43,22 @@ function LevelButton({ game, level, isClicked }: LevelButtonProps) {
   );
 }
 
-export default function LevelNav({ game }: LevelNavProps) {
-  const router = useRouter();
-  const level = Number(router.query.level);
-  const [currentLevel, setCurrentLevel] = useState(level);
-
-  useEffect(() => {
-    if (router.isReady) setCurrentLevel(level);
-  }, [router.isReady, level]);
+function LevelNav({ game, curLevel, disabled }: LevelNavProps) {
+  const arrNum = game === "baggage" ? 12 : 10;
 
   return (
     <div className="flex sm:flex-col flex-row bg-white shadow-lg rounded-2xl p-3 w-fit h-fit z-10">
-      {[...Array(12).keys()].map((level) => (
+      {[...Array(arrNum).keys()].map((level) => (
         <LevelButton
           game={game}
           level={level}
-          isClicked={level === currentLevel}
+          isClicked={level === curLevel}
           key={level}
+          disabled={disabled}
         />
       ))}
     </div>
   );
 }
+
+export default React.memo(LevelNav);

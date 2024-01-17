@@ -29,6 +29,7 @@ export const drawStaticElements = (
   context.translate(context.canvas.width / 2, context.canvas.height / 2);
 
   if (!images.current) return;
+  if (!images.current["carrier"]) return;
 
   context.drawImage(
     images.current["carrier"],

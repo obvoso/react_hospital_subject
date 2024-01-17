@@ -9,8 +9,8 @@ export default function SpeedButton() {
   const config = useRecoilValue(BaggageGameConfigState);
 
   useEffect(() => {
-    setCurrentSpeed(config.speed);
-  }, [config.speed]);
+    setCurrentSpeed(config?.speed);
+  }, [config?.speed]);
 
   const isClicked = (speed: string) => {
     if (speed === "느림") return currentSpeed === BaggageSpeed.SLOW;
