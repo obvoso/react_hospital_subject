@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Canvas from "@/components/rotateCarrier/Canvas";
 import { RotateCarrierGameLevels } from "@/utils/carrierRotation/carrierRotateGameConfig";
@@ -8,14 +8,8 @@ import {
   RotateCarrierStage,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import shuffleArray from "@/utils/arrayShuffle";
-import CustomButton from "@/utils/CustomButton";
 import {
   FindItemDirection,
   FindItemExist,
@@ -29,10 +23,16 @@ export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
   const subject = useRecoilValue(SubjectTextState);
-  const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
+  const setConfig = useSetRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
-  const { findDirection, findItemExist, setFindDirection, setFindItemExist } =
-    useGameControl(level);
+  const {
+    nextLevelBtn,
+    setNextLevelBtn,
+    findDirection,
+    findItemExist,
+    setFindDirection,
+    setFindItemExist,
+  } = useGameControl(level);
 
   useEffect(() => {
     const initConfig = () => {
@@ -62,11 +62,6 @@ export default function GamePage() {
     if (router.isReady) {
       initConfig();
     }
-
-    return () => {
-      setFindDirection(false);
-      setFindItemExist(false);
-    };
   }, [router.isReady, level]);
 
   return (
@@ -95,7 +90,11 @@ export default function GamePage() {
           <FindItemExist key={level} />
         )}
 
-        <GameContolButton level={level} />
+        <GameContolButton
+          level={level}
+          nextLevelBtn={nextLevelBtn}
+          setNextLevelBtn={setNextLevelBtn}
+        />
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
         <LevelNav

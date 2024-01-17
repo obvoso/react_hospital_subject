@@ -14,7 +14,7 @@ interface answerItem {
 
 export default function FindItemExist() {
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
-  const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+  const setGameState = useSetRecoilState(RotateCarrierGameState);
   const setSubject = useSetRecoilState(SubjectTextState);
   const [answerItem, setAnswerItem] = useState<answerItem[]>([]);
   const path = "/assets/rotateCarrier";
@@ -45,7 +45,7 @@ export default function FindItemExist() {
         });
       });
       setGameState((prev) => {
-        return { ...gameState, itemScore: prev.existScore + 1 };
+        return { ...prev, existScore: prev.existScore + 1 };
       });
     }
   };

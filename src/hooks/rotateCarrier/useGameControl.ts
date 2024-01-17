@@ -9,22 +9,19 @@ import { useRecoilState } from "recoil";
 export function useGameControl(level: number) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
-  const [findDirection, setFindDirection] = useState(config.findDirection);
-  const [findItemExist, setFindItemExist] = useState(config.findExist);
+  const [findDirection, setFindDirection] = useState(false);
+  const [findItemExist, setFindItemExist] = useState(false);
   const [nextLevelBtn, setNextLevelBtn] = useState(false);
 
   useEffect(() => {
     setFindDirection(config.findDirection);
-  }, [config.findDirection]);
-
-  useEffect(() => {
     setFindItemExist(config.findExist);
-  }, [config.findExist]);
-  //방향 찾기 게임으로 넘어감
+  }, [config]);
+
   useEffect(() => {
     if (gameState.directionScore === config.findItems && level < 9)
       setNextLevelBtn(true);
-  }, [gameState.directionScore]);
+  }, [gameState.directionScore, config]);
 
   useEffect(() => {
     if (
@@ -36,8 +33,9 @@ export function useGameControl(level: number) {
           ...gameState,
           stage: RotateCarrierStage.FIND_DIRECTION,
         });
+      else setNextLevelBtn(true);
     }
-  }, [gameState.existScore]);
+  }, [gameState.existScore, findDirection]);
 
   // 캐리어 물건 찾으면
   useEffect(() => {
@@ -46,7 +44,6 @@ export function useGameControl(level: number) {
       gameState.start &&
       gameState.stage === RotateCarrierStage.FIND_ITEM
     ) {
-      //존재 여부 찾기 게임으로 넘어감
       if (findItemExist)
         setGameState({ ...gameState, stage: RotateCarrierStage.FIND_EXIST });
       else if (findDirection)
@@ -54,9 +51,8 @@ export function useGameControl(level: number) {
           ...gameState,
           stage: RotateCarrierStage.FIND_DIRECTION,
         });
-      if (level < 9) setNextLevelBtn(true);
     }
-  }, [gameState.score, level]);
+  }, [gameState.score, level, findItemExist, findDirection]);
 
   return {
     findDirection,

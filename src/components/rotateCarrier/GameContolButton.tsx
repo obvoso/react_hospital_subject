@@ -1,22 +1,23 @@
+import React, { useCallback } from "react";
+import router from "next/router";
 import {
-  RotateCarrierConfigState,
   RotateCarrierGameState,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import { useGameControl } from "@/hooks/rotateCarrier/useGameControl";
 import CustomButton from "@/utils/CustomButton";
-import React, { useCallback } from "react";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import { FindItemExist, FindItemDirection } from ".";
-import router from "next/router";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 interface params {
   level: number;
+  nextLevelBtn: boolean;
+  setNextLevelBtn: (value: boolean) => void;
 }
 
-export default function GameContolButton({ level }: params) {
-  const { nextLevelBtn, setNextLevelBtn, setFindDirection, setFindItemExist } =
-    useGameControl(level);
+export default function GameContolButton({
+  level,
+  nextLevelBtn,
+  setNextLevelBtn,
+}: params) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
   const resetSubjuect = useResetRecoilState(SubjectTextState);
@@ -25,8 +26,6 @@ export default function GameContolButton({ level }: params) {
     resetGameState(); // 상태 리셋
     resetSubjuect();
     setNextLevelBtn(false);
-    setFindDirection(false);
-    setFindItemExist(false);
     if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
   }, [nextLevelBtn, level]);
 
@@ -38,8 +37,6 @@ export default function GameContolButton({ level }: params) {
     resetGameState(); // 상태 리셋
     resetSubjuect();
     setNextLevelBtn(false);
-    setFindDirection(false);
-    setFindItemExist(false);
     router.push("/");
   }
 

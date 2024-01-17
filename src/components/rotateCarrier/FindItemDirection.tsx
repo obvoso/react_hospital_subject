@@ -54,7 +54,7 @@ export default function FindItemDirection() {
       });
       setGameState((prev) => {
         return {
-          ...gameState,
+          ...prev,
           directionScore: prev.directionScore + 1,
         };
       });

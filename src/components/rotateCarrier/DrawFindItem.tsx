@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface Props {
   image: string;
@@ -37,9 +37,9 @@ export const DrawFindItem = ({
       <Image
         src={image}
         alt="findItems"
-        width={150}
-        height={150}
-        className="w-[100px] h-[100px] sm:w-[150px] sm:h-[150px]"
+        width={100}
+        height={100}
+        className="sm:w-[150px] sm:h-[150px]"
       />
       <span className="w-12 bg-black text-white text-center">{index + 1}</span>
     </div>
