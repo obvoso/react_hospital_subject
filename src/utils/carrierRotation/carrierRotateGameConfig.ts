@@ -1,26 +1,26 @@
-const enum ANGLE {
+export const enum ANGLE {
   ANGLE_90 = 1,
   ANGLE_180 = 2,
   ANGLE_270 = 3,
 }
 
-const carrier: RotateCarrierSpacePoint = {
+export const carrier: RotateCarrierSpacePoint = {
   x: 210,
   y: 100,
   w: 300,
   h: 500,
 };
 
-interface DirectionGroup {
+export interface DirectionGroup {
   index: number;
   imageKey: string;
 }
 
-interface DirectionGroups {
+export interface DirectionGroups {
   items: DirectionGroup[];
 }
 
-const space: RotateCarrierSpacePoint[] = [
+export const space: RotateCarrierSpacePoint[] = [
   // 1 X 2
   { x: -105, y: -120, w: 200, h: 130 },
   { x: -105, y: 10, w: 200, h: 130 },

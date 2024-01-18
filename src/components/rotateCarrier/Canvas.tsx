@@ -10,7 +10,6 @@ export default function Canvas() {
   const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const config = useRecoilValue(RotateCarrierConfigState);
   const { clickedRectIndex } = useMouseEvent(canvasRef, config);
-
   useAnimation({
     canvasRef,
     context: canvasRef.current?.getContext("2d")!,
