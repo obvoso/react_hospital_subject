@@ -16,11 +16,14 @@ export function useGameControl(level: number) {
   useEffect(() => {
     setFindDirection(config.findDirection);
     setFindItemExist(config.findExist);
-  }, [config]);
+    setNextLevelBtn(false);
+  }, [config.level]);
 
   useEffect(() => {
-    if (gameState.directionScore === config.findItems && level < 9)
+    if (gameState.directionScore === config.findItems) {
       setNextLevelBtn(true);
+      setGameState({ ...gameState, start: false });
+    }
   }, [gameState.directionScore, config]);
 
   useEffect(() => {
@@ -33,7 +36,10 @@ export function useGameControl(level: number) {
           ...gameState,
           stage: RotateCarrierStage.FIND_DIRECTION,
         });
-      else setNextLevelBtn(true);
+      else {
+        setNextLevelBtn(true);
+        setGameState({ ...gameState, start: false });
+      }
     }
   }, [gameState.existScore, findDirection]);
 
@@ -51,6 +57,10 @@ export function useGameControl(level: number) {
           ...gameState,
           stage: RotateCarrierStage.FIND_DIRECTION,
         });
+      else {
+        setNextLevelBtn(true);
+        setGameState({ ...gameState, start: false });
+      }
     }
   }, [gameState.score, level, findItemExist, findDirection]);
 

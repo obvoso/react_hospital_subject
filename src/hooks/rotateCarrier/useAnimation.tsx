@@ -33,14 +33,21 @@ export const useAnimation = ({
     return Math.round((num + Number.EPSILON) * 1000) / 1000;
   };
 
-  const draw = (angle: number) => {
-    if (!context) return;
+  const draw = (context: CanvasRenderingContext2D, angle: number) => {
+    if (!context) {
+      return;
+    }
+    context.transform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.save();
     context.translate(context.canvas.width / 2, context.canvas.height / 2);
     context.rotate(angle);
-    if (!images.current) return;
-    if (!images.current["carrier"]) return;
+    if (!images.current) {
+      return;
+    }
+    if (!images.current["carrier"]) {
+      return;
+    }
     context.drawImage(
       images.current["carrier"],
       -images.current["carrier"].width / 2 + 25,
@@ -64,7 +71,7 @@ export const useAnimation = ({
     context.restore();
   };
 
-  const animateRotation = () => {
+  const animateRotation = (context: CanvasRenderingContext2D) => {
     let rotateDirection = "";
     let degree = 0; //증가량은 속도
     let rotateCount = -1;
@@ -104,8 +111,7 @@ export const useAnimation = ({
         setSubject("물건의 위치는 어디에 있을까요?");
         return;
       }
-
-      draw(RoundFloat(degree * (Math.PI / 2)));
+      draw(context, RoundFloat(degree * (Math.PI / 2)));
       requestAnimationFrame(animateStep);
     };
     requestAnimationFrame(animateStep);
@@ -115,9 +121,9 @@ export const useAnimation = ({
     let duration = 0;
 
     const flash = () => {
+      context.setTransform(1, 0, 0, 1, 0, 0);
       const progress = Math.min(duration, 1.5);
       const alpha = Math.sin(progress * Math.PI);
-
       duration += 0.01;
       drawStaticElements(context, images, config, alpha);
 
@@ -139,7 +145,7 @@ export const useAnimation = ({
       animateQuestion(context); // start 누르고 1초동안 문제 보여주기
       setSubject("물건의 위치를 잘 기억해주세요.");
       setTimeout(() => {
-        animateRotation(), setSubject("캐리어가 회전합니다.");
+        animateRotation(context), setSubject("캐리어가 회전합니다.");
       }, 1500); // start 누르고 1.5초 후 애니메이션 시작
     }
   }, [gameState.start]);
@@ -152,6 +158,6 @@ export const useAnimation = ({
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    draw(gameState.lastAngle);
+    draw(context, gameState.lastAngle);
   }, [clickedRectIndex, gameState.start, images, gameState.lastAngle]);
 };

@@ -8,7 +8,12 @@ import {
   RotateCarrierStage,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import shuffleArray from "@/utils/arrayShuffle";
 import {
   FindItemDirection,
@@ -25,6 +30,7 @@ export default function GamePage() {
   const subject = useRecoilValue(SubjectTextState);
   const setConfig = useSetRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+  const resetGameState = useResetRecoilState(RotateCarrierGameState);
   const {
     nextLevelBtn,
     setNextLevelBtn,
@@ -61,6 +67,7 @@ export default function GamePage() {
     }
     if (router.isReady) {
       initConfig();
+      resetGameState();
     }
   }, [router.isReady, level]);
 
@@ -94,6 +101,8 @@ export default function GamePage() {
           level={level}
           nextLevelBtn={nextLevelBtn}
           setNextLevelBtn={setNextLevelBtn}
+          findDirection={findDirection}
+          findItemExist={findItemExist}
         />
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">

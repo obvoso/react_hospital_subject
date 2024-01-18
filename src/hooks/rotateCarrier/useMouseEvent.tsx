@@ -75,5 +75,10 @@ export const useMouseEvent = (
       canvasRef.current.removeEventListener("mouseup", handleMouseUp);
     };
   }, [gameState.start, gameState.lastAngle, clickedRectIndex]);
+
+  useEffect(() => {
+    setLastScoredIndex(-1);
+  }, [config]);
+
   return { clickedRectIndex };
 };
