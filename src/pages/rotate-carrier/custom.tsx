@@ -1,15 +1,11 @@
+import React from "react";
 import { RotateCarrierStage } from "@/atoms/rotateCarrier/config";
-import { DropDownButton } from "@/components/customBaggage/DropDownButton";
-import CustomButtons from "@/components/customRotateCarrier/CustomButtons";
-import SelectsDropDown from "@/components/customRotateCarrier/SelectsDropDown";
 import { FindItemDirection, FindItemExist } from "@/components/rotateCarrier";
-import Canvas from "@/components/rotateCarrier/Canvas";
-import FindItemControlButton from "@/components/rotateCarrier/FindItemControlButton";
-import GameContolButton from "@/components/customRotateCarrier/GameContolButton";
 import { useCustom } from "@/hooks/rotateCarrier/useCustom";
 import { useCustomGameControl } from "@/hooks/rotateCarrier/useCustomGameContol";
-import { ANGLE } from "@/utils/carrierRotation/carrierRotateGameConfig";
-import React, { useState } from "react";
+import CustomButtons from "@/components/customRotateCarrier/CustomButtons";
+import GameContolButton from "@/components/customRotateCarrier/GameContolButton";
+import Canvas from "@/components/rotateCarrier/Canvas";
 
 export default function CustomGamePage() {
   const {
@@ -20,12 +16,9 @@ export default function CustomGamePage() {
     setFindItem,
     obstacle,
     setObstacle,
-    rotate,
     setRotate,
-    rotateAngle,
     setRotateAngle,
     gameState,
-    setGameState,
   } = useCustom();
 
   const {
@@ -74,7 +67,6 @@ export default function CustomGamePage() {
           <div className="w-[500px] h-[500px]" />
         )}
         <GameContolButton
-          level={level}
           nextLevelBtn={nextLevelBtn}
           setNextLevelBtn={setNextLevelBtn}
         />

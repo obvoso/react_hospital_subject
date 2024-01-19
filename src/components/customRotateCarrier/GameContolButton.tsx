@@ -1,34 +1,24 @@
-import React, { useCallback, useEffect } from "react";
 import router from "next/router";
+import shuffleArray from "@/utils/arrayShuffle";
+import CustomButton from "@/utils/CustomButton";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
   RotateCarrierStage,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import CustomButton from "@/utils/CustomButton";
 import {
-  useGetRecoilValueInfo_UNSTABLE,
-  useRecoilState,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import {
-  RotateCarrierGameLevels,
   RotateCarrierItemAssets,
   RotateCarrierSpacePoint,
-  space,
 } from "@/utils/carrierRotation/carrierRotateGameConfig";
-import shuffleArray from "@/utils/arrayShuffle";
 
 interface params {
-  level: number;
   nextLevelBtn: boolean;
   setNextLevelBtn: (value: boolean) => void;
 }
 
 export default function GameContolButton({
-  level,
   nextLevelBtn,
   setNextLevelBtn,
 }: params) {
