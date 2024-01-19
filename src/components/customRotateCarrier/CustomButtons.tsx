@@ -96,6 +96,7 @@ export default function CustomButtons({
         />
         <DropDownButton
           label="방해 요소"
+          gridSize={gridSize}
           options={
             gridSize - itemSize === 0
               ? obstacleOptions.slice(0, 1)
