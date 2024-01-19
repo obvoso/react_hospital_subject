@@ -37,7 +37,7 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
 
   return (
     <div className="flex">
-      <div className="flex absolute inset-0 items-center justify-center">
+      <div className="flex flex-col absolute inset-0 items-center justify-center">
         <div className={`flex mb-32 min-w-[200px] w-24 h-20 justify-center`}>
           <span
             key={scoreText}
@@ -48,35 +48,41 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
             {scoreText}
           </span>
         </div>
+        <div className="left-0 ml-10 mt-[26rem] absolute ">
+          <KeyDownButton
+            downPressed={leftPressed}
+            checkForMatchAndScore={() =>
+              checkForMatchAndScore("ArrowLeft", itemAnimations)
+            }
+          >
+            <ArrowCircleLeftTwoToneIcon />
+          </KeyDownButton>
+        </div>
+        {((level >= 6 && level !== 8 && level !== 9 && level <= 11) ||
+          (level > 11 &&
+            (custom === Custom.COLOR_3 || custom === Custom.TYPE_3))) && (
+          <div className="bottom-[-20px] absolute">
+            <KeyDownButton
+              downPressed={downPressed}
+              checkForMatchAndScore={() =>
+                checkForMatchAndScore("ArrowDown", itemAnimations)
+              }
+            >
+              <ArrowCircleDownTwoToneIcon />
+            </KeyDownButton>
+          </div>
+        )}
+        <div className="right-0 mr-8 mt-[26rem] absolute">
+          <KeyDownButton
+            downPressed={rightPressed}
+            checkForMatchAndScore={() =>
+              checkForMatchAndScore("ArrowRight", itemAnimations)
+            }
+          >
+            <ArrowCircleRightTwoToneIcon />
+          </KeyDownButton>
+        </div>
       </div>
-      <KeyDownButton
-        downPressed={leftPressed}
-        checkForMatchAndScore={() =>
-          checkForMatchAndScore("ArrowLeft", itemAnimations)
-        }
-      >
-        <ArrowCircleLeftTwoToneIcon />
-      </KeyDownButton>
-      {((level >= 6 && level !== 8 && level !== 9 && level <= 11) ||
-        (level > 11 &&
-          (custom === Custom.COLOR_3 || custom === Custom.TYPE_3))) && (
-        <KeyDownButton
-          downPressed={downPressed}
-          checkForMatchAndScore={() =>
-            checkForMatchAndScore("ArrowDown", itemAnimations)
-          }
-        >
-          <ArrowCircleDownTwoToneIcon />
-        </KeyDownButton>
-      )}
-      <KeyDownButton
-        downPressed={rightPressed}
-        checkForMatchAndScore={() =>
-          checkForMatchAndScore("ArrowRight", itemAnimations)
-        }
-      >
-        <ArrowCircleRightTwoToneIcon />
-      </KeyDownButton>
     </div>
   );
 }
