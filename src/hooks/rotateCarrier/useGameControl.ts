@@ -2,9 +2,10 @@ import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
   RotateCarrierStage,
+  SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 export function useGameControl(level: number) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
@@ -12,6 +13,7 @@ export function useGameControl(level: number) {
   const [findDirection, setFindDirection] = useState(false);
   const [findItemExist, setFindItemExist] = useState(false);
   const [nextLevelBtn, setNextLevelBtn] = useState(false);
+  const setSubject = useSetRecoilState(SubjectTextState);
 
   useEffect(() => {
     setFindDirection(config.findDirection);
@@ -23,6 +25,7 @@ export function useGameControl(level: number) {
     if (gameState.directionScore === config.findItems) {
       setNextLevelBtn(true);
       setGameState({ ...gameState, start: false });
+      setSubject("맞추셨습니다!");
     }
   }, [gameState.directionScore, config]);
 
@@ -39,6 +42,7 @@ export function useGameControl(level: number) {
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });
+        setSubject("맞추셨습니다!");
       }
     }
   }, [gameState.existScore, findDirection]);
@@ -60,6 +64,7 @@ export function useGameControl(level: number) {
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });
+        setSubject("맞추셨습니다!");
       }
     }
   }, [gameState.score, level, findItemExist, findDirection]);

@@ -174,10 +174,11 @@ export const useCustom = () => {
           imageKey: `${image}_${j}`,
         });
       }
-      directionExamples.push({ items: group });
+      directionExamples.push({ items: shuffleArray(group) });
     }
-    return shuffleArray(directionExamples);
+    return directionExamples;
   };
+
   return {
     level,
     gridSize,
