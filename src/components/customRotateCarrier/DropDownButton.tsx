@@ -4,12 +4,14 @@ interface DropDownButtonProps {
   label: string;
   options: { label: string; value: any }[];
   onChange: (value: number) => void;
+  gridSize?: number;
 }
 
 export const DropDownButton = ({
   label,
   options,
   onChange,
+  gridSize,
 }: DropDownButtonProps) => {
   const handleChange = (event: any) => {
     onChange(Number(event.target.value));
