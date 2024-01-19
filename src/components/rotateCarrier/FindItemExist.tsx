@@ -23,7 +23,6 @@ export default function FindItemExist() {
   const totalImages = 4; // 총 이미지 개수
 
   const handleImageLoaded = () => {
-    console.log("loaded");
     setLoadedCount((prevCount) => prevCount + 1);
   };
 
