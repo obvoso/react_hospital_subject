@@ -54,10 +54,6 @@ export default function GamePage() {
     <div className="flex flex-col-reverse sm:flex-row justify-between min-w-[500px] mx-auto px-4 py-5">
       <div className="flex flex-col items-center sm:items-start">
         <BaggageCanvas level={level} key={level} />
-        <div className="flex flex-col items-center text-center mx-auto mt-4">
-          <CurrentScore />
-          <Timer />
-        </div>
       </div>
       <div className="bg-gray-100 rounded-2xl shadow-md p-4 sm:w-[325px] flex flex-col items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
         <div className="w-full p-2 flex items-center justify-center sm:justify-start">
@@ -68,10 +64,14 @@ export default function GamePage() {
             setNextBtn={setNextBtn}
           />
         </div>
-        <div className="w-full p-1 flex flex-col sm:flex-row items-center">
+        <div className="flex relative flex-col sm:flex-row items-center w-full p-1">
           <LevelNav game="baggage" curLevel={level} />
-          <div className="flex ml-5 mt-2 sm:mt-0 ">
+          <div className="flex flex-col ml-5 mt-2 sm:mt-0">
             <SpeedButton />
+            <div className="bg-white rounded-2xl shadow-lg sm:absolute gap-1 flex mt-2 sm:mt-52 w-36 h-20 flex-col items-center justify-center text-center mx-auto">
+              <CurrentScore />
+              <Timer />
+            </div>
           </div>
         </div>
       </div>
