@@ -6,6 +6,8 @@ interface Props {
   index: number;
   isAnswer: boolean;
   handleAnswer: (index: number) => void;
+  onImageLoaded: () => void;
+  showImage: boolean;
 }
 
 export const DrawFindItem = ({
@@ -13,6 +15,8 @@ export const DrawFindItem = ({
   index,
   handleAnswer,
   isAnswer,
+  onImageLoaded,
+  showImage = true,
 }: Props) => {
   const [isActive, setIsActive] = useState(false);
 
@@ -34,13 +38,16 @@ export const DrawFindItem = ({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      <Image
-        src={image}
-        alt="findItems"
-        width={100}
-        height={100}
-        className="sm:w-[150px] sm:h-[150px]"
-      />
+      <div style={{ visibility: showImage ? "visible" : "hidden" }}>
+        <Image
+          src={image}
+          alt="findItems"
+          width={100}
+          height={100}
+          className="sm:w-[150px] sm:h-[150px]"
+          onLoadingComplete={onImageLoaded}
+        />
+      </div>
       <span className="w-12 bg-black text-white text-center">{index + 1}</span>
     </div>
   );

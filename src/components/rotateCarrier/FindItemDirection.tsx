@@ -19,6 +19,20 @@ export default function FindItemDirection() {
   const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
   const [answerItem, setAnswerItem] = useState<answerItem[]>([]);
   const path = "/assets/rotateCarrier";
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const totalImages = 4; // 총 이미지 개수
+
+  const handleImageLoaded = () => {
+    console.log("loaded");
+    setLoadedCount((prevCount) => prevCount + 1);
+  };
+
+  useEffect(() => {
+    if (loadedCount === totalImages) {
+      setImagesLoaded(true);
+    }
+  }, [loadedCount, totalImages]);
 
   const isAnwer = (index: number) => index === gameState.lastDirection;
 
@@ -75,6 +89,8 @@ export default function FindItemDirection() {
               isAnswer={answerItem[index].isAnswer}
               key={index}
               handleAnswer={handleAnswer}
+              onImageLoaded={handleImageLoaded}
+              showImage={imagesLoaded}
             />
           )
         );
