@@ -55,7 +55,7 @@ export default function SelectsDropDown({
         </button>
 
         {dropdownOpen && (
-          <div className="absolute bg-white border border-gray-300 mt-1 p-2 rounded shadow-lg flex flex-col items-start z-20">
+          <div className="absolute bg-white border border-gray-300 mt-[21rem] p-2 rounded shadow-lg flex flex-col items-start z-20">
             {options.map((option, index) => (
               <label key={index} className="flex items-center mb-2">
                 <input

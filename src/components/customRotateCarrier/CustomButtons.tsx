@@ -3,10 +3,7 @@ import FindItemControlButton from "../rotateCarrier/FindItemControlButton";
 import { DropDownButton } from "./DropDownButton";
 import SelectsDropDown from "./SelectsDropDown";
 import { ANGLE } from "@/utils/carrierRotation/carrierRotateGameConfig";
-import {
-  RotateCarrierConfigState,
-  RotateCarrierGameState,
-} from "@/atoms/rotateCarrier/config";
+import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import { useRecoilValue } from "recoil";
 import SelectsRotationAngle from "./SelectRotationAngle";
 
@@ -39,7 +36,6 @@ export default function CustomButtons({
   setRotateAngle,
 }: CustomButtonsProps) {
   const gameState = useRecoilValue(RotateCarrierGameState);
-  const config = useRecoilValue(RotateCarrierConfigState);
 
   const gridSizeOptions = [
     { label: "2칸", value: 2 },
@@ -90,6 +86,14 @@ export default function CustomButtons({
           options={gridSizeOptions}
           onChange={(gridSize: number) => setGridSize(gridSize)}
         />
+
+        <SelectsDropDown
+          key={gridSize}
+          label="찾을 아이템"
+          options={findItemOptions}
+          onChange={(findItem: string[]) => setFindItem(findItem)}
+          max={gridSize - obstacleSize}
+        />
         <DropDownButton
           label="방해 요소"
           options={
@@ -100,12 +104,6 @@ export default function CustomButtons({
               : obstacleOptions
           }
           onChange={(obstacle: number) => setObstacle(obstacle)}
-        />
-        <SelectsDropDown
-          label="찾을 아이템"
-          options={findItemOptions}
-          onChange={(findItem: string[]) => setFindItem(findItem)}
-          max={gridSize - obstacleSize}
         />
         <DropDownButton
           label="회전 횟수"

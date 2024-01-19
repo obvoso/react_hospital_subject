@@ -43,7 +43,7 @@ export default function SelectsRotationAngle({
           {selectedValues.length + "개"}
         </button>
         {dropdownOpen && (
-          <div className="absolute bg-white border border-gray-300 mt-1 p-2 rounded shadow-lg flex flex-col items-start z-20">
+          <div className="absolute bg-white border border-gray-300 mt-[16.5rem] sm:mt-[13.5rem] p-2 rounded shadow-lg flex flex-col items-start z-20">
             {options.map((option, index) => (
               <label key={index} className="flex items-center mb-2">
                 <input
@@ -51,7 +51,7 @@ export default function SelectsRotationAngle({
                   value={option.value}
                   checked={selectedValues.includes(option.value)}
                   onChange={() => handleCheckboxChange(option.value)}
-                  className="mr-2"
+                  className="mr-2 h-8"
                 />
 
                 <span>{option.label}</span>

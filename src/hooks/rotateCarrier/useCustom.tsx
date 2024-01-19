@@ -13,7 +13,6 @@ import {
 import { use, useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
-//처음에 랜덤셔플 안됨!!!!!!!!!캐리어 배치할 때 랜덤 하게 수정해야됨..........
 export const useCustom = () => {
   const [gridSize, setGridSize] = useState(2);
   const [findItem, setFindItem] = useState<string[]>([]);
@@ -48,7 +47,6 @@ export const useCustom = () => {
 
   useEffect(() => {
     setLevel(9 + gridSize + obstacle + rotate + findItem.length);
-
     setConfig({
       level: 9 + gridSize + obstacle + rotate + findItem.length,
       findItems: findItem.length,
@@ -60,7 +58,7 @@ export const useCustom = () => {
       rotation: rotate,
       rotationAngle: initRotateAngle(),
       carrier: { imageKey: "carrier", point: carrier },
-      questions: initFindItem(randomIndex),
+      questions: initFindItem(randomIndex, findItem),
       obstacles: initObstacle(randomIndex),
       itemExamples: initItemExamples(),
       dirrectionExamples: initDirectionExamples(),
@@ -89,7 +87,8 @@ export const useCustom = () => {
     return direction;
   };
 
-  const initFindItem = (randomIndex: number[]) => {
+  const initFindItem = (randomIndex: number[], findItem: string[]) => {
+    if (randomIndex.length < findItem.length) return [];
     const findItemArray: RotateCarrierItemAssets[] = [];
     const indexCorrection = gridSize === 2 ? 0 : gridSize === 4 ? 2 : 6;
     for (let i = 0; i < findItem.length; i++) {
