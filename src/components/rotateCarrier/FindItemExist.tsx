@@ -18,7 +18,19 @@ export default function FindItemExist() {
   const setSubject = useSetRecoilState(SubjectTextState);
   const [answerItem, setAnswerItem] = useState<answerItem[]>([]);
   const path = "/assets/rotateCarrier";
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const totalImages = 4; // 총 이미지 개수
 
+  const handleImageLoaded = () => {
+    setLoadedCount((prevCount) => prevCount + 1);
+  };
+
+  useEffect(() => {
+    if (loadedCount === totalImages) {
+      setImagesLoaded(true);
+    }
+  }, [loadedCount, totalImages]);
   const isAnswer = (itemName: string) =>
     config.questions.some((question) => itemName === question.imageKey);
 
@@ -61,6 +73,8 @@ export default function FindItemExist() {
               isAnswer={answerItem[index].isAnswer}
               handleAnswer={handleAnswer}
               key={index}
+              onImageLoaded={handleImageLoaded}
+              showImage={imagesLoaded}
             />
           )
         );
