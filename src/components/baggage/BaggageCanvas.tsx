@@ -27,7 +27,7 @@ function BaggageCanvas({ level }: BaggageCanvasProps) {
       : "연습";
 
   return (
-    <div className="flex flex-col items-center min-w-[500px]">
+    <div className="flex relative flex-col items-center min-w-[500px]">
       <div className="flex flex-col z-10 bg-white p-4 rounded-xl shadow-md">
         <span className="text-lg font-bold text-center">{leveling}</span>
         <span className="font-semibold text-center whitespace-pre-line">
