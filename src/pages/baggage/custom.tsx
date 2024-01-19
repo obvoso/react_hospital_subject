@@ -62,9 +62,9 @@ export default function CustomGamePage() {
     <div className="flex flex-col-reverse sm:flex-row justify-between min-w-[500px] mx-auto px-4 py-5">
       <div className="flex flex-col items-center sm:items-start">
         <BaggageCanvas level={level} key={level} />
-        <div className="flex flex-col items-center text-center mx-auto mt-4">
-          <CurrentScore />
-          <Timer />
+      </div>
+      <div className="flex flex-col sm:w-[325px] items-center mx-auto justify-center h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10 mt-3">
+        <div className="mb-5">
           <GameControlButtons
             reset={reset}
             level={level}
@@ -72,8 +72,6 @@ export default function CustomGamePage() {
             setNextBtn={setNextBtn}
           />
         </div>
-      </div>
-      <div className="flex items-center mx-auto justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10 mt-3">
         <div className="z-10 flex items-center flex-row sm:flex-col">
           <DropDownButton
             label="속도"
@@ -99,6 +97,10 @@ export default function CustomGamePage() {
             options={obstacleOptions}
             onChange={(obstacle: number) => setObstacle(obstacle)}
           />
+        </div>
+        <div className="flex flex-row sm:flex-col items-center text-center mx-auto mt-4 gap-2">
+          <CurrentScore />
+          <Timer />
         </div>
       </div>
     </div>
