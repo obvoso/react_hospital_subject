@@ -40,11 +40,13 @@ export const useCustom = () => {
     }
     return () => {
       resetConfig();
+      setObstacle(0);
       setFindItem([]);
     };
   }, [gridSize]);
 
   useEffect(() => {
+    console.log(obstacle);
     setLevel(9 + gridSize + obstacle + rotate + findItem.length);
     setConfig({
       level: 9 + gridSize + obstacle + rotate + findItem.length,
