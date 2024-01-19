@@ -90,13 +90,20 @@ export default function GamePage() {
         {gameState.stage === RotateCarrierStage.FIND_ITEM && (
           <Canvas key={level} />
         )}
-        {gameState.stage === RotateCarrierStage.FIND_DIRECTION && (
-          <FindItemDirection key={level} />
+        {gameState.start &&
+          gameState.stage === RotateCarrierStage.FIND_DIRECTION && (
+            <FindItemDirection key={level} />
+          )}
+        {gameState.start &&
+          gameState.stage === RotateCarrierStage.FIND_EXIST && (
+            <FindItemExist key={level} />
+          )}
+        {((!gameState.start &&
+          gameState.stage === RotateCarrierStage.FIND_EXIST) ||
+          (!gameState.start &&
+            gameState.stage === RotateCarrierStage.FIND_DIRECTION)) && (
+          <div className="w-[500px] h-[500px]" />
         )}
-        {gameState.stage === RotateCarrierStage.FIND_EXIST && (
-          <FindItemExist key={level} />
-        )}
-
         <GameContolButton
           level={level}
           nextLevelBtn={nextLevelBtn}
