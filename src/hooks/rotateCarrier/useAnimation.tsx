@@ -28,7 +28,6 @@ export const useAnimation = ({
 }: params) => {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const setSubject = useSetRecoilState(SubjectTextState);
-
   const RoundFloat = (num: number) => {
     return Math.round((num + Number.EPSILON) * 1000) / 1000;
   };

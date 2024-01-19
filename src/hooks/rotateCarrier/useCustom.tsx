@@ -38,11 +38,10 @@ export const useCustom = () => {
         setRandomIndex(shuffleArray([0, 1, 2, 3, 4, 5]));
         break;
     }
-    resetConfig();
-    setFindItem([]);
-    setObstacle(0);
-    setRotate(1);
-    setRotateAngle([1]);
+    return () => {
+      resetConfig();
+      setFindItem([]);
+    };
   }, [gridSize]);
 
   useEffect(() => {
@@ -161,7 +160,7 @@ export const useCustom = () => {
     for (let i = 0; i < 4 - findItem.length; i++) {
       itemExamples.push(`obstacle${i}`);
     }
-    return itemExamples;
+    return shuffleArray(itemExamples);
   };
 
   const initDirectionExamples = () => {
@@ -177,7 +176,7 @@ export const useCustom = () => {
       }
       directionExamples.push({ items: group });
     }
-    return directionExamples;
+    return shuffleArray(directionExamples);
   };
   return {
     level,

@@ -145,6 +145,7 @@ export default function GameContolButton({
         items: shuffleArray(item.items),
       };
     });
+
     setConfig({
       ...config,
       answerDirection,
