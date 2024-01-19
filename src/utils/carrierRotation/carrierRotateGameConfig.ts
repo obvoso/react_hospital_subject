@@ -5,10 +5,10 @@ export const enum ANGLE {
 }
 
 export const carrier: RotateCarrierSpacePoint = {
-  x: 210,
-  y: 100,
-  w: 300,
-  h: 500,
+  x: 0,
+  y: 0,
+  w: 250,
+  h: 400,
 };
 
 export interface DirectionGroup {
@@ -22,20 +22,20 @@ export interface DirectionGroups {
 
 export const space: RotateCarrierSpacePoint[] = [
   // 1 X 2
-  { x: -105, y: -120, w: 200, h: 130 },
-  { x: -105, y: 10, w: 200, h: 130 },
+  { x: -85, y: -70, w: 165, h: 100 },
+  { x: -85, y: 30, w: 165, h: 100 },
   // 2 x 2
-  { x: -105, y: -120, w: 100, h: 130 },
-  { x: -105, y: 10, w: 100, h: 130 },
-  { x: -5, y: -120, w: 100, h: 130 },
-  { x: -5, y: 10, w: 100, h: 130 },
+  { x: -85, y: -70, w: 82.5, h: 100 },
+  { x: -85, y: 30, w: 82.5, h: 100 },
+  { x: -2.5, y: -70, w: 82.5, h: 100 },
+  { x: -2.5, y: 30, w: 82.5, h: 100 },
   // 2 x 3
-  { x: -105, y: -120, w: 100, h: 85 },
-  { x: -105, y: -35, w: 100, h: 85 },
-  { x: -105, y: 50, w: 100, h: 85 },
-  { x: -5, y: -120, w: 100, h: 85 },
-  { x: -5, y: -35, w: 100, h: 85 },
-  { x: -5, y: 50, w: 100, h: 85 },
+  { x: -85, y: -70, w: 82.5, h: 65 },
+  { x: -85, y: -5, w: 82.5, h: 65 },
+  { x: -85, y: 60, w: 82.5, h: 65 },
+  { x: -2.5, y: -70, w: 82.5, h: 65 },
+  { x: -2.5, y: -5, w: 82.5, h: 65 },
+  { x: -2.5, y: 60, w: 82.5, h: 65 },
 ];
 
 export interface RotateCarrierItemAssets {
@@ -132,7 +132,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item1_0",
-        point: { ...space[2], y: space[2].y + 10, h: 100 },
+        point: space[2],
       },
     ],
     obstacles: [],
@@ -162,13 +162,13 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item1_0",
-        point: { ...space[2], y: space[2].y + 10, h: 100 },
+        point: space[2],
       },
     ],
     obstacles: [
       {
         imageKey: "obstacle0",
-        point: { ...space[4], y: space[4].y + 20, h: 90 },
+        point: space[4],
       },
     ],
     itemExamples: ["obstacle0", "item1_0", "item2_0", "item4_0"],
@@ -197,17 +197,17 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item2_0",
-        point: { ...space[2], y: space[2].y + 30, h: 80 },
+        point: { ...space[2], y: space[2].y + 30, h: 50 },
       },
     ],
     obstacles: [
       {
         imageKey: "item0_90",
-        point: { ...space[3], y: space[3].y + 20, h: 90 },
+        point: space[3],
       },
       {
         imageKey: "item4_0",
-        point: { ...space[5], y: space[5].y + 20, h: 90 },
+        point: space[5],
       },
     ],
     itemExamples: ["item0_90", "item1_0", "item2_0", "item4_0"],
@@ -236,11 +236,11 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item2_0",
-        point: { ...space[2], y: space[2].y + 30, h: 80 },
+        point: { ...space[2], y: space[2].y + 10, h: 80 },
       },
       {
         imageKey: "item4_0",
-        point: { ...space[5], y: space[5].y + 20, h: 90 },
+        point: { ...space[5], y: space[5].y + 10, h: 80 },
       },
     ],
     obstacles: [],
@@ -283,19 +283,19 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item2_0",
-        point: { ...space[2], y: space[2].y + 30, h: 80 },
+        point: { ...space[2], y: space[2].y + 10, h: 80 },
       },
       {
         imageKey: "item4_0",
-        point: { ...space[5], y: space[5].y + 20, h: 90 },
+        point: { ...space[5], y: space[5].y + 10, h: 90 },
       },
     ],
     obstacles: [
       {
         imageKey: "item0_90",
         point: {
-          x: space[1].x + 10,
-          y: space[1].y + 30,
+          ...space[1],
+          y: space[1].y + 10,
           w: 80,
           h: 80,
         },
@@ -340,19 +340,19 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item2_0",
-        point: { ...space[2], y: space[2].y + 30, h: 80 },
+        point: { ...space[2], y: space[2].y + 10, h: 80 },
       },
       {
         imageKey: "item4_0",
-        point: { ...space[5], y: space[5].y + 20, h: 90 },
+        point: { ...space[5], y: space[5].y + 10, h: 90 },
       },
     ],
     obstacles: [
       {
         imageKey: "item0_90",
         point: {
-          x: space[3].x + 10,
-          y: space[3].y + 30,
+          x: space[3].x,
+          y: space[3].y + 10,
           w: 80,
           h: 80,
         },
@@ -360,8 +360,8 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
       {
         imageKey: "obstacle1",
         point: {
-          x: space[4].x + 10,
-          y: space[4].y + 30,
+          x: space[4].x,
+          y: space[4].y + 10,
           w: 80,
           h: 80,
         },
@@ -407,19 +407,19 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item2_0",
-        point: { x: space[11].x + 10, y: space[11].y + 20, w: 80, h: 50 },
+        point: { x: space[11].x + 10, y: space[11].y + 10, w: 60, h: 50 },
       },
       {
         imageKey: "item4_0",
-        point: { ...space[7], h: 90 },
+        point: { ...space[7], h: 60 },
       },
     ],
     obstacles: [
       {
         imageKey: "obstacle1",
         point: {
-          x: space[6].x + 20,
-          y: space[6].y + 10,
+          x: space[6].x + 10,
+          y: space[6].y,
           w: 60,
           h: 60,
         },
@@ -465,19 +465,19 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
     questions: [
       {
         imageKey: "item2_0",
-        point: { x: space[11].x + 10, y: space[11].y + 20, w: 80, h: 50 },
+        point: { x: space[11].x + 10, y: space[11].y + 10, w: 60, h: 50 },
       },
       {
         imageKey: "item4_0",
-        point: { ...space[7], h: 90 },
+        point: { ...space[7], h: 60 },
       },
     ],
     obstacles: [
       {
         imageKey: "obstacle1",
         point: {
-          x: space[6].x + 20,
-          y: space[6].y + 10,
+          x: space[6].x + 10,
+          y: space[6].y,
           w: 60,
           h: 60,
         },
@@ -485,8 +485,8 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
       {
         imageKey: "item0_90",
         point: {
-          x: space[9].x + 20,
-          y: space[9].y + 10,
+          x: space[9].x + 10,
+          y: space[9].y + 2.5,
           w: 60,
           h: 60,
         },
