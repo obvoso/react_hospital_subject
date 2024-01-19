@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface FindItemControlButton {
   findDirection: boolean;
@@ -18,8 +18,10 @@ interface params {
 function Toggle({ label, isOn, handleToggle, disabled }: params) {
   return (
     <label className="flex flex-col items-center cursor-pointer w-fit">
-      <span className="font-semibold text-gray-700">{label}</span>
-      <div className="relative mt-1">
+      <span className="text-sm sm:text-base font-semibold text-gray-700">
+        {label}
+      </span>
+      <div className={`relative mt-1 ${disabled && "cursor-not-allowed"}`}>
         <input
           type="checkbox"
           className="sr-only"
@@ -28,21 +30,21 @@ function Toggle({ label, isOn, handleToggle, disabled }: params) {
           disabled={disabled}
         />
         <div
-          className={`block bg-gray-400 w-14 h-8 rounded-full ${
-            isOn && "bg-blue-400"
+          className={`block w-12 sm:w-14 h-6 sm:h-8 rounded-full ${
+            isOn ? "bg-blue-400" : "bg-gray-400"
           }`}
-        ></div>
+        />
         <div
-          className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${
+          className={`dot absolute left-1 top-1 bg-white w-4 h-4 sm:w-6 sm:h-6 rounded-full transition ${
             isOn && "transform translate-x-6"
           }`}
-        ></div>
+        />
       </div>
     </label>
   );
 }
 
-export default function FindItemControlButton({
+function FindItemControlButton({
   findDirection,
   findItemExist,
   setFindDirection,
@@ -51,7 +53,7 @@ export default function FindItemControlButton({
 }: FindItemControlButton) {
   const buttons = [
     {
-      lebel: "물건 위치 찾기",
+      lebel: "들어있던 물건 찾기",
       state: findItemExist,
       setState: () => setFindItemExist(!findItemExist),
     },
@@ -62,18 +64,21 @@ export default function FindItemControlButton({
     },
   ];
 
-  console.log(findDirection);
+  React.memo(Toggle);
 
   return (
-    <div className="flex items-center justify-between w-60 p-3 mt-3">
-      {buttons.map((button) => (
+    <div className="flex items-center justify-between w-60 sm:w-72 p-3 mt-3">
+      {buttons.map((button, index) => (
         <Toggle
           label={button.lebel}
           isOn={button.state}
           handleToggle={button.setState}
           disabled={disabled}
+          key={index}
         />
       ))}
     </div>
   );
 }
+
+export default React.memo(FindItemControlButton);

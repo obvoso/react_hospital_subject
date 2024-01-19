@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Canvas from "@/components/rotateCarrier/Canvas";
 import { RotateCarrierGameLevels } from "@/utils/carrierRotation/carrierRotateGameConfig";
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
+  RotateCarrierStage,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
 import {
@@ -14,7 +15,6 @@ import {
   useSetRecoilState,
 } from "recoil";
 import shuffleArray from "@/utils/arrayShuffle";
-import CustomButton from "@/utils/CustomButton";
 import {
   FindItemDirection,
   FindItemExist,
@@ -29,9 +29,16 @@ export default function GamePage() {
   const level = Number(router.query.level);
   const subject = useRecoilValue(SubjectTextState);
   const setConfig = useSetRecoilState(RotateCarrierConfigState);
-  const gameState = useRecoilValue(RotateCarrierGameState);
-  const { findDirection, findItemExist, setFindDirection, setFindItemExist } =
-    useGameControl(level);
+  const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+  const resetGameState = useResetRecoilState(RotateCarrierGameState);
+  const {
+    nextLevelBtn,
+    setNextLevelBtn,
+    findDirection,
+    findItemExist,
+    setFindDirection,
+    setFindItemExist,
+  } = useGameControl(level);
 
   useEffect(() => {
     const initConfig = () => {
@@ -60,6 +67,7 @@ export default function GamePage() {
     }
     if (router.isReady) {
       initConfig();
+      resetGameState();
     }
   }, [router.isReady, level]);
 
@@ -79,8 +87,23 @@ export default function GamePage() {
           setFindItemExist={setFindItemExist}
           disabled={gameState.start}
         />
-        <Canvas key={level} />
-        <GameContolButton level={level} />
+        {gameState.stage === RotateCarrierStage.FIND_ITEM && (
+          <Canvas key={level} />
+        )}
+        {gameState.stage === RotateCarrierStage.FIND_DIRECTION && (
+          <FindItemDirection key={level} />
+        )}
+        {gameState.stage === RotateCarrierStage.FIND_EXIST && (
+          <FindItemExist key={level} />
+        )}
+
+        <GameContolButton
+          level={level}
+          nextLevelBtn={nextLevelBtn}
+          setNextLevelBtn={setNextLevelBtn}
+          findDirection={findDirection}
+          findItemExist={findItemExist}
+        />
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
         <LevelNav

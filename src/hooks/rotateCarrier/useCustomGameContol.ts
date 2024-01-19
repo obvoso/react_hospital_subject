@@ -6,7 +6,11 @@ import {
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-export function useGameControl(level: number) {
+interface params {
+  level: number;
+}
+
+export function useCustomGameControl({ level }: params) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [findDirection, setFindDirection] = useState(false);
@@ -14,13 +18,13 @@ export function useGameControl(level: number) {
   const [nextLevelBtn, setNextLevelBtn] = useState(false);
 
   useEffect(() => {
-    setFindDirection(config.findDirection);
-    setFindItemExist(config.findExist);
+    //setFindDirection(config.findDirection);
+    //setFindItemExist(config.findExist);
     setNextLevelBtn(false);
   }, [config.level]);
 
   useEffect(() => {
-    if (gameState.directionScore === config.findItems) {
+    if (config.findItems && gameState.directionScore === config.findItems) {
       setNextLevelBtn(true);
       setGameState({ ...gameState, start: false });
     }

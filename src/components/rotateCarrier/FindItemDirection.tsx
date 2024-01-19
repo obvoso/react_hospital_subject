@@ -54,7 +54,7 @@ export default function FindItemDirection() {
       });
       setGameState((prev) => {
         return {
-          ...gameState,
+          ...prev,
           directionScore: prev.directionScore + 1,
         };
       });
@@ -65,7 +65,7 @@ export default function FindItemDirection() {
   };
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-20">
+    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-10 sm:p-20">
       {config.dirrectionExamples[currentGroupIndex].items.map((item, index) => {
         return (
           answerItem[index] && (

@@ -14,7 +14,7 @@ interface answerItem {
 
 export default function FindItemExist() {
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
-  const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+  const setGameState = useSetRecoilState(RotateCarrierGameState);
   const setSubject = useSetRecoilState(SubjectTextState);
   const [answerItem, setAnswerItem] = useState<answerItem[]>([]);
   const path = "/assets/rotateCarrier";
@@ -45,13 +45,13 @@ export default function FindItemExist() {
         });
       });
       setGameState((prev) => {
-        return { ...gameState, itemScore: prev.itemScore + 1 };
+        return { ...prev, existScore: prev.existScore + 1 };
       });
     }
   };
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-20">
+    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-5 sm:p-10">
       {config.itemExamples.map((item, index) => {
         return (
           answerItem[index] && (

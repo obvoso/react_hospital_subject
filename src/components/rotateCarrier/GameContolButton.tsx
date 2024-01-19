@@ -1,39 +1,40 @@
+import React, { useCallback } from "react";
+import router from "next/router";
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
+  RotateCarrierStage,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import { useGameControl } from "@/hooks/rotateCarrier/useGameControl";
 import CustomButton from "@/utils/CustomButton";
-import React, { useCallback } from "react";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import { FindItemExist, FindItemDirection } from ".";
-import router from "next/router";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { RotateCarrierGameLevels } from "@/utils/carrierRotation/carrierRotateGameConfig";
+import shuffleArray from "@/utils/arrayShuffle";
 
 interface params {
   level: number;
+  nextLevelBtn: boolean;
+  setNextLevelBtn: (value: boolean) => void;
+  findDirection: boolean;
+  findItemExist: boolean;
 }
 
-export default function GameContolButton({ level }: params) {
-  const {
-    findDirection,
-    findItemExist,
-    nextLevelBtn,
-    setNextLevelBtn,
-    setFindDirection,
-    setFindItemExist,
-  } = useGameControl(level);
-  const config = useRecoilValue(RotateCarrierConfigState);
+export default function GameContolButton({
+  level,
+  nextLevelBtn,
+  setNextLevelBtn,
+  findDirection,
+  findItemExist,
+}: params) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
   const resetSubjuect = useResetRecoilState(SubjectTextState);
+  const setConfig = useSetRecoilState(RotateCarrierConfigState);
 
   const handleNextLevel = useCallback(() => {
     resetGameState(); // 상태 리셋
     resetSubjuect();
     setNextLevelBtn(false);
-    setFindDirection(false);
-    setFindItemExist(false);
     if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
   }, [nextLevelBtn, level]);
 
@@ -41,47 +42,71 @@ export default function GameContolButton({ level }: params) {
     setGameState({ ...gameState, start: true });
   }
 
+  function handleRestart() {
+    const levelConfig = RotateCarrierGameLevels[level];
+    const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
+    const shuffleExistItem = shuffleArray(levelConfig.itemExamples);
+    const shuffleDirectionItem = levelConfig.dirrectionExamples.map((item) => {
+      return {
+        ...item,
+        items: shuffleArray(item.items),
+      };
+    });
+    setConfig({
+      ...levelConfig,
+      findDirection: findDirection,
+      findExist: findItemExist,
+      rotationAngle: shuffleAngle,
+      itemExamples: shuffleExistItem,
+      dirrectionExamples: shuffleDirectionItem,
+    });
+    setGameState({
+      stage: RotateCarrierStage.FIND_ITEM,
+      score: 0,
+      directionScore: 0,
+      existScore: 0,
+      start: true,
+      lastAngle: 0,
+      lastDirection: 0,
+    });
+    setNextLevelBtn(false);
+  }
+
   function handleGameClear() {
     resetGameState(); // 상태 리셋
     resetSubjuect();
     setNextLevelBtn(false);
-    setFindDirection(false);
-    setFindItemExist(false);
     router.push("/");
   }
 
   return (
-    <div>
-      {findItemExist &&
-        config.itemExamples &&
-        !findDirection &&
-        gameState.start && <FindItemExist />}
-      {findDirection && config.findDirection && gameState.start && (
-        <FindItemDirection />
-      )}
-      <div className="flex justify-center items-center space-x-4">
+    <div className="flex justify-center items-center space-x-4">
+      <CustomButton
+        text="게임 시작"
+        onClick={handleStart}
+        type={!gameState.start && !nextLevelBtn ? "activate" : "disabled"}
+      />
+      {nextLevelBtn && level < 9 && (
         <CustomButton
-          text="게임 시작"
-          onClick={handleStart}
-          type={gameState.start ? "disabled" : "activate"}
+          text="다음 단계"
+          onClick={handleNextLevel}
+          type="activate"
         />
-        {nextLevelBtn && (
-          <CustomButton
-            text="다음 단계"
-            onClick={handleNextLevel}
-            type="activate"
-          />
-        )}
-        {gameState.directionScore === config.findItems &&
-          gameState.start &&
-          level === 9 && (
-            <CustomButton
-              text="처음으로"
-              onClick={handleGameClear}
-              type="activate"
-            />
-          )}
-      </div>
+      )}
+      {nextLevelBtn && (
+        <CustomButton
+          text="처음으로"
+          onClick={handleGameClear}
+          type="activate"
+        />
+      )}
+      {nextLevelBtn && !gameState.start && (
+        <CustomButton
+          text="다시 시작"
+          onClick={handleRestart}
+          type="activate"
+        />
+      )}
     </div>
   );
 }
