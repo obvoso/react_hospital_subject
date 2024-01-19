@@ -18,8 +18,6 @@ export function useCustomGameControl({ level }: params) {
   const [nextLevelBtn, setNextLevelBtn] = useState(false);
 
   useEffect(() => {
-    //setFindDirection(config.findDirection);
-    //setFindItemExist(config.findExist);
     setNextLevelBtn(false);
   }, [config.level]);
 

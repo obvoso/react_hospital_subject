@@ -1,11 +1,11 @@
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { DrawFindItem } from "./DrawFindItem";
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import React, { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { DrawFindItem } from "./DrawFindItem";
 
 interface answerItem {
   isAnswer: boolean;

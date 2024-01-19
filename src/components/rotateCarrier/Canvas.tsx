@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { preLoadImages } from "./index";
 import { RotateCarrierConfigState } from "@/atoms/rotateCarrier/config";
@@ -12,7 +12,6 @@ export default function Canvas() {
   const { clickedRectIndex } = useMouseEvent(canvasRef, config);
   useAnimation({
     canvasRef,
-    context: canvasRef.current?.getContext("2d")!,
     images,
     config,
     clickedRectIndex,

@@ -1,10 +1,10 @@
 import { RefObject, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
 import {
   RotateCarrierGameState,
   SubjectTextState,
 } from "@/atoms/rotateCarrier/config";
-import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
 import {
   drawRect,
   drawStaticElements,
@@ -13,7 +13,6 @@ import {
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
-  context: CanvasRenderingContext2D;
   images: RefObject<{ [key: string]: HTMLImageElement }>;
   config: RotateCarrierLevelConfig;
   clickedRectIndex: number;
@@ -21,7 +20,6 @@ interface params {
 
 export const useAnimation = ({
   canvasRef,
-  context,
   images,
   config,
   clickedRectIndex,

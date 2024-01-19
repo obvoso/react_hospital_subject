@@ -1,11 +1,11 @@
 import React from "react";
 import FindItemControlButton from "../rotateCarrier/FindItemControlButton";
-import { DropDownButton } from "./DropDownButton";
 import SelectsDropDown from "./SelectsDropDown";
+import SelectsRotationAngle from "./SelectRotationAngle";
+import { DropDownButton } from "./DropDownButton";
 import { ANGLE } from "@/utils/carrierRotation/carrierRotateGameConfig";
 import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import { useRecoilValue } from "recoil";
-import SelectsRotationAngle from "./SelectRotationAngle";
 
 interface CustomButtonsProps {
   gridSize: number;

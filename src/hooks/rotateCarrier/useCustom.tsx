@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import shuffleArray from "@/utils/arrayShuffle";
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,
 } from "@/atoms/rotateCarrier/config";
-import shuffleArray from "@/utils/arrayShuffle";
 import {
   carrier,
   space,
@@ -10,8 +12,6 @@ import {
   DirectionGroups,
   DirectionGroup,
 } from "@/utils/carrierRotation/carrierRotateGameConfig";
-import { use, useEffect, useState } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
 
 export const useCustom = () => {
   const [gridSize, setGridSize] = useState(2);
@@ -186,11 +186,8 @@ export const useCustom = () => {
     setFindItem,
     obstacle,
     setObstacle,
-    rotate,
     setRotate,
-    rotateAngle,
     setRotateAngle,
     gameState,
-    setGameState,
   };
 };
