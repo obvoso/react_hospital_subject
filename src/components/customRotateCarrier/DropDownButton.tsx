@@ -29,9 +29,13 @@ export const DropDownButton = ({
         className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 rounded shadow focus:outline-none focus:shadow-outline text-center"
         id={label}
         onChange={handleChange}
+        key={gridSize === undefined ? 0 : gridSize}
       >
         {options.map((option, index) => (
-          <option key={index} value={option.value}>
+          <option
+            key={index + (gridSize === undefined ? 0 : gridSize)}
+            value={option.value}
+          >
             {option.label}
           </option>
         ))}
