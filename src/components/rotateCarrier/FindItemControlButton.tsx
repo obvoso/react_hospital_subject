@@ -18,9 +18,7 @@ interface params {
 function Toggle({ label, isOn, handleToggle, disabled }: params) {
   return (
     <label className="flex flex-col items-center cursor-pointer w-fit">
-      <span className="text-sm sm:text-base font-semibold text-gray-700">
-        {label}
-      </span>
+      <span className="text-sm  font-semibold text-gray-700">{label}</span>
       <div className={`relative mt-1 ${disabled && "cursor-not-allowed"}`}>
         <input
           type="checkbox"
@@ -30,12 +28,12 @@ function Toggle({ label, isOn, handleToggle, disabled }: params) {
           disabled={disabled}
         />
         <div
-          className={`block w-12 sm:w-14 h-6 sm:h-8 rounded-full ${
+          className={`block w-12  h-6  rounded-full ${
             isOn ? "bg-blue-400" : "bg-gray-400"
           }`}
         />
         <div
-          className={`dot absolute left-1 top-1 bg-white w-4 h-4 sm:w-6 sm:h-6 rounded-full transition ${
+          className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${
             isOn && "transform translate-x-6"
           }`}
         />

@@ -35,19 +35,29 @@ export default function GameContolButton({
           imageKey: config.questions[i].imageKey,
           point: {
             ...randomIndex[i],
-            x: randomIndex[i].x + 30,
-            w: 120,
-            h: 120,
+            x: randomIndex[i].x + 40,
+            w: 90,
+            h: 90,
+          },
+        });
+      else if (config.space.length === 4)
+        findItemArray.push({
+          imageKey: config.questions[i].imageKey,
+          point: {
+            x: randomIndex[i].x + 10,
+            y: randomIndex[i].y + 15,
+            w: 65,
+            h: 65,
           },
         });
       else
         findItemArray.push({
           imageKey: config.questions[i].imageKey,
           point: {
-            x: randomIndex[i].x + 10,
+            x: randomIndex[i].x + 15,
             y: randomIndex[i].y + 10,
-            w: 80,
-            h: 80,
+            w: 50,
+            h: 50,
           },
         });
     }
@@ -67,21 +77,30 @@ export default function GameContolButton({
           point: {
             ...randomIndex[i],
             x: randomIndex[i].x + 30,
-            w: 100,
-            h: 100,
+            w: 90,
+            h: 90,
           },
         });
-        continue;
-      }
-      obstacleArray.push({
-        imageKey: `obstacle${j}`,
-        point: {
-          ...randomIndex[i],
-          y: randomIndex[i].y + 10,
-          w: 80,
-          h: 80,
-        },
-      });
+      } else if (config.space.length === 4)
+        obstacleArray.push({
+          imageKey: `obstacle${j}`,
+          point: {
+            x: randomIndex[i].x + 10,
+            y: randomIndex[i].y + 20,
+            w: 60,
+            h: 60,
+          },
+        });
+      else
+        obstacleArray.push({
+          imageKey: `obstacle${j}`,
+          point: {
+            x: randomIndex[i].x + 15,
+            y: randomIndex[i].y + 10,
+            w: 50,
+            h: 50,
+          },
+        });
     }
     return obstacleArray;
   };
@@ -91,26 +110,26 @@ export default function GameContolButton({
     const direction: number[] = [];
     for (let i = 0; i < config.questions.length; i++) {
       if (config.space.length === 2) {
-        if (randomIndex[i].y === -120) direction.push(0);
+        if (randomIndex[i].y === -70) direction.push(0);
         else direction.push(1);
       } else if (config.space.length === 4) {
-        if (randomIndex[i].x === -105 && randomIndex[i].y === -120)
+        if (randomIndex[i].x === -85 && randomIndex[i].y === -70)
           direction.push(0);
-        else if (randomIndex[i].x === -105 && randomIndex[i].y === 10)
+        else if (randomIndex[i].x === -85 && randomIndex[i].y === 30)
           direction.push(1);
-        else if (randomIndex[i].x === -5 && randomIndex[i].y === -120)
+        else if (randomIndex[i].x === -5 && randomIndex[i].y === -70)
           direction.push(2);
         else direction.push(3);
       } else {
-        if (randomIndex[i].x === -105 && randomIndex[i].y === -120)
+        if (randomIndex[i].x === -85 && randomIndex[i].y === -70)
           direction.push(0);
-        else if (randomIndex[i].x === -105 && randomIndex[i].y === -35)
+        else if (randomIndex[i].x === -85 && randomIndex[i].y === -5)
           direction.push(1);
-        else if (randomIndex[i].x === -105 && randomIndex[i].y === 50)
+        else if (randomIndex[i].x === -85 && randomIndex[i].y === 60)
           direction.push(2);
-        else if (randomIndex[i].x === -5 && randomIndex[i].y === -120)
+        else if (randomIndex[i].x === -2.5 && randomIndex[i].y === -70)
           direction.push(3);
-        else if (randomIndex[i].x === -5 && randomIndex[i].y === -35)
+        else if (randomIndex[i].x === -2.5 && randomIndex[i].y === -5)
           direction.push(4);
         else direction.push(5);
       }

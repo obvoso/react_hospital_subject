@@ -34,8 +34,8 @@ export const drawStaticElements = (
 
   context.drawImage(
     images.current["carrier"],
-    -images.current["carrier"].width / 2 + 25,
-    -images.current["carrier"].height / 2,
+    -images.current["carrier"].width / 2 + 50,
+    -images.current["carrier"].height / 2 + 80,
     config.carrier.point.w,
     config.carrier.point.h
   );

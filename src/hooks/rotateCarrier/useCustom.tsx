@@ -97,19 +97,29 @@ export const useCustom = () => {
           imageKey: findItem[i],
           point: {
             ...space[randomIndex[i] + indexCorrection],
-            x: space[randomIndex[i] + indexCorrection].x + 30,
-            w: 120,
-            h: 120,
+            x: space[randomIndex[i] + indexCorrection].x + 40,
+            w: 90,
+            h: 90,
+          },
+        });
+      else if (gridSize === 4)
+        findItemArray.push({
+          imageKey: findItem[i],
+          point: {
+            x: space[randomIndex[i] + indexCorrection].x + 10,
+            y: space[randomIndex[i] + indexCorrection].y + 15,
+            w: 65,
+            h: 65,
           },
         });
       else
         findItemArray.push({
           imageKey: findItem[i],
           point: {
-            x: space[randomIndex[i] + indexCorrection].x + 10,
+            x: space[randomIndex[i] + indexCorrection].x + 15,
             y: space[randomIndex[i] + indexCorrection].y + 10,
-            w: 80,
-            h: 80,
+            w: 50,
+            h: 50,
           },
         });
     }
@@ -135,18 +145,28 @@ export const useCustom = () => {
           point: {
             ...space[randomIndex[i] + indexCorrection],
             x: space[randomIndex[i] + indexCorrection].x + 30,
-            w: 100,
-            h: 100,
+            w: 90,
+            h: 90,
           },
         });
-      } else
+      } else if (gridSize === 4)
         obstacleArray.push({
           imageKey: `obstacle${j}`,
           point: {
-            ...space[randomIndex[i] + indexCorrection],
+            x: space[randomIndex[i] + indexCorrection].x + 10,
+            y: space[randomIndex[i] + indexCorrection].y + 20,
+            w: 60,
+            h: 60,
+          },
+        });
+      else
+        obstacleArray.push({
+          imageKey: `obstacle${j}`,
+          point: {
+            x: space[randomIndex[i] + indexCorrection].x + 15,
             y: space[randomIndex[i] + indexCorrection].y + 10,
-            w: 80,
-            h: 80,
+            w: 50,
+            h: 50,
           },
         });
     }

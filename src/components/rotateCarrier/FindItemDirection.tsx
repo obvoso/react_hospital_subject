@@ -24,7 +24,6 @@ export default function FindItemDirection() {
   const totalImages = 4; // 총 이미지 개수
 
   const handleImageLoaded = () => {
-    console.log("loaded");
     setLoadedCount((prevCount) => prevCount + 1);
   };
 
@@ -79,7 +78,7 @@ export default function FindItemDirection() {
   };
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-10 sm:p-20">
+    <div className="grid grid-cols-2 grid-rows-2 gap-10 p-10">
       {config.dirrectionExamples[currentGroupIndex].items.map((item, index) => {
         return (
           answerItem[index] && (
