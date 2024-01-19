@@ -30,7 +30,7 @@ export default function SpeedButton() {
         <button
           className={`${
             isClicked(speed) ? "bg-blue-500" : "bg-blue-200"
-          } hover:bg-blue-400 text-white text-sm font-semibold py-1 px-2 sm:my-1 mx-1 rounded sm:w-16 shadow-md`}
+          } hover:bg-blue-400 text-white text-sm font-semibold py-1 px-2 sm:my-1 mx-1 rounded w-14 shadow-md`}
           key={speed}
           onClick={() => handleSetSpeed(speed)}
         >

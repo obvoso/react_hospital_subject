@@ -10,9 +10,9 @@ interface Props {
 export default function CustomButton({ text, onClick, type }: Props) {
   const styles = {
     activate:
-      "text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-600",
+      "text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-600 whitespace-nowrap",
     disabled:
-      "text-white font-bold py-2 px-4 rounded bg-gray-400 cursor-not-allowed",
+      "text-white font-bold py-2 px-4 rounded bg-gray-400 cursor-not-allowed whitespace-nowrap",
   };
   const btnStyle = type === "activate" ? styles.activate : styles.disabled;
 

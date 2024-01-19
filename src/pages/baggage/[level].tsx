@@ -57,6 +57,10 @@ export default function GamePage() {
         <div className="flex flex-col items-center text-center mx-auto mt-4">
           <CurrentScore />
           <Timer />
+        </div>
+      </div>
+      <div className="bg-gray-100 rounded-2xl shadow-md p-4 sm:w-[325px] flex flex-col items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
+        <div className="w-full p-2 flex items-center justify-center sm:justify-start">
           <GameControlButtons
             reset={reset}
             level={level}
@@ -64,11 +68,11 @@ export default function GamePage() {
             setNextBtn={setNextBtn}
           />
         </div>
-      </div>
-      <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
-        <LevelNav game="baggage" curLevel={level} />
-        <div className="flex mt-2 sm:mt-0 sm:ml-8 ">
-          <SpeedButton />
+        <div className="w-full p-1 flex flex-col sm:flex-row items-center">
+          <LevelNav game="baggage" curLevel={level} />
+          <div className="flex ml-5 mt-2 sm:mt-0 ">
+            <SpeedButton />
+          </div>
         </div>
       </div>
     </div>

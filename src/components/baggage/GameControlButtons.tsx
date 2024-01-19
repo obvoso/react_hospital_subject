@@ -18,7 +18,6 @@ import {
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
-import next from "next";
 
 interface GameButtonsProps {
   reset: () => void;
@@ -83,7 +82,7 @@ export default function GameControlButtons({
   }, [score, gameState.gameOver, gameState.start, config, level]);
 
   return (
-    <div className="flex justify-center space-x-4 mt-4">
+    <div className="flex justify-center space-x-4">
       {!nextBtn && !gameState.gameOver && (
         <CustomButton
           text="게임 시작"
