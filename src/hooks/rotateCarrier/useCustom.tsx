@@ -40,6 +40,7 @@ export const useCustom = () => {
     }
     return () => {
       resetConfig();
+      setObstacle(0);
       setFindItem([]);
     };
   }, [gridSize]);
