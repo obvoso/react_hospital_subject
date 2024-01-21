@@ -68,7 +68,7 @@ export default function GamePage() {
           <LevelNav game="baggage" curLevel={level} />
           <div className="flex flex-col ml-5 mt-2 sm:mt-0">
             <SpeedButton />
-            <div className="bg-white rounded-2xl shadow-lg sm:absolute gap-1 flex mt-2 sm:mt-52 w-36 h-20 flex-col items-center justify-center text-center mx-auto">
+            <div className="bg-white rounded-2xl shadow-lg sm:absolute gap-1 flex mt-2 sm:mt-52 w-40 h-20 flex-col items-center justify-center text-center mx-auto">
               <CurrentScore />
               <Timer />
             </div>
