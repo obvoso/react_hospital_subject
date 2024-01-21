@@ -25,7 +25,7 @@ export function useGameControl(level: number) {
     if (gameState.directionScore === config.findItems) {
       setNextLevelBtn(true);
       setGameState({ ...gameState, start: false });
-      setSubject("맞추셨습니다!");
+      setSubject("맞히셨습니다!");
     }
   }, [gameState.directionScore, config]);
 
@@ -42,7 +42,7 @@ export function useGameControl(level: number) {
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });
-        setSubject("맞추셨습니다!");
+        setSubject("맞히셨습니다!");
       }
     }
   }, [gameState.existScore, findDirection]);
@@ -64,7 +64,7 @@ export function useGameControl(level: number) {
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });
-        setSubject("맞추셨습니다!");
+        setSubject("맞히셨습니다!");
       }
     }
   }, [gameState.score, level, findItemExist, findDirection]);
