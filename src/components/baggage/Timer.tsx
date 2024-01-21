@@ -31,11 +31,13 @@ export default function Timer() {
   }, [router.isReady, level]);
 
   return (
-    <div className="flex w-full text-lg font-semibold">
+    <div className="flex w-full text-lg font-semibold items-center">
       <span className="bg-blue-300 text-white text-sm rounded-full py-1 px-3 ml-5 text-center">
         시간
       </span>
-      <span className="ml-2 w-14 text-gray-500">{timer.toFixed(2)}</span>
+      <span className="ml-1 w-[80px] text-base text-gray-500">
+        {timer.toFixed(2)}
+      </span>
     </div>
   );
 }
