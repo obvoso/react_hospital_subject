@@ -1,7 +1,6 @@
-import Route from "@/components/route/Index";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
 import React from "react";
+import Route from "@/components/route/Index";
+import { useRouter } from "next/router";
 
 export default function RoutePage() {
   const router = useRouter();
