@@ -45,7 +45,7 @@ function BaggageCanvas({ level }: BaggageCanvasProps) {
             : "bg-bg3"
         } bg-cover`}
       >
-        <div className="flex mt-[-110px]">
+        <div className="flex mt-[-80px]">
           <canvas
             ref={canvasRef}
             width={cmToPixels(3)}

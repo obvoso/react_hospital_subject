@@ -11,7 +11,7 @@ export default function CurrentScore() {
       <span className="bg-blue-300 text-white text-sm rounded-full py-1 px-3 ml-5 text-center">
         점수
       </span>
-      <span className="ml-2 w-14 text-gray-500">
+      <span className="ml-1 w-16 text-gray-500 text-center">
         {score} / {config.items}
       </span>
     </div>
