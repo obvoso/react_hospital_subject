@@ -1,5 +1,5 @@
 import { BaggageGameConfigState, GameSpeed } from "@/atoms/baggage/game";
-import { BaggageSpeed } from "@/utils/baggage/baggageGameConfig";
+import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
 import React, { use, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 

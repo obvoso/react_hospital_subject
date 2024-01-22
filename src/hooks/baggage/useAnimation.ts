@@ -10,7 +10,7 @@ import {
   ItemScoreState,
 } from "@/atoms/baggage/game";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { BaggageSpeed } from "@/utils/baggage/baggageGameConfig";
+import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;

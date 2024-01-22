@@ -11,7 +11,7 @@ import {
   RotateCarrierItemAssets,
   DirectionGroups,
   DirectionGroup,
-} from "@/utils/carrierRotation/carrierRotateGameConfig";
+} from "@/assets/rotateCarrier/carrierRotateGameConfig";
 
 export const useCustom = () => {
   const [gridSize, setGridSize] = useState(2);

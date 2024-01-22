@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Canvas from "@/components/rotateCarrier/Canvas";
-import { RotateCarrierGameLevels } from "@/utils/carrierRotation/carrierRotateGameConfig";
+import { RotateCarrierGameLevels } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import {
   RotateCarrierConfigState,
   RotateCarrierGameState,

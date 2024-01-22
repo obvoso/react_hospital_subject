@@ -11,7 +11,7 @@ import {
 import {
   RotateCarrierItemAssets,
   RotateCarrierSpacePoint,
-} from "@/utils/carrierRotation/carrierRotateGameConfig";
+} from "@/assets/rotateCarrier/carrierRotateGameConfig";
 
 interface params {
   nextLevelBtn: boolean;

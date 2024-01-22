@@ -11,7 +11,7 @@ import {
 import {
   BaggageLevelConfig,
   baggageGameLevels,
-} from "@/utils/baggage/baggageGameConfig";
+} from "@/assets/baggage/baggageGameConfig";
 import {
   useRecoilState,
   useRecoilValue,

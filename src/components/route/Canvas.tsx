@@ -1,13 +1,15 @@
-import { MapHeight, MapWidth, Mark } from "@/type/route/MarkPosition";
+import { useAnimate } from "@/hooks/route/useAnimate";
+import { MapHeight, MapWidth, Mark } from "@/type/route/Mark";
 import { useRef } from "react";
 
 interface CanvasProps {
+  level: number;
   marks: Mark[];
 }
 
-export default function Canvas({ marks }: CanvasProps) {
+export default function Canvas({ marks, level }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const context = useRef<CanvasRenderingContext2D>(null);
+  useAnimate({ level, canvasRef, marks });
 
   return (
     <div>

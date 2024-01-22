@@ -1,5 +1,5 @@
 import { RefObject } from "react";
-import { BaggageLevelConfig } from "@/utils/baggage/baggageGameConfig";
+import { BaggageLevelConfig } from "@/assets/baggage/baggageGameConfig";
 import { ItemAnimation } from "@/atoms/baggage/animationItem";
 import { setShuffleItems } from "./setShuffleItems";
 

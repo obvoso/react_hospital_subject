@@ -2,7 +2,7 @@ import { atom } from "recoil";
 import {
   BaggageLevelConfig,
   BaggageSpeed,
-} from "@/utils/baggage/baggageGameConfig";
+} from "@/assets/baggage/baggageGameConfig";
 
 export const BaggageItemScore = {
   PERFECT: ["PERFECT", 1] as [string, number],

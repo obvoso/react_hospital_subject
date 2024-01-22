@@ -8,7 +8,7 @@ import {
 } from "@/atoms/rotateCarrier/config";
 import CustomButton from "@/utils/CustomButton";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { RotateCarrierGameLevels } from "@/utils/carrierRotation/carrierRotateGameConfig";
+import { RotateCarrierGameLevels } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import shuffleArray from "@/utils/arrayShuffle";
 
 interface params {

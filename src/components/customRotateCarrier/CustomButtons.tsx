@@ -3,7 +3,7 @@ import FindItemControlButton from "../rotateCarrier/FindItemControlButton";
 import SelectsDropDown from "./SelectsDropDown";
 import SelectsRotationAngle from "./SelectRotationAngle";
 import { DropDownButton } from "./DropDownButton";
-import { ANGLE } from "@/utils/carrierRotation/carrierRotateGameConfig";
+import { ANGLE } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import { useRecoilValue } from "recoil";
 

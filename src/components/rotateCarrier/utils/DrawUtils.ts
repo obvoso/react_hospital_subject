@@ -1,7 +1,7 @@
 import {
   RotateCarrierItemAssets,
   RotateCarrierLevelConfig,
-} from "@/utils/carrierRotation/carrierRotateGameConfig";
+} from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import { RefObject } from "react";
 
 export const drawRect = (

@@ -1,22 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import Canvas from "./Canvas";
-import { useRandomMark } from "@/hooks/route/useRamdomMark";
 import Mark from "./Mark";
+import { useRandomMark } from "@/hooks/route/useRamdomMark";
+import { useGrid } from "@/hooks/route/useGrid";
+import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
+import Subject from "./Subject";
 
 interface RouteProps {
   level: number;
 }
 
 export default function Route({ level }: RouteProps) {
-  const { mark } = useRandomMark();
-  console.log(mark);
+  const config = RouteGameConfigList[level];
+  const { gridInitFlag } = useGrid(level);
+  const { mark } = useRandomMark({ level, gridInitFlag });
+  const [subjectInitFlag, setSubjectInitFlag] = useState(false);
+
+  if (!gridInitFlag || !mark.length) {
+    return null;
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div>여기는 서브젝트 들어갈듯</div>
-      <div className="flex relative w-[600px] h-[400px] bg-map1 bg-contain">
-        <Canvas key={level} marks={mark} />
+    <div className="flex flex-col items-center justify-center p-10 gap-10">
+      <Subject level={level} setSubjectInit={() => setSubjectInitFlag(true)} />
+      <div
+        className={`flex relative w-[600px] h-[400px] ${
+          config.background === "map0"
+            ? "bg-map0"
+            : config.background === "map1"
+            ? "bg-map1"
+            : "bg-map2"
+        } bg-contain`}
+      >
         <Mark marks={mark} />
+        {subjectInitFlag && (
+          <>
+            <Canvas key={level} level={level} marks={mark} />
+          </>
+        )}
       </div>
     </div>
   );
