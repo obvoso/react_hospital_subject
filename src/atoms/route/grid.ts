@@ -17,25 +17,43 @@ export const gridState = atom({
   default: createGrid(),
 });
 
-function updateGrid(grid: boolean[][], cellsToUpdate: Cell[]): boolean[][] {
+function updateGrid(
+  grid: boolean[][],
+  cellsToUpdate: Cell[],
+  flag: boolean
+): boolean[][] {
   const newGrid = grid.map((row) => [...row]);
 
   cellsToUpdate.forEach((cell) => {
-    newGrid[cell.y][cell.x] = true;
+    newGrid[cell.y][cell.x] = flag;
   });
 
   return newGrid;
 }
 
-export const updateGridState = selector({
-  key: "updateGridState",
+export const updateTrueGridState = selector({
+  key: "updateTrueGridState",
   get: ({ get }) => {
     return get(gridState);
   },
   set: ({ set, get }, cellsToUpdate: Cell[] | DefaultValue) => {
     if (!(cellsToUpdate instanceof DefaultValue)) {
       const currentGrid = get(gridState);
-      const newGrid = updateGrid(currentGrid, cellsToUpdate);
+      const newGrid = updateGrid(currentGrid, cellsToUpdate, true);
+      set(gridState, newGrid);
+    }
+  },
+});
+
+export const updateFalseGridState = selector({
+  key: "updateFalseGridState",
+  get: ({ get }) => {
+    return get(gridState);
+  },
+  set: ({ set, get }, cellsToUpdate: Cell[] | DefaultValue) => {
+    if (!(cellsToUpdate instanceof DefaultValue)) {
+      const currentGrid = get(gridState);
+      const newGrid = updateGrid(currentGrid, cellsToUpdate, false);
       set(gridState, newGrid);
     }
   },

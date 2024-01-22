@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { MapHeight, MapWidth, Mark } from "@/type/route/Mark";
+import Route from "./Index";
+import { routeGameState } from "@/atoms/route/game";
+import { useRecoilState } from "recoil";
 
 interface MarkProps {
   marks: Mark[];
@@ -27,8 +30,6 @@ function DrawMark({
   } else if (isCorrect === false) {
     backgroundColor = "rgba(200, 50, 0, 0.4)";
   }
-
-  console.log(backgroundColor);
 
   const markStyle: React.CSSProperties = {
     position: "absolute",
@@ -64,7 +65,8 @@ function DrawMark({
   );
 }
 
-export default function MarkComponent({ marks }: MarkProps) {
+export default function Mark({ marks }: MarkProps) {
+  const [gameState, setGameState] = useRecoilState(routeGameState);
   const [clickCount, setClickCount] = useState(0);
   const [clickedMarks, setClickedMarks] = useState<
     Record<number, boolean | null>
@@ -76,6 +78,9 @@ export default function MarkComponent({ marks }: MarkProps) {
     setClickedMarks({ ...clickedMarks, [priority]: isCorrect });
 
     if (isCorrect) {
+      if (priority + 1 === marks.length && clickCount + 1 === marks.length) {
+        setGameState({ start: false, scored: true });
+      }
       setClickCount(clickCount + 1);
       setCorrectRoute({ ...correctRoute, [priority]: true });
     }
@@ -90,7 +95,10 @@ export default function MarkComponent({ marks }: MarkProps) {
 
   return (
     <div className={`flex absolute w-[${MapWidth}px] h-[${MapHeight}px]`}>
-      <div className="flex relative w-full h-full z-10">
+      <div
+        className="flex relative w-full h-full z-10"
+        key={marks[0].x + marks[2].x}
+      >
         {marks.map((mark) => (
           <DrawMark
             mark={mark}

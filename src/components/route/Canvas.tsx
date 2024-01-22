@@ -9,6 +9,7 @@ interface CanvasProps {
 
 export default function Canvas({ marks, level }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   useAnimate({ level, canvasRef, marks });
 
   return (

@@ -5,6 +5,7 @@ import { useRandomMark } from "@/hooks/route/useRamdomMark";
 import { useGrid } from "@/hooks/route/useGrid";
 import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
 import Subject from "./Subject";
+import GameContolButton from "./GameControlButton";
 
 interface RouteProps {
   level: number;
@@ -16,29 +17,28 @@ export default function Route({ level }: RouteProps) {
   const { mark } = useRandomMark({ level, gridInitFlag });
   const [subjectInitFlag, setSubjectInitFlag] = useState(false);
 
+  console.log(mark);
+
   if (!gridInitFlag || !mark.length) {
     return null;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-10 gap-10">
+    <div className="flex flex-col items-center justify-center p-10 gap-y-20">
       <Subject level={level} setSubjectInit={() => setSubjectInitFlag(true)} />
       <div
-        className={`flex relative w-[600px] h-[400px] ${
+        className={`flex relative w-[600px] h-[400px] bg-contain ${
           config.background === "map0"
             ? "bg-map0"
             : config.background === "map1"
             ? "bg-map1"
             : "bg-map2"
-        } bg-contain`}
+        }`}
       >
         <Mark marks={mark} />
-        {subjectInitFlag && (
-          <>
-            <Canvas key={level} level={level} marks={mark} />
-          </>
-        )}
+        {subjectInitFlag && <Canvas key={level} level={level} marks={mark} />}
       </div>
+      <GameContolButton />
     </div>
   );
 }

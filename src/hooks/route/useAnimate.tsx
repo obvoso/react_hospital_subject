@@ -1,7 +1,9 @@
 import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
+import { routeGameState } from "@/atoms/route/game";
 import { Mark } from "@/type/route/Mark";
 import { RouteGameConfig } from "@/type/route/routeGameConfig";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
+import { useRecoilValue } from "recoil";
 
 interface Props {
   level: number;
@@ -10,6 +12,8 @@ interface Props {
 }
 
 export function useAnimate({ level, canvasRef, marks }: Props) {
+  const gameState = useRecoilValue(routeGameState);
+
   const startAnimation = (
     context: CanvasRenderingContext2D,
     vehicle: HTMLImageElement,
@@ -48,6 +52,7 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
   };
 
   useEffect(() => {
+    if (!gameState.start) return;
     const config = RouteGameConfigList[level];
     const vehicle = new Image();
     if (!canvasRef?.current) return;
@@ -61,5 +66,5 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
     vehicle.onload = () => {
       startAnimation(context, vehicle, config);
     };
-  }, [canvasRef]);
+  }, [canvasRef, gameState.start]);
 }

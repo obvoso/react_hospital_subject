@@ -1,10 +1,15 @@
-import { gridState, updateGridState } from "@/atoms/route/grid";
+import {
+  gridState,
+  updateFalseGridState,
+  updateTrueGridState,
+} from "@/atoms/route/grid";
 import { Mark, MarkCellSize } from "@/type/route/Mark";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Cell } from "@/type/route/routeGameConfig";
 import { getRandomCell } from "@/utils/route/getRandomCell";
 import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
+import { routeGameState } from "@/atoms/route/game";
 
 interface Props {
   level: number;
@@ -13,12 +18,13 @@ interface Props {
 
 export function useRandomMark({ level, gridInitFlag }: Props) {
   const [grid, setGrid] = useRecoilState(gridState);
-  const updateGrid = useSetRecoilState(updateGridState);
+  const updateTrueGrid = useSetRecoilState(updateTrueGridState);
+  const updateFalseGrid = useSetRecoilState(updateFalseGridState);
   const { cols, rows } = { cols: 4, rows: 6 };
   const [mark, setMark] = useState<Mark[]>([]);
+  const gameState = useRecoilValue(routeGameState);
 
   useEffect(() => {
-    if (!gridInitFlag) return;
     const config = RouteGameConfigList[level];
     const randomMark: Cell[] = [];
     const randomMarkCount = config.mark - config.transit;
@@ -33,19 +39,26 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
       }
       randomMark.push(cell);
     }
-    updateGrid(randomMark);
+    updateTrueGrid(randomMark);
     updateMark(randomMark);
-  }, [gridInitFlag]);
+    return () => {
+      updateFalseGrid(randomMark);
+      setMark([]);
+      console.log("clean up");
+    };
+  }, [gridInitFlag, gameState.scored]);
 
   function updateMark(randomMark: Cell[]) {
+    console.log(randomMark, mark);
     let count = 0;
+    const randomIndex = Math.floor(Math.random() * 3);
     for (let y = 0; y < cols; y++) {
       for (let x = 0; x < rows; x++) {
         if (randomMark.some((cell) => cell.x === x && cell.y === y)) {
           setMark((prev) => [
             ...prev,
             {
-              image: `mark${count}`,
+              image: `mark${count + randomIndex}`,
               x: x * MarkCellSize,
               y: y * MarkCellSize,
               priority: count++,
