@@ -24,8 +24,7 @@ export const RouteGameConfigList: RouteGameConfig[] = [
     direction: Direction.FORWARD,
     transit: 1,
     obstacle: false,
-    //speed: Speed.SLOW,
-    speed: Speed.FAST,
+    speed: Speed.SLOW,
     invalidGrid: InvalidGridMap0,
     background: "map0",
     subject:

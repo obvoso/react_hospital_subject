@@ -1,9 +1,7 @@
+import { useEffect, useRef } from "react";
 import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
-import { routeGameState } from "@/atoms/route/game";
 import { Mark } from "@/type/route/Mark";
 import { RouteGameConfig } from "@/type/route/routeGameConfig";
-import { useEffect } from "react";
-import { useRecoilValue } from "recoil";
 
 interface Props {
   level: number;
@@ -12,7 +10,7 @@ interface Props {
 }
 
 export function useAnimate({ level, canvasRef, marks }: Props) {
-  const gameState = useRecoilValue(routeGameState);
+  const animationFrameIdRef = useRef<number | null>(null);
 
   const startAnimation = (
     context: CanvasRenderingContext2D,
@@ -24,7 +22,10 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
     const increaseSpeed = config.speed;
 
     const animate = () => {
+      //종료 조건
       if (currentMark + 1 >= config.mark + config.transit) {
+        cancelAnimationFrame(animationFrameIdRef.current!);
+        animationFrameIdRef.current = null;
         const timer = setTimeout(() => {
           context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         }, 200);
@@ -33,11 +34,10 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
 
       const { x: startX, y: startY } = marks[currentMark];
       const { x: endX, y: endY } = marks[currentMark + 1];
-
+      let speed = 0;
       const totalDistance = Math.sqrt(
         Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)
       );
-      let speed = 0;
 
       const move = () => {
         speed += increaseSpeed;
@@ -50,33 +50,58 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
         context.drawImage(vehicle, x, y, 50, 50);
 
         if (distanceFraction < 1) {
-          requestAnimationFrame(move);
+          animationFrameIdRef.current = requestAnimationFrame(move);
         } else {
+          if (animationFrameIdRef.current)
+            cancelAnimationFrame(animationFrameIdRef.current);
           currentMark++;
-          requestAnimationFrame(animate);
+          const timer = setTimeout(() => {
+            animationFrameIdRef.current = requestAnimationFrame(animate);
+          }, 100);
+          return () => clearTimeout(timer);
         }
       };
 
       move();
     };
-
-    requestAnimationFrame(animate);
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+    }
+    animationFrameIdRef.current = requestAnimationFrame(animate);
   };
 
   useEffect(() => {
-    if (!gameState.start) return;
-    const config = RouteGameConfigList[level];
-    const vehicle = new Image();
-    if (!canvasRef?.current) return;
-    const context = canvasRef.current.getContext("2d");
-    if (!context) return;
+    if (
+      canvasRef.current &&
+      //gameState.start &&
+      marks.length &&
+      !animationFrameIdRef.current
+    ) {
+      console.log(animationFrameIdRef.current);
+      const config = RouteGameConfigList[level];
+      const vehicle = new Image();
+      const context = canvasRef.current.getContext("2d");
+      if (!context) return;
 
-    config.obstacle
-      ? (vehicle.src = "/assets/route/taxi.png")
-      : (vehicle.src = "/assets/route/bus.png");
+      config.obstacle
+        ? (vehicle.src = "/assets/route/taxi.png")
+        : (vehicle.src = "/assets/route/bus.png");
+      vehicle.onload = () => {
+        if (!animationFrameIdRef.current)
+          startAnimation(context, vehicle, config, marks);
+        else {
+          console.log(animationFrameIdRef.current);
+          cancelAnimationFrame(animationFrameIdRef.current);
+          animationFrameIdRef.current = null;
+        }
+      };
+    }
 
-    vehicle.onload = () => {
-      startAnimation(context, vehicle, config, marks);
+    return () => {
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
+      }
     };
-  }, [canvasRef, gameState.start, marks]);
+  }, [marks]);
 }

@@ -7,7 +7,9 @@ export default function GameControlButton() {
   const [gameStatus, setGameStatus] = useRecoilState(routeGameState);
 
   const handleRestart = () => {
-    setGameStatus({ start: true });
+    if (gameStatus.restartCount === 3) window.location.reload();
+    else
+      setGameStatus({ start: true, restartCount: gameStatus.restartCount + 1 });
   };
 
   return (

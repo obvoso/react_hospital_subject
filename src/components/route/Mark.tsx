@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { MapHeight, MapWidth, Mark } from "@/type/route/Mark";
 import { routeGameState } from "@/atoms/route/game";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
 
 interface MarkProps {
@@ -73,7 +73,7 @@ function DrawMark({
 
 export default function Mark({ marks, level }: MarkProps) {
   const config = RouteGameConfigList[level];
-  const [gameState, setGameState] = useRecoilState(routeGameState);
+  const setGameState = useSetRecoilState(routeGameState);
   const [clickCount, setClickCount] = useState(0);
   const [correctRoute, setCorrectRoute] = useState<Record<number, boolean>>({});
   const [clickedMarks, setClickedMarks] = useState<
@@ -94,7 +94,7 @@ export default function Mark({ marks, level }: MarkProps) {
     //종료 조건
     if (isCorrect) {
       if (clickCount + 1 === marks.length) {
-        setGameState({ start: false });
+        setGameState((prev) => ({ ...prev, start: false }));
         setTimeout(() => {
           setClickCount(0);
           setCorrectRoute({});

@@ -16,7 +16,6 @@ export default function Route({ level }: RouteProps) {
   const { gridInitFlag } = useGrid(level);
   const { mark } = useRandomMark({ level, gridInitFlag });
   const [subjectInitFlag, setSubjectInitFlag] = useState(false);
-  console.log(mark);
   if (!gridInitFlag || !mark.length) {
     return null;
   }
