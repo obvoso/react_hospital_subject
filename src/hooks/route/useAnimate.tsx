@@ -21,32 +21,43 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
     marks: Mark[]
   ) => {
     let currentMark = 0;
-    let speed = 0;
-    let increaseSpeed = 0.015;
+    const increaseSpeed = 3;
 
     const animate = () => {
-      speed += increaseSpeed;
-      if (speed > config.speed / 1000) {
-        speed = 0;
-        currentMark++;
-      }
-
-      if (currentMark + 1 === config.mark) {
+      if (currentMark + 1 >= config.mark) {
         const timer = setTimeout(() => {
           context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         }, 200);
         return () => clearTimeout(timer);
       }
 
-      context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
       const { x: startX, y: startY } = marks[currentMark];
       const { x: endX, y: endY } = marks[currentMark + 1];
-      const x = startX + (endX - startX) * speed;
-      const y = startY + (endY - startY) * speed;
 
-      context.drawImage(vehicle, x, y, 50, 50);
-      requestAnimationFrame(animate);
+      const totalDistance = Math.sqrt(
+        Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)
+      );
+      let speed = 0;
+
+      const move = () => {
+        speed += increaseSpeed;
+        const distanceFraction = Math.min(speed / totalDistance, 1);
+
+        const x = startX + (endX - startX) * distanceFraction;
+        const y = startY + (endY - startY) * distanceFraction;
+
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        context.drawImage(vehicle, x, y, 50, 50);
+
+        if (distanceFraction < 1) {
+          requestAnimationFrame(move);
+        } else {
+          currentMark++;
+          requestAnimationFrame(animate);
+        }
+      };
+
+      move();
     };
 
     requestAnimationFrame(animate);
