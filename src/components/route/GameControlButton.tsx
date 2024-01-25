@@ -7,15 +7,15 @@ export default function GameControlButton() {
   const [gameStatus, setGameStatus] = useRecoilState(routeGameState);
 
   const handleRestart = () => {
-    setGameStatus({ start: true, scored: false });
+    setGameStatus({ start: true });
   };
 
   return (
     <div>
       <CustomButton
-        text="시작"
+        text="다시 시작"
         onClick={handleRestart}
-        type={gameStatus.scored ? "activate" : "disabled"}
+        type={gameStatus.start ? "disabled" : "activate"}
       />
     </div>
   );

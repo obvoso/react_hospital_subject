@@ -20,36 +20,39 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
   const [grid, setGrid] = useRecoilState(gridState);
   const updateTrueGrid = useSetRecoilState(updateTrueGridState);
   const updateFalseGrid = useSetRecoilState(updateFalseGridState);
-  const { cols, rows } = { cols: 4, rows: 6 };
-  const [mark, setMark] = useState<Mark[]>([]);
   const gameState = useRecoilValue(routeGameState);
+  const [mark, setMark] = useState<Mark[]>([]);
+  const { cols, rows } = { cols: 4, rows: 6 };
 
   useEffect(() => {
-    const config = RouteGameConfigList[level];
+    console.log(gridInitFlag, gameState);
     const randomMark: Cell[] = [];
-    const randomMarkCount = config.mark - config.transit;
-    for (let i = 0; i < randomMarkCount; i++) {
-      let cell: Cell = getRandomCell();
-      if (
-        grid[cell.y][cell.x] ||
-        randomMark.some((mark) => mark.x === cell.x && mark.y === cell.y)
-      ) {
-        --i;
-        continue;
+    if (gameState.start && gridInitFlag) {
+      const config = RouteGameConfigList[level];
+      const randomMarkCount = config.mark - config.transit;
+      for (let i = 0; i < randomMarkCount; i++) {
+        let cell: Cell = getRandomCell();
+        if (
+          grid[cell.y][cell.x] ||
+          randomMark.some((mark) => mark.x === cell.x && mark.y === cell.y)
+        ) {
+          --i;
+          continue;
+        }
+        randomMark.push(cell);
       }
-      randomMark.push(cell);
+      updateTrueGrid(randomMark);
+      updateMark(randomMark);
     }
-    updateTrueGrid(randomMark);
-    updateMark(randomMark);
-    return () => {
-      updateFalseGrid(randomMark);
-      setMark([]);
-      console.log("clean up");
-    };
-  }, [gridInitFlag, gameState.scored]);
+    if (!gameState.start && gridInitFlag) {
+      return () => {
+        updateFalseGrid(randomMark);
+        setMark([]);
+      };
+    }
+  }, [gridInitFlag, gameState]);
 
   function updateMark(randomMark: Cell[]) {
-    console.log(randomMark, mark);
     let count = 0;
     const randomIndex = Math.floor(Math.random() * 3);
     for (let y = 0; y < cols; y++) {

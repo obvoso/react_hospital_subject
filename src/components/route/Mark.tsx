@@ -79,7 +79,10 @@ export default function Mark({ marks }: MarkProps) {
 
     if (isCorrect) {
       if (priority + 1 === marks.length && clickCount + 1 === marks.length) {
-        setGameState({ start: false, scored: true });
+        setGameState({ start: false });
+        setClickCount(0);
+        setCorrectRoute({});
+        return;
       }
       setClickCount(clickCount + 1);
       setCorrectRoute({ ...correctRoute, [priority]: true });

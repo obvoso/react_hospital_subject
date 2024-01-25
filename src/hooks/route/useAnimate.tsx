@@ -17,7 +17,8 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
   const startAnimation = (
     context: CanvasRenderingContext2D,
     vehicle: HTMLImageElement,
-    config: RouteGameConfig
+    config: RouteGameConfig,
+    marks: Mark[]
   ) => {
     let currentMark = 0;
     let speed = 0;
@@ -64,7 +65,7 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
       : (vehicle.src = "/assets/route/bus.png");
 
     vehicle.onload = () => {
-      startAnimation(context, vehicle, config);
+      startAnimation(context, vehicle, config, marks);
     };
-  }, [canvasRef, gameState.start]);
+  }, [canvasRef, gameState.start, marks]);
 }

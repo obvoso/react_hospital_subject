@@ -4,6 +4,6 @@ export const routeGameState = atom({
   key: "routeGameState",
   default: {
     start: false,
-    scored: false,
+    //scored: false,
   },
 });
