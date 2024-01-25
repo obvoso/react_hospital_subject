@@ -13,7 +13,7 @@ export default function GameControlButton() {
   return (
     <div>
       <CustomButton
-        text="다시 시작"
+        text="시작"
         onClick={handleRestart}
         type={gameStatus.start ? "disabled" : "activate"}
       />
