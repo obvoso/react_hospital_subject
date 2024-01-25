@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { MapHeight, MapWidth, Mark } from "@/type/route/Mark";
-import Route from "./Index";
 import { routeGameState } from "@/atoms/route/game";
 import { useRecoilState } from "recoil";
+import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
 
 interface MarkProps {
   marks: Mark[];
+  level: number;
 }
 
 interface DrawMarkProps {
@@ -15,6 +16,7 @@ interface DrawMarkProps {
   handleMouseDown: (priority: number) => void;
   handleMouseUp: () => void;
   isCorrect: boolean | null;
+  endIndex: number;
 }
 
 function DrawMark({
@@ -23,6 +25,7 @@ function DrawMark({
   handleMouseDown,
   handleMouseUp,
   isCorrect,
+  endIndex,
 }: DrawMarkProps) {
   let backgroundColor = "";
   if (isCorrect) {
@@ -53,11 +56,14 @@ function DrawMark({
         onMouseDown={() => handleMouseDown(mark.priority)}
         onMouseUp={handleMouseUp}
       />
-
-      {correctRoute[mark.priority] && (
+      {(correctRoute[mark.priority] || correctRoute[endIndex]) && (
         <div className="flex absolute justify-center items-center w-full h-10">
           <div className="flex w-6 h-6 text-indigo-400 font-semibold items-center  justify-center rounded-full border-2 border-indigo-400">
-            {mark.priority + 1}
+            {correctRoute[mark.priority] ? (
+              <>{mark.priority + 1}</>
+            ) : (
+              <>{endIndex + 1}</>
+            )}
           </div>
         </div>
       )}
@@ -65,20 +71,29 @@ function DrawMark({
   );
 }
 
-export default function Mark({ marks }: MarkProps) {
+export default function Mark({ marks, level }: MarkProps) {
+  const config = RouteGameConfigList[level];
   const [gameState, setGameState] = useRecoilState(routeGameState);
   const [clickCount, setClickCount] = useState(0);
+  const [correctRoute, setCorrectRoute] = useState<Record<number, boolean>>({});
   const [clickedMarks, setClickedMarks] = useState<
     Record<number, boolean | null>
   >({});
-  const [correctRoute, setCorrectRoute] = useState<Record<number, boolean>>({});
 
   const handleMouseDown = (priority: number) => {
-    const isCorrect = clickCount === priority;
+    let isCorrect = false;
+    if (
+      clickCount === priority ||
+      (config.transit &&
+        marks[priority].x === marks[config.mark].x &&
+        marks[priority].y === marks[config.mark].y)
+    )
+      isCorrect = true;
     setClickedMarks({ ...clickedMarks, [priority]: isCorrect });
 
+    //종료 조건
     if (isCorrect) {
-      if (priority + 1 === marks.length && clickCount + 1 === marks.length) {
+      if (clickCount + 1 === marks.length) {
         setGameState({ start: false });
         setTimeout(() => {
           setClickCount(0);
@@ -86,7 +101,15 @@ export default function Mark({ marks }: MarkProps) {
         }, 1000);
       }
       setClickCount(clickCount + 1);
-      setCorrectRoute({ ...correctRoute, [priority]: true });
+      if (clickCount === priority)
+        setCorrectRoute({ ...correctRoute, [priority]: true });
+      else if (config.transit) {
+        setCorrectRoute({
+          ...correctRoute,
+          [config.mark]: true,
+          [priority]: false,
+        });
+      }
     }
   };
 
@@ -99,20 +122,22 @@ export default function Mark({ marks }: MarkProps) {
 
   return (
     <div className={`flex absolute w-[${MapWidth}px] h-[${MapHeight}px]`}>
-      <div
-        className="flex relative w-full h-full z-10"
-        key={marks[0].x + marks[2].x}
-      >
-        {marks.map((mark) => (
-          <DrawMark
-            mark={mark}
-            correctRoute={correctRoute}
-            handleMouseDown={handleMouseDown}
-            handleMouseUp={handleMouseUp}
-            key={mark.priority}
-            isCorrect={clickedMarks[mark.priority]}
-          />
-        ))}
+      <div className="flex relative w-full h-full z-10">
+        {marks
+          .filter((mark) =>
+            config.transit ? mark.priority < config.mark : true
+          )
+          .map((mark) => (
+            <DrawMark
+              mark={mark}
+              correctRoute={correctRoute}
+              handleMouseDown={handleMouseDown}
+              handleMouseUp={handleMouseUp}
+              key={mark.priority}
+              isCorrect={clickedMarks[mark.priority]}
+              endIndex={config.mark}
+            />
+          ))}
       </div>
     </div>
   );

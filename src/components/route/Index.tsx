@@ -16,7 +16,7 @@ export default function Route({ level }: RouteProps) {
   const { gridInitFlag } = useGrid(level);
   const { mark } = useRandomMark({ level, gridInitFlag });
   const [subjectInitFlag, setSubjectInitFlag] = useState(false);
-
+  console.log(mark);
   if (!gridInitFlag || !mark.length) {
     return null;
   }
@@ -33,7 +33,7 @@ export default function Route({ level }: RouteProps) {
             : "bg-map2"
         }`}
       >
-        <Mark marks={mark} />
+        <Mark marks={mark} level={level} />
         {subjectInitFlag && <Canvas key={level} level={level} marks={mark} />}
       </div>
       <GameContolButton />

@@ -17,6 +17,7 @@ interface Props {
 }
 
 export function useRandomMark({ level, gridInitFlag }: Props) {
+  const config = RouteGameConfigList[level];
   const [grid, setGrid] = useRecoilState(gridState);
   const updateTrueGrid = useSetRecoilState(updateTrueGridState);
   const updateFalseGrid = useSetRecoilState(updateFalseGridState);
@@ -25,11 +26,10 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
   const { cols, rows } = { cols: 4, rows: 6 };
 
   useEffect(() => {
-    console.log(gridInitFlag, gameState);
     const randomMark: Cell[] = [];
     if (gameState.start && gridInitFlag) {
       const config = RouteGameConfigList[level];
-      const randomMarkCount = config.mark - config.transit;
+      const randomMarkCount = config.mark;
       for (let i = 0; i < randomMarkCount; i++) {
         let cell: Cell = getRandomCell();
         if (
@@ -68,6 +68,15 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
             },
           ]);
         }
+      }
+    }
+    if (config.transit) {
+      for (let i = 0; i < config.transit; i++) {
+        let randomCell = Math.floor(Math.random() * (randomMark.length - 1));
+        setMark((prev) => [
+          ...prev,
+          { ...prev[randomCell], priority: randomMark.length },
+        ]);
       }
     }
   }

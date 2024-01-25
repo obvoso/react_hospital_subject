@@ -2,7 +2,7 @@ import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
 import { routeGameState } from "@/atoms/route/game";
 import { Mark } from "@/type/route/Mark";
 import { RouteGameConfig } from "@/type/route/routeGameConfig";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 
 interface Props {
@@ -21,10 +21,10 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
     marks: Mark[]
   ) => {
     let currentMark = 0;
-    const increaseSpeed = 3;
+    const increaseSpeed = config.speed;
 
     const animate = () => {
-      if (currentMark + 1 >= config.mark) {
+      if (currentMark + 1 >= config.mark + config.transit) {
         const timer = setTimeout(() => {
           context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         }, 200);

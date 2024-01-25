@@ -6,8 +6,8 @@ export const enum Direction {
 }
 
 export const enum Speed {
-  SLOW = 1000,
-  FASE = 750,
+  SLOW = 2,
+  FAST = 4,
 }
 
 export interface Cell {
