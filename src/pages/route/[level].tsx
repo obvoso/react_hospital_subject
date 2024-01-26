@@ -12,7 +12,7 @@ export default function RoutePage() {
 
   return (
     <div>
-      <Route level={Number(level)} />
+      <Route level={Number(level)} key={Number(level)} />
     </div>
   );
 }

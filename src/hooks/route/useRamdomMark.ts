@@ -27,7 +27,7 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
 
   useEffect(() => {
     const randomMark: Cell[] = [];
-    if (gameState.start && gridInitFlag) {
+    if (gridInitFlag && gameState.start) {
       const randomMarkCount = config.mark;
       for (let i = 0; i < randomMarkCount; i++) {
         let cell: Cell = getRandomCell();
@@ -44,12 +44,11 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
       updateTrueGrid(randomMark);
       updateMark(randomMark);
     }
-    if (!gameState.start && gridInitFlag) {
+    if (!gameState.start && gridInitFlag)
       return () => {
         updateFalseGrid(randomMark);
         setMark([]);
       };
-    }
   }, [gridInitFlag, gameState.start]);
 
   function updateMark(randomMark: Cell[]) {

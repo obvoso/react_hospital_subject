@@ -24,12 +24,12 @@ export default function Route({ level }: RouteProps) {
         <Subject
           level={level}
           setSubjectInit={() => setSubjectInitFlag(true)}
-          key={mark[0].x + mark[1].x - mark[0].y + level}
         />
         <DrawMarkAndCanvas
           level={level}
           mark={mark}
           subjectInitFlag={subjectInitFlag}
+          key={level}
         />
         <GameContolButton />
       </div>

@@ -37,7 +37,6 @@ export const updateTrueGridState = selector({
     return get(gridState);
   },
   set: ({ set, get }, cellsToUpdate: Cell[] | DefaultValue) => {
-    console.log("updateTrueGridState");
     if (!(cellsToUpdate instanceof DefaultValue)) {
       const currentGrid = get(gridState);
       const newGrid = updateGrid(currentGrid, cellsToUpdate, true);
@@ -52,7 +51,6 @@ export const updateFalseGridState = selector({
     return get(gridState);
   },
   set: ({ set, get }, cellsToUpdate: Cell[] | DefaultValue) => {
-    console.log("updateFalseGridState");
     if (!(cellsToUpdate instanceof DefaultValue)) {
       const currentGrid = get(gridState);
       const newGrid = updateGrid(currentGrid, cellsToUpdate, false);

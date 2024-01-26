@@ -14,7 +14,7 @@ export function useGrid(level: number) {
 
     updateGrid(config.invalidGrid);
     setGridInitFlag(true);
-    setGameState((prev) => ({ ...prev, start: true }));
+    setGameState({ start: true });
   }, [level]);
 
   return { gridInitFlag };
