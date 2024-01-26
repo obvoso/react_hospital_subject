@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
-import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
+
 import { Mark } from "@/type/route/Mark";
-import { RouteGameConfig } from "@/type/route/routeGameConfig";
+import { RouteGameConfig } from "@/type/route/routeGameConfigType";
+import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 
 interface Props {
   level: number;
@@ -50,7 +51,13 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
         context.drawImage(vehicle, x, y, 50, 50);
 
         if (distanceFraction < 1) {
-          animationFrameIdRef.current = requestAnimationFrame(move);
+          //맨 처음 시작하는 경우 0.5초뒤에 시작
+          if (speed === increaseSpeed && currentMark === 0)
+            setTimeout(
+              () => (animationFrameIdRef.current = requestAnimationFrame(move)),
+              500
+            );
+          else animationFrameIdRef.current = requestAnimationFrame(move);
         } else {
           if (animationFrameIdRef.current)
             cancelAnimationFrame(animationFrameIdRef.current);
@@ -77,8 +84,7 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
       marks.length &&
       !animationFrameIdRef.current
     ) {
-      console.log(animationFrameIdRef.current);
-      const config = RouteGameConfigList[level];
+      const config = routeGameConfigList[level];
       const vehicle = new Image();
       const context = canvasRef.current.getContext("2d");
       if (!context) return;
@@ -90,7 +96,6 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
         if (!animationFrameIdRef.current)
           startAnimation(context, vehicle, config, marks);
         else {
-          console.log(animationFrameIdRef.current);
           cancelAnimationFrame(animationFrameIdRef.current);
           animationFrameIdRef.current = null;
         }

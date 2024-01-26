@@ -6,9 +6,9 @@ import {
 import { Mark, MarkCellSize } from "@/type/route/Mark";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { Cell } from "@/type/route/routeGameConfig";
+import { Cell, Direction } from "@/type/route/routeGameConfigType";
 import { getRandomCell } from "@/utils/route/getRandomCell";
-import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
+import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { routeGameState } from "@/atoms/route/game";
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export function useRandomMark({ level, gridInitFlag }: Props) {
-  const config = RouteGameConfigList[level];
+  const config = routeGameConfigList[level];
   const [grid, setGrid] = useRecoilState(gridState);
   const updateTrueGrid = useSetRecoilState(updateTrueGridState);
   const updateFalseGrid = useSetRecoilState(updateFalseGridState);
@@ -28,7 +28,6 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
   useEffect(() => {
     const randomMark: Cell[] = [];
     if (gameState.start && gridInitFlag) {
-      const config = RouteGameConfigList[level];
       const randomMarkCount = config.mark;
       for (let i = 0; i < randomMarkCount; i++) {
         let cell: Cell = getRandomCell();
@@ -41,6 +40,7 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
         }
         randomMark.push(cell);
       }
+
       updateTrueGrid(randomMark);
       updateMark(randomMark);
     }
@@ -50,7 +50,7 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
         setMark([]);
       };
     }
-  }, [gridInitFlag, gameState]);
+  }, [gridInitFlag, gameState.start]);
 
   function updateMark(randomMark: Cell[]) {
     let count = 0;
@@ -78,6 +78,9 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
           { ...prev[randomCell], priority: randomMark.length },
         ]);
       }
+    }
+    if (config.direction === Direction.BACKWARD) {
+      setMark((prev) => prev.reverse());
     }
   }
   return { mark };

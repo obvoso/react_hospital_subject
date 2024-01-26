@@ -1,5 +1,3 @@
-import { InvalidGridMap0 } from "@/assets/route/InvalidGrid";
-
 export const enum Direction {
   FORWARD = 0,
   BACKWARD = 1,

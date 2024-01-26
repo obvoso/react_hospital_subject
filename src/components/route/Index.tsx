@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import Canvas from "./Canvas";
-import Mark from "./Mark";
+import { useState } from "react";
 import { useRandomMark } from "@/hooks/route/useRamdomMark";
 import { useGrid } from "@/hooks/route/useGrid";
-import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
 import Subject from "./Subject";
 import GameContolButton from "./GameControlButton";
+import LevelNav from "@/utils/LevelNav";
+import DrawMarkAndCanvas from "./DrawMarkAndCanvas";
 
 interface RouteProps {
   level: number;
 }
 
 export default function Route({ level }: RouteProps) {
-  const config = RouteGameConfigList[level];
   const { gridInitFlag } = useGrid(level);
   const { mark } = useRandomMark({ level, gridInitFlag });
   const [subjectInitFlag, setSubjectInitFlag] = useState(false);
@@ -21,21 +19,21 @@ export default function Route({ level }: RouteProps) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-10 gap-y-20">
-      <Subject level={level} setSubjectInit={() => setSubjectInitFlag(true)} />
-      <div
-        className={`flex relative w-[600px] h-[400px] bg-contain ${
-          config.background === "map0"
-            ? "bg-map0"
-            : config.background === "map1"
-            ? "bg-map1"
-            : "bg-map2"
-        }`}
-      >
-        <Mark marks={mark} level={level} />
-        {subjectInitFlag && <Canvas key={level} level={level} marks={mark} />}
+    <div className="flex flex-col-reverse sm:flex-row justify-center items-center py-4 gap-x-10">
+      <div className="flex flex-col items-center justify-center p-10 gap-y-14">
+        <Subject
+          level={level}
+          setSubjectInit={() => setSubjectInitFlag(true)}
+          key={mark[0].x + mark[1].x - mark[0].y + level}
+        />
+        <DrawMarkAndCanvas
+          level={level}
+          mark={mark}
+          subjectInitFlag={subjectInitFlag}
+        />
+        <GameContolButton />
       </div>
-      <GameContolButton />
+      <LevelNav game="route" curLevel={level} />
     </div>
   );
 }

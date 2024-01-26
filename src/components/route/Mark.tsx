@@ -3,7 +3,7 @@ import Image from "next/image";
 import { MapHeight, MapWidth, Mark } from "@/type/route/Mark";
 import { routeGameState } from "@/atoms/route/game";
 import { useSetRecoilState } from "recoil";
-import { RouteGameConfigList } from "@/assets/route/routeGameConfig";
+import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 
 interface MarkProps {
   marks: Mark[];
@@ -72,7 +72,7 @@ function DrawMark({
 }
 
 export default function Mark({ marks, level }: MarkProps) {
-  const config = RouteGameConfigList[level];
+  const config = routeGameConfigList[level];
   const setGameState = useSetRecoilState(routeGameState);
   const [clickCount, setClickCount] = useState(0);
   const [correctRoute, setCorrectRoute] = useState<Record<number, boolean>>({});
