@@ -1,8 +1,4 @@
-import {
-  gridState,
-  updateFalseGridState,
-  updateTrueGridState,
-} from "@/atoms/route/grid";
+import { gridState } from "@/atoms/route/grid";
 import { Mark, MarkCellSize } from "@/type/route/Mark";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -19,8 +15,6 @@ interface Props {
 export function useRandomMark({ level, gridInitFlag }: Props) {
   const config = routeGameConfigList[level];
   const [grid, setGrid] = useRecoilState(gridState);
-  const updateTrueGrid = useSetRecoilState(updateTrueGridState);
-  const updateFalseGrid = useSetRecoilState(updateFalseGridState);
   const gameState = useRecoilValue(routeGameState);
   const [mark, setMark] = useState<Mark[]>([]);
   const { cols, rows } = { cols: 4, rows: 6 };
@@ -41,12 +35,10 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
         randomMark.push(cell);
       }
 
-      updateTrueGrid(randomMark);
       updateMark(randomMark);
     }
     if (!gameState.start && gridInitFlag)
       return () => {
-        updateFalseGrid(randomMark);
         setMark([]);
       };
   }, [gridInitFlag, gameState.start]);

@@ -35,10 +35,10 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
 
       const { x: startX, y: startY } = marks[currentMark];
       const { x: endX, y: endY } = marks[currentMark + 1];
-      let speed = 0;
       const totalDistance = Math.sqrt(
         Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)
       );
+      let speed = 0;
 
       const move = () => {
         speed += increaseSpeed;

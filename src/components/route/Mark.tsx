@@ -1,77 +1,19 @@
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MapHeight, MapWidth, Mark } from "@/type/route/Mark";
 import { routeGameState } from "@/atoms/route/game";
 import { useSetRecoilState } from "recoil";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
+import { useAutoCursor } from "@/hooks/route/useAutoCursor";
+import DrawMark from "./DrawMark";
 
 interface MarkProps {
   marks: Mark[];
   level: number;
+  clickAble: boolean;
 }
 
-interface DrawMarkProps {
-  mark: Mark;
-  correctRoute: Record<number, boolean>;
-  handleMouseDown: (priority: number) => void;
-  handleMouseUp: () => void;
-  isCorrect: boolean | null;
-  endIndex: number;
-}
-
-function DrawMark({
-  mark,
-  correctRoute,
-  handleMouseDown,
-  handleMouseUp,
-  isCorrect,
-  endIndex,
-}: DrawMarkProps) {
-  let backgroundColor = "";
-  if (isCorrect) {
-    backgroundColor = "rgba(0, 100, 200, 0.4)";
-  } else if (isCorrect === false) {
-    backgroundColor = "rgba(200, 50, 0, 0.4)";
-  }
-
-  const markStyle: React.CSSProperties = {
-    position: "absolute",
-    left: `${mark.x}px`,
-    top: `${mark.y}px`,
-    borderRadius: "50%",
-    background: backgroundColor
-      ? `radial-gradient(circle, ${backgroundColor} 20%, transparent 70%)`
-      : "",
-  };
-
-  return (
-    <div style={markStyle}>
-      <Image
-        src={`/assets/route/${mark.image}.png`}
-        width={0}
-        height={0}
-        alt={mark.image}
-        sizes="50px"
-        className="w-full h-auto hover:cursor-pointer hover:scale-125 transition-all duration-300"
-        onMouseDown={() => handleMouseDown(mark.priority)}
-        onMouseUp={handleMouseUp}
-      />
-      {(correctRoute[mark.priority] || correctRoute[endIndex]) && (
-        <div className="flex absolute justify-center items-center w-full h-10">
-          <div className="flex w-6 h-6 text-indigo-400 font-semibold items-center  justify-center rounded-full border-2 border-indigo-400">
-            {correctRoute[mark.priority] ? (
-              <>{mark.priority + 1}</>
-            ) : (
-              <>{endIndex + 1}</>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default function Mark({ marks, level }: MarkProps) {
+export default function Mark({ marks, level, clickAble }: MarkProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const config = routeGameConfigList[level];
   const setGameState = useSetRecoilState(routeGameState);
   const [clickCount, setClickCount] = useState(0);
@@ -84,6 +26,7 @@ export default function Mark({ marks, level }: MarkProps) {
     let isCorrect = false;
     if (
       clickCount === priority ||
+      level === 11 ||
       (config.transit &&
         marks[priority].x === marks[config.mark].x &&
         marks[priority].y === marks[config.mark].y)
@@ -93,7 +36,7 @@ export default function Mark({ marks, level }: MarkProps) {
 
     //종료 조건
     if (isCorrect) {
-      if (clickCount + 1 === marks.length) {
+      if (clickCount + 1 === marks.length || (level === 11 && priority === 1)) {
         setGameState((prev) => ({ ...prev, start: false }));
         setTimeout(() => {
           setClickCount(0);
@@ -101,7 +44,7 @@ export default function Mark({ marks, level }: MarkProps) {
         }, 1000);
       }
       setClickCount(clickCount + 1);
-      if (clickCount === priority)
+      if (clickCount === priority || (level === 11 && priority === 1))
         setCorrectRoute({ ...correctRoute, [priority]: true });
       else if (config.transit) {
         setCorrectRoute({
@@ -120,8 +63,19 @@ export default function Mark({ marks, level }: MarkProps) {
     return () => clearTimeout(timer);
   };
 
+  useAutoCursor({
+    marks,
+    level,
+    containerRef,
+    handleMouseDown,
+    handleMouseUp,
+  });
+
   return (
-    <div className={`flex absolute w-[${MapWidth}px] h-[${MapHeight}px]`}>
+    <div
+      ref={containerRef}
+      className={`flex absolute w-[${MapWidth}px] h-[${MapHeight}px]`}
+    >
       <div className="flex relative w-full h-full z-10">
         {marks
           .filter((mark) =>
@@ -136,6 +90,7 @@ export default function Mark({ marks, level }: MarkProps) {
               key={mark.priority}
               isCorrect={clickedMarks[mark.priority]}
               endIndex={config.mark}
+              clickAble={level !== 11 && clickAble}
             />
           ))}
       </div>

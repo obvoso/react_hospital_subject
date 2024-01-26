@@ -31,7 +31,7 @@ export default function Route({ level }: RouteProps) {
           subjectInitFlag={subjectInitFlag}
           key={level}
         />
-        <GameContolButton />
+        <GameContolButton level={level} />
       </div>
       <LevelNav game="route" curLevel={level} />
     </div>

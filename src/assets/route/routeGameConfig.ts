@@ -142,6 +142,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     subject:
       "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
   },
+  // 3단계 영상
   {
     level: 11,
     mark: 2,
@@ -154,7 +155,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     subject:
       "이번에는 버스가 이동하는 경로를 조금 더 집중해서 기억해주세요.\n버스가 이동하는 경로를 기억해서 마지막 도착지부터 거꾸로 눌러야합니다.\n연습해 볼게요.",
   },
-  // 3단계 영상
+  //3단계 연습
   {
     level: 12,
     mark: 3,
@@ -166,18 +167,5 @@ export const routeGameConfigList: RouteGameConfig[] = [
     background: "map1",
     subject:
       "이번에는 한번 연습해보도록 하겠습니다.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
-  },
-  //3단계 연습
-  {
-    level: 13,
-    mark: 4,
-    direction: Direction.BACKWARD,
-    transit: 0,
-    obstacle: false,
-    speed: Speed.SLOW,
-    invalidGrid: InvalidGridMap1,
-    background: "map1",
-    subject:
-      "버스로 이동하는 여행 경로를 잘 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
   },
 ];

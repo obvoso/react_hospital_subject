@@ -23,7 +23,7 @@ const DrawMarkAndCanvas = React.memo(
         }`}
         key={level}
       >
-        <Mark marks={mark} level={level} />
+        <Mark marks={mark} level={level} clickAble={subjectInitFlag} />
         {subjectInitFlag && <Canvas key={level} level={level} marks={mark} />}
       </div>
     );
