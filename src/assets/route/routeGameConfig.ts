@@ -153,7 +153,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     invalidGrid: InvalidGridMap1,
     background: "map1",
     subject:
-      "이번에는 버스가 이동하는 경로를 조금 더 집중해서 기억해주세요.\n버스가 이동하는 경로를 기억해서 마지막 도착지부터 거꾸로 눌러야합니다.\n연습해 볼게요.",
+      "이번에는 버스가 이동하는 경로를 조금 더 집중해서 기억해주세요.\n버스가 이동하는 경로를 기억해서 마지막 도착지부터 거꾸로 눌러야합니다.\n시연 영상입니다.",
   },
   //3단계 연습
   {

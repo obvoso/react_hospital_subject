@@ -10,7 +10,7 @@ interface CanvasProps {
 function Canvas({ marks, level }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useAnimate({ level, canvasRef, marks });
+  //useAnimate({ level, canvasRef, marks });
 
   return (
     <div>

@@ -28,7 +28,7 @@ export default function GameControlButton({ level }: GameControlButtonProps) {
     <div className="flex gap-x-3">
       {level !== 11 && (
         <CustomButton
-          text="시작"
+          text="다시 시작"
           onClick={handleRestart}
           type={gameStatus.start ? "disabled" : "activate"}
         />

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Mark } from "@/type/route/Mark";
 import { RouteGameConfig } from "@/type/route/routeGameConfigType";
@@ -8,10 +8,17 @@ interface Props {
   level: number;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   marks: Mark[];
+  subjectInitFlag: boolean;
 }
 
-export function useAnimate({ level, canvasRef, marks }: Props) {
+export function useAnimate({
+  level,
+  canvasRef,
+  marks,
+  subjectInitFlag,
+}: Props) {
   const animationFrameIdRef = useRef<number | null>(null);
+  const [animationDone, setAnimationDone] = useState(false);
 
   const startAnimation = (
     context: CanvasRenderingContext2D,
@@ -29,6 +36,7 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
         animationFrameIdRef.current = null;
         const timer = setTimeout(() => {
           context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+          setAnimationDone(true);
         }, 200);
         return () => clearTimeout(timer);
       }
@@ -80,7 +88,7 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
   useEffect(() => {
     if (
       canvasRef.current &&
-      //gameState.start &&
+      subjectInitFlag &&
       marks.length &&
       !animationFrameIdRef.current
     ) {
@@ -108,5 +116,7 @@ export function useAnimate({ level, canvasRef, marks }: Props) {
         animationFrameIdRef.current = null;
       }
     };
-  }, [marks]);
+  }, [marks, subjectInitFlag]);
+
+  return { animationDone };
 }
