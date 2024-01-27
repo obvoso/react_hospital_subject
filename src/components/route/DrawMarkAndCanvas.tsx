@@ -35,15 +35,12 @@ const DrawMarkAndCanvas = ({
   });
 
   useObstacleRoute({
-    level,
-    gridInitFlag,
     mark,
     setCurrentRoute,
     otherRoute,
     setOtherRoute,
     animationDone,
     setAnimationStop,
-    subjectInitFlag,
     config,
   });
 

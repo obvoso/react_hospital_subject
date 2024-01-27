@@ -34,7 +34,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
     /**
      * 1. clickCount가 priority와 같으면 정답
      * 2. level이 11이면 정답(하드코딩..ㅋ)
-     * 3. 경유 상태이고 현재 클릭한 마크가 목표 마크와 같으면 정답
+     * 3. 경유 상태이고 현재 클릭한 마크가 목표 마크와 같으면 정답 (경유지는 마지막 인덱스에 있어서 클릭카운트랑 비교함)
      */
     console.log(
       clickCount,

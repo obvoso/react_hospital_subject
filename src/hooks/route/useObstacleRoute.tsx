@@ -5,31 +5,29 @@ import { useSetRecoilState } from "recoil";
 import { subjectState } from "@/atoms/route/game";
 
 interface params {
-  level: number;
-  gridInitFlag: boolean;
   mark: Mark[];
   setCurrentRoute: React.Dispatch<React.SetStateAction<Mark[]>>;
   otherRoute: Mark[];
   setOtherRoute: React.Dispatch<React.SetStateAction<Mark[]>>;
   animationDone: boolean;
   setAnimationStop: React.Dispatch<React.SetStateAction<boolean>>;
-  subjectInitFlag: boolean;
   config: any;
 }
 
 export default function useObstacleRoute({
-  level,
-  gridInitFlag,
   mark,
   setCurrentRoute,
   otherRoute,
   setOtherRoute,
   animationDone,
   setAnimationStop,
-  subjectInitFlag,
   config,
 }: params) {
   const setSubject = useSetRecoilState(subjectState);
+
+  function arraysHaveSameSequence(arr1: Mark[], arr2: Mark[]) {
+    return arr1.every((item, index) => item.image === arr2[index].image);
+  }
 
   // 첫번째 경로 할당
   useEffect(() => {
@@ -38,26 +36,33 @@ export default function useObstacleRoute({
 
   // 두번째 경로 할당
   useEffect(() => {
-    if (config.obstacle && !otherRoute.length && animationDone) {
-      const copyArr = mark.slice(0, -1);
-      let newRoute: Mark[] = shuffleArray(copyArr).map((item, index) => {
-        return {
-          ...item,
-          priority: index,
-        };
-      });
-      let randomIndex = Math.floor(Math.random() * (newRoute.length - 2));
-      newRoute.push({
-        ...newRoute[randomIndex],
-        priority: newRoute.length,
-      });
-      const timer = setTimeout(() => {
-        setOtherRoute(newRoute);
-        setCurrentRoute(newRoute);
-      }, 1000);
-      return () => clearTimeout(timer);
+    function setSecondRoute() {
+      if (config.obstacle && !otherRoute.length && animationDone) {
+        let newRoute: Mark[];
+        do {
+          const copyArr = mark.slice(0, -1);
+          newRoute = shuffleArray(copyArr).map((item, index) => ({
+            ...item,
+            priority: index,
+          }));
+
+          let randomIndex = Math.floor(Math.random() * (newRoute.length - 2));
+          newRoute.push({
+            ...newRoute[randomIndex],
+            priority: newRoute.length,
+          });
+        } while (arraysHaveSameSequence(newRoute, mark));
+
+        const timer = setTimeout(() => {
+          setOtherRoute(newRoute);
+          setCurrentRoute(newRoute);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+      }
     }
-  }, [animationDone]);
+    setSecondRoute();
+  }, [animationDone, config.obstacle, mark, otherRoute.length]);
 
   // 세번째 경로 할당(정답)
   useEffect(() => {
