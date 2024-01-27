@@ -6,3 +6,8 @@ export const routeGameState = atom({
     start: false,
   },
 });
+
+export const subjectState = atom({
+  key: "subjectState",
+  default: "",
+});

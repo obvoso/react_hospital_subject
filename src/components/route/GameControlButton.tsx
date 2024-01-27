@@ -13,6 +13,11 @@ export default function GameControlButton({ level }: GameControlButtonProps) {
   const [gameStatus, setGameStatus] = useRecoilState(routeGameState);
 
   const handleRestart = () => {
+    // 구차 레전드..
+    if (level === 6 || level === 9 || level === 10) {
+      window.location.reload();
+      return;
+    }
     setGameStatus({ start: true });
   };
 

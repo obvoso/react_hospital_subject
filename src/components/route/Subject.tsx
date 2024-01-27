@@ -1,5 +1,7 @@
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
+import { subjectState } from "@/atoms/route/game";
 import React, { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 
 interface SubjectProps {
   level: number;
@@ -9,8 +11,12 @@ interface SubjectProps {
 export default function Subject({ level, setSubjectInit }: SubjectProps) {
   const config = routeGameConfigList[level];
   const fullSubject = config.subject;
-  const [subject, setSubject] = useState<string>("");
+  const [subject, setSubject] = useRecoilState(subjectState);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setSubject("");
+  }, []);
 
   useEffect(() => {
     if (index < fullSubject.length) {
@@ -21,6 +27,7 @@ export default function Subject({ level, setSubjectInit }: SubjectProps) {
 
       return () => clearTimeout(timer);
     } else {
+      // 서브젝트 렌더링 0.5초 후에 버스 출발
       const timer = setTimeout(() => {
         setSubjectInit();
       }, 500);

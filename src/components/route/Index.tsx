@@ -12,7 +12,6 @@ interface RouteProps {
 
 export default function Route({ level }: RouteProps) {
   const { gridInitFlag } = useGrid(level);
-
   const [subjectInitFlag, setSubjectInitFlag] = useState(false);
   if (!gridInitFlag) {
     return null;
@@ -27,7 +26,6 @@ export default function Route({ level }: RouteProps) {
         />
         <DrawMarkAndCanvas
           level={level}
-          //mark={mark}
           subjectInitFlag={subjectInitFlag}
           gridInitFlag={gridInitFlag}
           key={level}

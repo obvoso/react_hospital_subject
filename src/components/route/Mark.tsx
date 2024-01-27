@@ -36,10 +36,19 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
      * 2. level이 11이면 정답(하드코딩..ㅋ)
      * 3. 경유 상태이고 현재 클릭한 마크가 목표 마크와 같으면 정답
      */
+    console.log(
+      clickCount,
+      priority,
+      marks[priority].x,
+      marks[config.mark].x,
+      marks[priority].y,
+      marks[config.mark].y
+    );
     if (
       clickCount === priority ||
       level === 11 ||
       (config.transit &&
+        clickCount === config.mark &&
         marks[priority].x === marks[config.mark].x &&
         marks[priority].y === marks[config.mark].y)
     )

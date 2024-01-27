@@ -77,8 +77,8 @@ export const routeGameConfigList: RouteGameConfig[] = [
     transit: 0,
     obstacle: false,
     speed: Speed.SLOW,
-    invalidGrid: InvalidGridMap0,
-    background: "map0",
+    invalidGrid: InvalidGridMap1,
+    background: "map1",
     subject:
       "버스로 이동하는 여행 경로를 잘 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
   },
@@ -102,8 +102,8 @@ export const routeGameConfigList: RouteGameConfig[] = [
     transit: 0,
     obstacle: false,
     speed: Speed.FAST,
-    invalidGrid: InvalidGridMap2,
-    background: "map2",
+    invalidGrid: InvalidGridMap1,
+    background: "map1",
     subject:
       "버스로 이동하는 여행 경로를 잘 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
   },
@@ -114,8 +114,8 @@ export const routeGameConfigList: RouteGameConfig[] = [
     transit: 1,
     obstacle: false,
     speed: Speed.FAST,
-    invalidGrid: InvalidGridMap2,
-    background: "map2",
+    invalidGrid: InvalidGridMap1,
+    background: "map1",
     subject:
       "버스로 이동하는 여행 경로를 잘 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
   },

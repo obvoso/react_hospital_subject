@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-
 import { Mark } from "@/type/route/Mark";
 import { RouteGameConfig } from "@/type/route/routeGameConfigType";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
+import { clear } from "console";
 
 interface Props {
   level: number;
@@ -10,6 +10,7 @@ interface Props {
   marks: Mark[];
   subjectInitFlag: boolean;
   vehicleAsset: string;
+  animationStop: boolean;
 }
 
 export function useAnimate({
@@ -18,6 +19,7 @@ export function useAnimate({
   marks,
   subjectInitFlag,
   vehicleAsset,
+  animationStop,
 }: Props) {
   const animationFrameIdRef = useRef<number | null>(null);
   const [animationDone, setAnimationDone] = useState(false);
@@ -73,8 +75,10 @@ export function useAnimate({
           currentMark++;
           const timer = setTimeout(() => {
             animationFrameIdRef.current = requestAnimationFrame(animate);
-          }, 100);
-          return () => clearTimeout(timer);
+          }, 300);
+          return () => {
+            clearTimeout(timer);
+          };
         }
       };
 
@@ -91,13 +95,13 @@ export function useAnimate({
       canvasRef.current &&
       subjectInitFlag &&
       marks.length &&
-      !animationFrameIdRef.current
+      !animationFrameIdRef.current &&
+      !animationStop
     ) {
       const config = routeGameConfigList[level];
       const vehicle = new Image();
       const context = canvasRef.current.getContext("2d");
       if (!context) return;
-
       vehicle.src = `/assets/route/${vehicleAsset}.png`;
       vehicle.onload = () => {
         if (!animationFrameIdRef.current)
@@ -110,12 +114,13 @@ export function useAnimate({
     }
 
     return () => {
+      setAnimationDone(false);
       if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
         animationFrameIdRef.current = null;
       }
     };
-  }, [marks, subjectInitFlag, vehicleAsset]);
+  }, [marks, subjectInitFlag, vehicleAsset, animationStop]);
 
   return { animationDone };
 }
