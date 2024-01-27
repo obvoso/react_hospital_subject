@@ -34,7 +34,6 @@ const DrawMarkAndCanvas = React.memo(
       >
         <Mark marks={mark} level={level} clickAble={animationDone} />
         <canvas ref={canvasRef} width={MapWidth} height={MapHeight}></canvas>
-        {/*{subjectInitFlag && <Canvas key={level} level={level} marks={mark} />}*/}
       </div>
     );
   }

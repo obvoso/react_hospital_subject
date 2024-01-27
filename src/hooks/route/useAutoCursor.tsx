@@ -7,6 +7,7 @@ interface AutoCursorProps {
   containerRef: React.RefObject<HTMLDivElement>;
   handleMouseDown: (priority: number) => void;
   handleMouseUp: () => void;
+  moveAble: boolean;
 }
 
 export function useAutoCursor({
@@ -15,6 +16,7 @@ export function useAutoCursor({
   containerRef,
   handleMouseDown,
   handleMouseUp,
+  moveAble,
 }: AutoCursorProps) {
   useEffect(() => {
     if (level !== 11 || marks.length === 0 || !containerRef.current) return;
@@ -26,14 +28,13 @@ export function useAutoCursor({
 
     cursor.style.position = "absolute";
     cursor.style.pointerEvents = "none";
+    cursor.style.zIndex = "100";
     cursor.style.width = "50px";
     cursor.style.height = "50px";
     document.body.appendChild(cursor);
 
-    // 좌표 설정
-
     let currentMarkIndex = marks.length - 1;
-    const cursorSpeed = 3; // 조절 가능한 속도
+    const cursorSpeed = 3;
 
     const animateCursor = (prevX?: number, prevY?: number) => {
       if (currentMarkIndex < 0) {
@@ -66,22 +67,19 @@ export function useAutoCursor({
           handleMouseUp();
           setTimeout(() => {
             currentMarkIndex--;
-            animateCursor(x, y); // 현재 좌표를 다음 호출에 넘김
+            animateCursor(x, y);
           }, 100); // 100ms 후에 다음 마크로 이동
         } else requestAnimationFrame(move);
       };
       move();
     };
 
-    const timer = setTimeout(() => {
-      animateCursor();
-    }, 10000);
+    if (moveAble) animateCursor();
 
     return () => {
       if (cursor.parentNode) {
         document.body.removeChild(cursor);
       }
-      clearTimeout(timer);
     };
-  }, [marks, level]);
+  }, [marks, level, moveAble]);
 }

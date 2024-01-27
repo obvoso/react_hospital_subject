@@ -22,6 +22,12 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
     Record<number, boolean | null>
   >({});
 
+  useEffect(() => {
+    setCorrectRoute({});
+    setClickCount(0);
+    setClickedMarks({});
+  }, [level, marks]);
+
   const handleMouseDown = (priority: number) => {
     let isCorrect = false;
     if (
@@ -38,10 +44,6 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
     if (isCorrect) {
       if (clickCount + 1 === marks.length || (level === 11 && priority === 1)) {
         setGameState((prev) => ({ ...prev, start: false }));
-        setTimeout(() => {
-          setClickCount(0);
-          setCorrectRoute({});
-        }, 1000);
       }
       setClickCount(clickCount + 1);
       if (clickCount === priority || (level === 11 && priority === 1))
@@ -69,6 +71,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
     containerRef,
     handleMouseDown,
     handleMouseUp,
+    moveAble: clickAble,
   });
 
   return (
