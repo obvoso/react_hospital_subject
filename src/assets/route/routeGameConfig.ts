@@ -92,7 +92,8 @@ export const routeGameConfigList: RouteGameConfig[] = [
     invalidGrid: InvalidGridMap2,
     background: "map2",
     subject:
-      "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
+      //"각 버스와 택시가 이동하는 경로를 모두 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
+      "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
   },
   {
     level: 7,

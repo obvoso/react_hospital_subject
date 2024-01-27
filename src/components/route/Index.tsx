@@ -12,9 +12,9 @@ interface RouteProps {
 
 export default function Route({ level }: RouteProps) {
   const { gridInitFlag } = useGrid(level);
-  const { mark } = useRandomMark({ level, gridInitFlag });
+
   const [subjectInitFlag, setSubjectInitFlag] = useState(false);
-  if (!gridInitFlag || !mark.length) {
+  if (!gridInitFlag) {
     return null;
   }
 
@@ -27,8 +27,9 @@ export default function Route({ level }: RouteProps) {
         />
         <DrawMarkAndCanvas
           level={level}
-          mark={mark}
+          //mark={mark}
           subjectInitFlag={subjectInitFlag}
+          gridInitFlag={gridInitFlag}
           key={level}
         />
         <GameContolButton level={level} />

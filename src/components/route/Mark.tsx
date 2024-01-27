@@ -23,6 +23,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
   >({});
 
   useEffect(() => {
+    //console.log("marks", marks);
     setCorrectRoute({});
     setClickCount(0);
     setClickedMarks({});
@@ -30,6 +31,11 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
 
   const handleMouseDown = (priority: number) => {
     let isCorrect = false;
+    /**
+     * 1. clickCount가 priority와 같으면 정답
+     * 2. level이 11이면 정답(하드코딩..ㅋ)
+     * 3. 경유 상태이고 현재 클릭한 마크가 목표 마크와 같으면 정답
+     */
     if (
       clickCount === priority ||
       level === 11 ||

@@ -9,6 +9,7 @@ interface Props {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   marks: Mark[];
   subjectInitFlag: boolean;
+  vehicleAsset: string;
 }
 
 export function useAnimate({
@@ -16,10 +17,10 @@ export function useAnimate({
   canvasRef,
   marks,
   subjectInitFlag,
+  vehicleAsset,
 }: Props) {
   const animationFrameIdRef = useRef<number | null>(null);
   const [animationDone, setAnimationDone] = useState(false);
-
   const startAnimation = (
     context: CanvasRenderingContext2D,
     vehicle: HTMLImageElement,
@@ -97,9 +98,7 @@ export function useAnimate({
       const context = canvasRef.current.getContext("2d");
       if (!context) return;
 
-      config.obstacle
-        ? (vehicle.src = "/assets/route/taxi.png")
-        : (vehicle.src = "/assets/route/bus.png");
+      vehicle.src = `/assets/route/${vehicleAsset}.png`;
       vehicle.onload = () => {
         if (!animationFrameIdRef.current)
           startAnimation(context, vehicle, config, marks);
@@ -116,7 +115,7 @@ export function useAnimate({
         animationFrameIdRef.current = null;
       }
     };
-  }, [marks, subjectInitFlag]);
+  }, [marks, subjectInitFlag, vehicleAsset]);
 
   return { animationDone };
 }

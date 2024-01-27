@@ -33,6 +33,7 @@ export default function DrawMark({
     [clickAble, mark.priority, handleMouseDown]
   );
 
+  //console.log(mark);
   let backgroundColor = "";
   if (isCorrect) {
     backgroundColor = "rgba(0, 100, 200, 0.4)";
