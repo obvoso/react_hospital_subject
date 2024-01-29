@@ -12,7 +12,6 @@ export function useGrid(level: number) {
   const customRoute = useRecoilValue(customRouteState);
 
   useEffect(() => {
-    console.log(level);
     const config = level < 11 ? routeGameConfigList[level] : customRoute;
 
     updateGrid(config.invalidGrid);

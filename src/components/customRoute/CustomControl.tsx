@@ -15,16 +15,16 @@ import {
   InvalidGridMap1,
   InvalidGridMap2,
 } from "@/assets/route/InvalidGrid";
+import SelectMap from "./SelectMap";
 
 export default function CustomControl() {
   const [customRoute, setCustomRoute] = useRecoilState(customRouteState);
 
   return (
-    <div className="flex flex-row sm:flex-col items-center bg-white rounded-lg shadow-lg px-3 sm:py-6 py-4">
-      <SelectsDropDown
+    <div className="flex flex-row sm:flex-col items-center bg-white rounded-lg shadow-lg px-3 sm:py-6 py-4 min-w-[150px]">
+      <SelectMap
         label="맵 선택"
         options={mapOptions}
-        max={1}
         imagePath="/assets/route/"
         onChange={(value) =>
           setCustomRoute((prev) => ({

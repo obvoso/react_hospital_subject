@@ -45,6 +45,8 @@ const DrawMarkAndCanvas = ({
     config,
   });
 
+  console.log(config.background);
+
   return (
     <div
       className={`flex relative w-[600px] h-[400px] bg-contain ${
