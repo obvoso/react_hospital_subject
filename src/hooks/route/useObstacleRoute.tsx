@@ -40,17 +40,19 @@ export default function useObstacleRoute({
       if (config.obstacle && !otherRoute.length && animationDone) {
         let newRoute: Mark[];
         do {
-          const copyArr = mark.slice(0, -1);
+          const copyArr = config.transit ? mark.slice(0, -1) : mark;
           newRoute = shuffleArray(copyArr).map((item, index) => ({
             ...item,
             priority: index,
           }));
 
-          let randomIndex = Math.floor(Math.random() * (newRoute.length - 2));
-          newRoute.push({
-            ...newRoute[randomIndex],
-            priority: newRoute.length,
-          });
+          if (config.transit) {
+            let randomIndex = Math.floor(Math.random() * (newRoute.length - 2));
+            newRoute.push({
+              ...newRoute[randomIndex],
+              priority: newRoute.length,
+            });
+          }
         } while (arraysHaveSameSequence(newRoute, mark));
 
         const timer = setTimeout(() => {
