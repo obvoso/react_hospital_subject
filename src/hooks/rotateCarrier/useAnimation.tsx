@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
+import { RotateCarrierLevelConfig } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import {
   RotateCarrierGameState,
   SubjectTextState,

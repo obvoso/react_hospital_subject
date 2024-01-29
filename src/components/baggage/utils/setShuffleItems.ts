@@ -1,7 +1,7 @@
 import {
   BaggageItemAssets,
   BaggageLevelConfig,
-} from "@/utils/baggage/baggageGameConfig";
+} from "@/assets/baggage/baggageGameConfig";
 import { BaggageStatus } from "@/utils/constEnum";
 import { shuffleArray } from "..";
 import { ItemAnimation } from "@/atoms/baggage/animationItem";

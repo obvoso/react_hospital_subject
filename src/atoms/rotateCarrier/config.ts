@@ -1,4 +1,4 @@
-import { RotateCarrierLevelConfig } from "@/utils/carrierRotation/carrierRotateGameConfig";
+import { RotateCarrierLevelConfig } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import { atom } from "recoil";
 
 export enum RotateCarrierStage {

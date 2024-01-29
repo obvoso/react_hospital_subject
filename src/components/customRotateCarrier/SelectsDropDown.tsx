@@ -5,6 +5,7 @@ interface SelectProps {
   options: { label: string; value: any }[];
   onChange: (value: any) => void;
   max: number;
+  imagePath: string;
 }
 
 export default function SelectsDropDown({
@@ -12,6 +13,7 @@ export default function SelectsDropDown({
   options,
   onChange,
   max,
+  imagePath,
 }: SelectProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -68,7 +70,7 @@ export default function SelectsDropDown({
                 />
 
                 <img
-                  src={`/assets/rotateCarrier/${option.value}.png`}
+                  src={imagePath + option.value + ".png"}
                   alt={option.label}
                   className="h-10 w-10 mr-2"
                 />

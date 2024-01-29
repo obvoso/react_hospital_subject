@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
-import { baggageGameLevels } from "@/utils/baggage/baggageGameConfig";
+import { baggageGameLevels } from "@/assets/baggage/baggageGameConfig";
 import { BaggageCanvas } from "@/components/baggage";
 import {
   BaggageGameConfigState,

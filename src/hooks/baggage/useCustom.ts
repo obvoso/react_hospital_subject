@@ -4,7 +4,7 @@ import { BaggageGameConfigState, GameSpeed } from "@/atoms/baggage/game";
 import {
   BaggageLevelConfig,
   BaggageItemAssets,
-} from "@/utils/baggage/baggageGameConfig";
+} from "@/assets/baggage/baggageGameConfig";
 import {
   BaggageCustomState,
   Classification,

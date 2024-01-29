@@ -9,7 +9,7 @@ import CurrentScore from "@/components/baggage/CurrentScore";
 import GameControlButtons from "@/components/baggage/GameControlButtons";
 import { DropDownButton } from "@/components/customBaggage/DropDownButton";
 import { useCustom } from "@/hooks/baggage/useCustom";
-import { BaggageSpeed } from "@/utils/baggage/baggageGameConfig";
+import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
 import { useResetRecoilState } from "recoil";
 import Timer from "@/components/baggage/Timer";
 import { Classification } from "@/atoms/baggage/custom";

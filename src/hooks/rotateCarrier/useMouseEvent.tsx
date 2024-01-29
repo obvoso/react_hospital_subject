@@ -2,7 +2,7 @@ import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
 import {
   RotateCarrierLevelConfig,
   RotateCarrierSpacePoint,
-} from "@/utils/carrierRotation/carrierRotateGameConfig";
+} from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import { RefObject, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
