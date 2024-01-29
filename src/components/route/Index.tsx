@@ -33,7 +33,7 @@ export default function Route({ level }: RouteProps) {
         />
         <GameContolButton level={level} />
       </div>
-      {level < 11 ? (
+      {level < 13 ? (
         <>
           <Speed level={level} />
           <LevelNav game="route" curLevel={level} />

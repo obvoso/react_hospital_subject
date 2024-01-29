@@ -91,7 +91,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     speed: Speed.FAST,
     invalidGrid: InvalidGridMap2,
     background: "map2",
-    subject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
+    subject: "",
   },
   {
     level: 7,
@@ -108,14 +108,14 @@ export const routeGameConfigList: RouteGameConfig[] = [
   {
     level: 8,
     mark: 5,
-    direction: Direction.BACKWARD,
+    direction: Direction.FORWARD,
     transit: 1,
     obstacle: false,
     speed: Speed.FAST,
     invalidGrid: InvalidGridMap1,
     background: "map1",
     subject:
-      "버스로 이동하는 여행 경로를 잘 기억해주세요.\n버스가 이동하는 순서를 거꾸로 기억해서 눌러주세요.",
+      "버스로 이동하는 여행 경로를 순서대로 기억해주세요.\n버스가 이동하였던 경로 순서대로 여행지를 눌러주세요.",
   },
   {
     level: 9,
@@ -126,7 +126,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     speed: Speed.FAST,
     invalidGrid: InvalidGridMap2,
     background: "map2",
-    subject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
+    subject: "",
   },
   {
     level: 10,
@@ -137,7 +137,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     speed: Speed.FAST,
     invalidGrid: InvalidGridMap2,
     background: "map2",
-    subject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
+    subject: "",
   },
   // 3단계 영상
   {

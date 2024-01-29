@@ -3,7 +3,7 @@ import { Mark } from "@/type/route/Mark";
 import { RouteGameConfig } from "@/type/route/routeGameConfigType";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { useRecoilValue } from "recoil";
-import { vehicleSpeedState } from "@/atoms/route/game";
+import { routeGameState, vehicleSpeedState } from "@/atoms/route/game";
 import { customRouteState } from "@/atoms/route/custom";
 
 interface Props {
@@ -12,7 +12,6 @@ interface Props {
   marks: Mark[];
   subjectInitFlag: boolean;
   vehicleAsset: string;
-  animationStop: boolean;
 }
 
 export function useAnimate({
@@ -21,12 +20,12 @@ export function useAnimate({
   marks,
   subjectInitFlag,
   vehicleAsset,
-  animationStop,
 }: Props) {
   const animationFrameIdRef = useRef<number | null>(null);
   const [animationDone, setAnimationDone] = useState(false);
   const speed = useRecoilValue(vehicleSpeedState);
   const customRoute = useRecoilValue(customRouteState);
+  const gameState = useRecoilValue(routeGameState);
 
   const startAnimation = (
     context: CanvasRenderingContext2D,
@@ -42,11 +41,9 @@ export function useAnimate({
       if (currentMark + 1 >= config.mark + config.transit) {
         cancelAnimationFrame(animationFrameIdRef.current!);
         animationFrameIdRef.current = null;
-        const timer = setTimeout(() => {
-          context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-          setAnimationDone(true);
-        }, 200);
-        return () => clearTimeout(timer);
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        setAnimationDone(true);
+        return;
       }
 
       const { x: startX, y: startY } = marks[currentMark];
@@ -97,13 +94,14 @@ export function useAnimate({
 
   useEffect(() => {
     if (
+      gameState.start &&
       canvasRef.current &&
       subjectInitFlag &&
       marks.length &&
       !animationFrameIdRef.current &&
-      !animationStop
+      !animationDone
     ) {
-      const config = level < 11 ? routeGameConfigList[level] : customRoute;
+      const config = level < 13 ? routeGameConfigList[level] : customRoute;
       const vehicle = new Image();
       const context = canvasRef.current.getContext("2d");
       if (!context) return;
@@ -118,13 +116,20 @@ export function useAnimate({
       };
     }
     return () => {
-      setAnimationDone(false);
       if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
         animationFrameIdRef.current = null;
       }
     };
-  }, [marks, subjectInitFlag, vehicleAsset, animationStop, speed]);
+  }, [
+    marks,
+    subjectInitFlag,
+    vehicleAsset,
+    animationDone,
+    speed,
+    level,
+    gameState.start,
+  ]);
 
-  return { animationDone };
+  return { animationDone, setAnimationDone };
 }

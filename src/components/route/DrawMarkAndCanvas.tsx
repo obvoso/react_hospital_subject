@@ -20,19 +20,17 @@ const DrawMarkAndCanvas = ({
   gridInitFlag,
 }: DrawMarkAndCanvasProps) => {
   const customRoute = useRecoilValue(customRouteState);
-  const config = level < 11 ? routeGameConfigList[level] : customRoute;
+  const config = level < 13 ? routeGameConfigList[level] : customRoute;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { mark } = useRandomMark({ level, gridInitFlag });
   const [otherRoute, setOtherRoute] = useState<IMark[]>([]);
   const [currentRoute, setCurrentRoute] = useState<IMark[]>([]);
-  const [animationStop, setAnimationStop] = useState(false);
-  const { animationDone } = useAnimate({
+  const { animationDone, setAnimationDone } = useAnimate({
     level,
     canvasRef,
     marks: currentRoute,
     subjectInitFlag,
     vehicleAsset: otherRoute.length !== 0 ? "taxi" : "bus",
-    animationStop,
   });
 
   useObstacleRoute({
@@ -41,11 +39,9 @@ const DrawMarkAndCanvas = ({
     otherRoute,
     setOtherRoute,
     animationDone,
-    setAnimationStop,
+    setAnimationDone,
     config,
   });
-
-  console.log(config.background);
 
   return (
     <div
@@ -58,11 +54,7 @@ const DrawMarkAndCanvas = ({
       }`}
       key={level}
     >
-      <Mark
-        marks={currentRoute}
-        level={level}
-        clickAble={animationDone || animationStop}
-      />
+      <Mark marks={currentRoute} level={level} clickAble={animationDone} />
       <canvas ref={canvasRef} width={MapWidth} height={MapHeight}></canvas>
     </div>
   );

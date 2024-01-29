@@ -208,6 +208,7 @@ export const useCustom = () => {
     setFindItem,
     obstacle,
     setObstacle,
+    rotate,
     setRotate,
     setRotateAngle,
     gameState,

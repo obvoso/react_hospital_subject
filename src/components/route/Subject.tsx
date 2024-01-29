@@ -1,7 +1,6 @@
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
-import { customRouteState } from "@/atoms/route/custom";
 import { subjectState } from "@/atoms/route/game";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 interface SubjectProps {
@@ -10,20 +9,29 @@ interface SubjectProps {
 }
 
 export default function Subject({ level, setSubjectInit }: SubjectProps) {
-  const customRoute = useRecoilValue(customRouteState);
-  const config = level < 11 ? routeGameConfigList[level] : customRoute;
-  const fullSubject = config.subject;
-  const [subject, setSubject] = useRecoilState(subjectState);
+  const config = routeGameConfigList[level];
+  const [fullSubject, setFullSubject] = useRecoilState(subjectState);
+  const [typing, setTyping] = useState("");
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    setSubject("");
-  }, []);
+    if (config) {
+      setFullSubject(config.subject);
+    } else {
+      setFullSubject("커스텀 경로 기억하기 페이지입니다.");
+    }
+    setTyping("");
+  }, [level]);
 
   useEffect(() => {
-    if (index < fullSubject.length) {
+    setIndex(0);
+    setTyping("");
+  }, [fullSubject]);
+
+  useEffect(() => {
+    if (index < fullSubject.length + 1) {
       const timer = setTimeout(() => {
-        setSubject((prev) => prev + fullSubject.charAt(index));
+        setTyping((prev) => prev + fullSubject.charAt(index));
         setIndex(index + 1);
       }, 70);
 
@@ -40,7 +48,7 @@ export default function Subject({ level, setSubjectInit }: SubjectProps) {
   return (
     <div className="flex items-center justify-center bg-whilte border-2 border-gray-500 rounded-md shadow-lg w-[500px] h-[100px] bg-contain">
       <span className="flex whitespace-pre-line leading-7 text-center">
-        {subject}
+        {typing}
       </span>
     </div>
   );

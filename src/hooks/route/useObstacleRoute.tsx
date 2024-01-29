@@ -3,6 +3,7 @@ import shuffleArray from "@/utils/arrayShuffle";
 import { Mark } from "@/type/route/Mark";
 import { useSetRecoilState } from "recoil";
 import { subjectState } from "@/atoms/route/game";
+import { Direction } from "@/type/route/routeGameConfigType";
 
 interface params {
   mark: Mark[];
@@ -10,7 +11,7 @@ interface params {
   otherRoute: Mark[];
   setOtherRoute: React.Dispatch<React.SetStateAction<Mark[]>>;
   animationDone: boolean;
-  setAnimationStop: React.Dispatch<React.SetStateAction<boolean>>;
+  setAnimationDone: React.Dispatch<React.SetStateAction<boolean>>;
   config: any;
 }
 
@@ -20,7 +21,7 @@ export default function useObstacleRoute({
   otherRoute,
   setOtherRoute,
   animationDone,
-  setAnimationStop,
+  setAnimationDone,
   config,
 }: params) {
   const setSubject = useSetRecoilState(subjectState);
@@ -32,20 +33,35 @@ export default function useObstacleRoute({
   // 첫번째 경로 할당
   useEffect(() => {
     setCurrentRoute(mark);
+    setOtherRoute([]);
+    setAnimationDone(false);
+    if (config.obstacle)
+      setSubject("각 버스와 택시가 이동하는 경로를 모두 기억해주세요.");
   }, [mark]);
 
   // 두번째 경로 할당
   useEffect(() => {
+    function getCopyArr(arr: Mark[]) {
+      const copyArr = new Map();
+
+      arr.forEach((obj) => {
+        if (!copyArr.has(obj.image)) {
+          copyArr.set(obj.image, obj);
+        }
+      });
+
+      return Array.from(copyArr.values());
+    }
+
     function setSecondRoute() {
       if (config.obstacle && !otherRoute.length && animationDone) {
         let newRoute: Mark[];
         do {
-          const copyArr = config.transit ? mark.slice(0, -1) : mark;
+          const copyArr = config.transit ? getCopyArr(mark) : { ...mark };
           newRoute = shuffleArray(copyArr).map((item, index) => ({
             ...item,
             priority: index,
           }));
-
           if (config.transit) {
             let randomIndex = Math.floor(Math.random() * (newRoute.length - 2));
             newRoute.push({
@@ -53,11 +69,15 @@ export default function useObstacleRoute({
               priority: newRoute.length,
             });
           }
+          if (config.direction === Direction.BACKWARD) {
+            newRoute.reverse();
+          }
         } while (arraysHaveSameSequence(newRoute, mark));
 
         const timer = setTimeout(() => {
           setOtherRoute(newRoute);
           setCurrentRoute(newRoute);
+          setAnimationDone(false);
         }, 1000);
 
         return () => clearTimeout(timer);
@@ -68,15 +88,15 @@ export default function useObstacleRoute({
 
   // 세번째 경로 할당(정답)
   useEffect(() => {
-    // 왜 animationDone이 true가 먼저 찍히고 다시 false가 되는지 모르겠음..
-    if (config.obstacle && otherRoute.length && !animationDone) {
-      return () => {
-        const random = Math.floor(Math.random() * 2);
-        const vehicle = random ? "버스" : "택시";
-        setCurrentRoute(random ? mark : otherRoute);
-        setSubject(vehicle + "가 이동하였던 경로 순서 여행지를 눌러주세요.");
-        setAnimationStop(true);
-      };
+    if (config.obstacle && otherRoute.length && animationDone) {
+      const random = Math.floor(Math.random() * 2);
+      const vehicle = random ? "버스" : "택시";
+      setCurrentRoute(random ? mark : otherRoute);
+      if (config.transit)
+        setSubject(
+          vehicle + "가 이동하였던 경로 순서를 거꾸로 기억해서 눌러주세요."
+        );
+      else setSubject(vehicle + "가 이동하였던 경로 순서 여행지를 눌러주세요.");
     }
   }, [animationDone, otherRoute]);
 }

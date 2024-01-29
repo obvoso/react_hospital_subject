@@ -11,6 +11,7 @@ interface CustomButtonsProps {
   gridSize: number;
   obstacleSize: number;
   itemSize: number;
+  rotate: number;
   findDirection: boolean;
   findExist: boolean;
   setFindDirection: (findDirection: boolean) => void;
@@ -25,6 +26,7 @@ export default function CustomButtons({
   gridSize,
   obstacleSize,
   itemSize,
+  rotate,
   findDirection,
   findExist,
   setFindDirection,
@@ -83,6 +85,7 @@ export default function CustomButtons({
       <div className="flex flex-row pt-5 items-center">
         <DropDownButton
           label="격자 크기"
+          curValue={gridSize}
           options={gridSizeOptions}
           onChange={(gridSize: number) => setGridSize(gridSize)}
         />
@@ -97,7 +100,7 @@ export default function CustomButtons({
         />
         <DropDownButton
           label="방해 요소"
-          gridSize={gridSize}
+          curValue={obstacleSize}
           options={
             gridSize - itemSize === 0
               ? obstacleOptions.slice(0, 1)
@@ -109,6 +112,7 @@ export default function CustomButtons({
         />
         <DropDownButton
           label="회전 횟수"
+          curValue={rotate}
           options={rotateOptions}
           onChange={(rotate: number) => setRotate(rotate)}
         />

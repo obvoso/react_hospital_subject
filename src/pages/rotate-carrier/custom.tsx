@@ -16,6 +16,7 @@ export default function CustomGamePage() {
     setFindItem,
     obstacle,
     setObstacle,
+    rotate,
     setRotate,
     setRotateAngle,
     gameState,
@@ -39,6 +40,7 @@ export default function CustomGamePage() {
           gridSize={gridSize}
           obstacleSize={obstacle}
           itemSize={findItem.length}
+          rotate={rotate}
           findDirection={findDirection}
           findExist={findItemExist}
           setFindDirection={setFindDirection}

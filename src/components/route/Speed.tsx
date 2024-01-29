@@ -10,7 +10,7 @@ interface Props {
 
 export default function Speed({ level }: Props) {
   const customRoute = useRecoilValue(customRouteState);
-  const config = level < 11 ? routeGameConfigList[level] : customRoute;
+  const config = level < 13 ? routeGameConfigList[level] : customRoute;
   const setSpeed = useSetRecoilState(vehicleSpeedState);
 
   useEffect(() => {

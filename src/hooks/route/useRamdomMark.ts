@@ -48,21 +48,17 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
   function updateMark(randomMark: Cell[]) {
     let count = 0;
     const randomIndex = Math.floor(Math.random() * 3);
-    for (let y = 0; y < cols; y++) {
-      for (let x = 0; x < rows; x++) {
-        if (randomMark.some((cell) => cell.x === x && cell.y === y)) {
-          setMark((prev) => [
-            ...prev,
-            {
-              image: `mark${count + randomIndex}`,
-              x: x * MarkCellSize,
-              y: y * MarkCellSize,
-              priority: count++,
-            },
-          ]);
-        }
-      }
-    }
+    randomMark.forEach((cell) => {
+      setMark((prev) => [
+        ...prev,
+        {
+          image: `mark${count + randomIndex}`,
+          x: cell.x * MarkCellSize,
+          y: cell.y * MarkCellSize,
+          priority: count++,
+        },
+      ]);
+    });
     if (config.transit) {
       for (let i = 0; i < config.transit; i++) {
         let randomCell = Math.floor(Math.random() * (randomMark.length - 1));

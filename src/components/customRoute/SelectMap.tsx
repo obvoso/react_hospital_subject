@@ -5,6 +5,7 @@ interface SelectProps {
   options: { label: string; value: any }[];
   onChange: (value: any) => void;
   imagePath: string;
+  currentMap: string;
 }
 
 export default function SelectMap({
@@ -12,8 +13,9 @@ export default function SelectMap({
   options,
   onChange,
   imagePath,
+  currentMap,
 }: SelectProps) {
-  const [selectedValues, setSelectedValues] = useState<string>("map1");
+  const [selectedValues, setSelectedValues] = useState<string>(currentMap);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleCheckboxChange = (value: string) => {

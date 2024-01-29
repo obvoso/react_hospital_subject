@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapHeight, MapWidth, Mark } from "@/type/route/Mark";
 import { routeGameState } from "@/atoms/route/game";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { useAutoCursor } from "@/hooks/route/useAutoCursor";
-import DrawMark from "./DrawMark";
 import { customRouteState } from "@/atoms/route/custom";
+import DrawMark from "./DrawMark";
 
 interface MarkProps {
   marks: Mark[];
@@ -16,7 +16,7 @@ interface MarkProps {
 export default function Mark({ marks, level, clickAble }: MarkProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const customRoute = useRecoilValue(customRouteState);
-  const config = level < 11 ? routeGameConfigList[level] : customRoute;
+  const config = level < 13 ? routeGameConfigList[level] : customRoute;
   const setGameState = useSetRecoilState(routeGameState);
   const [clickCount, setClickCount] = useState(0);
   const [correctRoute, setCorrectRoute] = useState<Record<number, boolean>>({});

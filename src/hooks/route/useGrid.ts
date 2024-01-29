@@ -12,11 +12,13 @@ export function useGrid(level: number) {
   const customRoute = useRecoilValue(customRouteState);
 
   useEffect(() => {
-    const config = level < 11 ? routeGameConfigList[level] : customRoute;
+    const config = level < 13 ? routeGameConfigList[level] : customRoute;
 
     updateGrid(config.invalidGrid);
     setGridInitFlag(true);
-    setGameState({ start: true });
+    if (level < 13) {
+      setGameState({ start: true });
+    }
   }, [level]);
 
   return { gridInitFlag };

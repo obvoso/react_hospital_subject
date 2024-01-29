@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
-import Image from "next/image";
+import React, { memo, useCallback } from "react";
 import { Mark } from "@/type/route/Mark";
+import Image from "next/image";
 
 interface DrawMarkProps {
   mark: Mark;
@@ -12,7 +12,17 @@ interface DrawMarkProps {
   clickAble: boolean;
 }
 
-export default function DrawMark({
+function DrawRoutePriority({ priority }: { priority: number }) {
+  return (
+    <div className="flex justify-center items-center w-full h-10">
+      <div className="flex w-6 h-6 text-indigo-400 font-semibold items-center  justify-center rounded-full border-2 border-indigo-400">
+        {priority}
+      </div>
+    </div>
+  );
+}
+
+export default React.memo(function DrawMark({
   mark,
   correctRoute,
   handleMouseDown,
@@ -66,17 +76,17 @@ export default function DrawMark({
         onMouseDown={onMouseDown}
         onMouseUp={handleMouseUp}
       />
-      {(correctRoute[mark.priority] || correctRoute[endIndex]) && (
-        <div className="flex absolute justify-center items-center w-full h-10">
-          <div className="flex w-6 h-6 text-indigo-400 font-semibold items-center  justify-center rounded-full border-2 border-indigo-400">
-            {correctRoute[mark.priority] ? (
-              <>{mark.priority + 1}</>
-            ) : (
-              <>{endIndex + 1}</>
-            )}
-          </div>
-        </div>
-      )}
+      <div className="flex absolute flex-row ml-[-7px] w-16 h-10">
+        {correctRoute[mark.priority] && (
+          <DrawRoutePriority priority={mark.priority + 1} />
+        )}
+        {correctRoute[endIndex] && !correctRoute[mark.priority] && (
+          <>
+            <DrawRoutePriority priority={mark.priority + 1} />
+            <DrawRoutePriority priority={endIndex + 1} />
+          </>
+        )}
+      </div>
     </div>
   );
-}
+});
