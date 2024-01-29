@@ -6,6 +6,7 @@ import { Cell, Direction } from "@/type/route/routeGameConfigType";
 import { getRandomCell } from "@/utils/route/getRandomCell";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { routeGameState } from "@/atoms/route/game";
+import { customRouteState } from "@/atoms/route/custom";
 
 interface Props {
   level: number;
@@ -13,7 +14,8 @@ interface Props {
 }
 
 export function useRandomMark({ level, gridInitFlag }: Props) {
-  const config = routeGameConfigList[level];
+  const customRoute = useRecoilValue(customRouteState);
+  const config = level < 11 ? routeGameConfigList[level] : customRoute;
   const [grid, setGrid] = useRecoilState(gridState);
   const gameState = useRecoilValue(routeGameState);
   const [mark, setMark] = useState<Mark[]>([]);

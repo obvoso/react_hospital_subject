@@ -93,6 +93,7 @@ export default function CustomButtons({
           options={findItemOptions}
           onChange={(findItem: string[]) => setFindItem(findItem)}
           max={gridSize - obstacleSize}
+          imagePath="/assets/rotateCarrier/"
         />
         <DropDownButton
           label="방해 요소"

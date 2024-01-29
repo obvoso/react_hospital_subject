@@ -1,7 +1,8 @@
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
+import { customRouteState } from "@/atoms/route/custom";
 import { subjectState } from "@/atoms/route/game";
 import React, { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 interface SubjectProps {
   level: number;
@@ -9,7 +10,8 @@ interface SubjectProps {
 }
 
 export default function Subject({ level, setSubjectInit }: SubjectProps) {
-  const config = routeGameConfigList[level];
+  const customRoute = useRecoilValue(customRouteState);
+  const config = level < 11 ? routeGameConfigList[level] : customRoute;
   const fullSubject = config.subject;
   const [subject, setSubject] = useRecoilState(subjectState);
   const [index, setIndex] = useState(0);

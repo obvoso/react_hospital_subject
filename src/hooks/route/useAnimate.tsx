@@ -4,6 +4,7 @@ import { RouteGameConfig } from "@/type/route/routeGameConfigType";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { useRecoilValue } from "recoil";
 import { vehicleSpeedState } from "@/atoms/route/game";
+import { customRouteState } from "@/atoms/route/custom";
 
 interface Props {
   level: number;
@@ -25,6 +26,7 @@ export function useAnimate({
   const animationFrameIdRef = useRef<number | null>(null);
   const [animationDone, setAnimationDone] = useState(false);
   const speed = useRecoilValue(vehicleSpeedState);
+  const customRoute = useRecoilValue(customRouteState);
 
   const startAnimation = (
     context: CanvasRenderingContext2D,
@@ -101,7 +103,7 @@ export function useAnimate({
       !animationFrameIdRef.current &&
       !animationStop
     ) {
-      const config = routeGameConfigList[level];
+      const config = level < 11 ? routeGameConfigList[level] : customRoute;
       const vehicle = new Image();
       const context = canvasRef.current.getContext("2d");
       if (!context) return;
@@ -115,7 +117,6 @@ export function useAnimate({
         }
       };
     }
-    console.log(speed);
     return () => {
       setAnimationDone(false);
       if (animationFrameIdRef.current) {

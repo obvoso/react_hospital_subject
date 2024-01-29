@@ -4,9 +4,9 @@ import Mark from "./Mark";
 import { MapWidth, MapHeight, Mark as IMark } from "@/type/route/Mark";
 import { useAnimate } from "@/hooks/route/useAnimate";
 import { useRandomMark } from "@/hooks/route/useRamdomMark";
-import { useSetRecoilState } from "recoil";
-import { subjectState } from "@/atoms/route/game";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import useObstacleRoute from "@/hooks/route/useObstacleRoute";
+import { customRouteState } from "@/atoms/route/custom";
 
 interface DrawMarkAndCanvasProps {
   level: number;
@@ -19,7 +19,8 @@ const DrawMarkAndCanvas = ({
   subjectInitFlag,
   gridInitFlag,
 }: DrawMarkAndCanvasProps) => {
-  const config = routeGameConfigList[level];
+  const customRoute = useRecoilValue(customRouteState);
+  const config = level < 11 ? routeGameConfigList[level] : customRoute;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { mark } = useRandomMark({ level, gridInitFlag });
   const [otherRoute, setOtherRoute] = useState<IMark[]>([]);

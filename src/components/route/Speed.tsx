@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { vehicleSpeedState } from "@/atoms/route/game";
+import { customRouteState } from "@/atoms/route/custom";
 
 interface Props {
   level: number;
 }
 
 export default function Speed({ level }: Props) {
-  const config = routeGameConfigList[level];
-  const [speed, setSpeed] = useRecoilState(vehicleSpeedState);
+  const customRoute = useRecoilValue(customRouteState);
+  const config = level < 11 ? routeGameConfigList[level] : customRoute;
+  const setSpeed = useSetRecoilState(vehicleSpeedState);
 
   useEffect(() => {
     setSpeed(config.speed);

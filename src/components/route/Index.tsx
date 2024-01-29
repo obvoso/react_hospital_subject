@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useRandomMark } from "@/hooks/route/useRamdomMark";
 import { useGrid } from "@/hooks/route/useGrid";
 import Subject from "./Subject";
 import GameContolButton from "./GameControlButton";
 import LevelNav from "@/utils/LevelNav";
 import DrawMarkAndCanvas from "./DrawMarkAndCanvas";
 import Speed from "./Speed";
+import CustomControl from "../customRoute/CustomControl";
 
 interface RouteProps {
   level: number;
@@ -33,8 +33,14 @@ export default function Route({ level }: RouteProps) {
         />
         <GameContolButton level={level} />
       </div>
-      <Speed level={level} />
-      <LevelNav game="route" curLevel={level} />
+      {level < 11 ? (
+        <>
+          <Speed level={level} />
+          <LevelNav game="route" curLevel={level} />
+        </>
+      ) : (
+        <CustomControl />
+      )}
     </div>
   );
 }
