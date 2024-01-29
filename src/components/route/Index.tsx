@@ -5,6 +5,7 @@ import Subject from "./Subject";
 import GameContolButton from "./GameControlButton";
 import LevelNav from "@/utils/LevelNav";
 import DrawMarkAndCanvas from "./DrawMarkAndCanvas";
+import Speed from "./Speed";
 
 interface RouteProps {
   level: number;
@@ -32,6 +33,7 @@ export default function Route({ level }: RouteProps) {
         />
         <GameContolButton level={level} />
       </div>
+      <Speed level={level} />
       <LevelNav game="route" curLevel={level} />
     </div>
   );

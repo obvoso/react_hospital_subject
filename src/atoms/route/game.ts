@@ -11,3 +11,8 @@ export const subjectState = atom({
   key: "subjectState",
   default: "",
 });
+
+export const vehicleSpeedState = atom({
+  key: "vehicleSpeedState",
+  default: 0,
+});

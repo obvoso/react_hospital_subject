@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Mark } from "@/type/route/Mark";
 import { RouteGameConfig } from "@/type/route/routeGameConfigType";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
-import { clear } from "console";
+import { useRecoilValue } from "recoil";
+import { vehicleSpeedState } from "@/atoms/route/game";
 
 interface Props {
   level: number;
@@ -23,6 +24,8 @@ export function useAnimate({
 }: Props) {
   const animationFrameIdRef = useRef<number | null>(null);
   const [animationDone, setAnimationDone] = useState(false);
+  const speed = useRecoilValue(vehicleSpeedState);
+
   const startAnimation = (
     context: CanvasRenderingContext2D,
     vehicle: HTMLImageElement,
@@ -30,7 +33,7 @@ export function useAnimate({
     marks: Mark[]
   ) => {
     let currentMark = 0;
-    const increaseSpeed = config.speed;
+    const increaseSpeed = speed;
 
     const animate = () => {
       //종료 조건
@@ -112,7 +115,7 @@ export function useAnimate({
         }
       };
     }
-
+    console.log(speed);
     return () => {
       setAnimationDone(false);
       if (animationFrameIdRef.current) {
@@ -120,7 +123,7 @@ export function useAnimate({
         animationFrameIdRef.current = null;
       }
     };
-  }, [marks, subjectInitFlag, vehicleAsset, animationStop]);
+  }, [marks, subjectInitFlag, vehicleAsset, animationStop, speed]);
 
   return { animationDone };
 }
