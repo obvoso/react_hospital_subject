@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import shuffleArray from "@/utils/arrayShuffle";
 import { Mark } from "@/type/route/Mark";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { subjectState } from "@/atoms/route/game";
 import { Direction } from "@/type/route/routeGameConfigType";
+import { arraysHaveSameSequence } from "@/utils/route/arraysHaveSameSequence";
 
 interface params {
   mark: Mark[];
@@ -24,18 +25,28 @@ export default function useObstacleRoute({
   setAnimationDone,
   config,
 }: params) {
-  const setSubject = useSetRecoilState(subjectState);
-
-  function arraysHaveSameSequence(arr1: Mark[], arr2: Mark[]) {
-    return arr1.every((item, index) => item.image === arr2[index].image);
-  }
+  const [subject, setSubject] = useRecoilState(subjectState);
 
   // 첫번째 경로 할당
   useEffect(() => {
+    if (mark.length === 0) return;
     setCurrentRoute(mark);
     setOtherRoute([]);
     setAnimationDone(false);
-    if (config.obstacle) {
+    if (
+      config.obstacle &&
+      config.level < 13 &&
+      subject.fullSubject.length === 0
+    ) {
+      setSubject({
+        fullSubject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
+        typing: "",
+        index: 0,
+      });
+    } else if (
+      config.obstacle &&
+      (config.level >= 13 || subject.fullSubject.length !== 0)
+    ) {
       setSubject({
         fullSubject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
         typing: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
@@ -73,7 +84,7 @@ export default function useObstacleRoute({
             priority: index,
           }));
           if (config.transit) {
-            let randomIndex = Math.floor(Math.random() * (newRoute.length - 2));
+            let randomIndex = Math.floor(Math.random() * (newRoute.length - 1));
             newRoute.push({
               ...newRoute[randomIndex],
               priority: newRoute.length,

@@ -61,6 +61,7 @@ export function useRandomMark({ level, gridInitFlag }: Props) {
     if (config.transit) {
       for (let i = 0; i < config.transit; i++) {
         let randomCell = Math.floor(Math.random() * (randomMark.length - 1));
+        console.log(randomCell);
         setMark((prev) => [
           ...prev,
           { ...prev[randomCell], priority: randomMark.length },
