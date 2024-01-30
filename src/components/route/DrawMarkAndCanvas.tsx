@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import React, { useRef, useState } from "react";
 import Mark from "./Mark";
@@ -44,19 +45,26 @@ const DrawMarkAndCanvas = ({
   });
 
   return (
-    <div
-      className={`flex relative w-[600px] h-[400px] bg-contain ${
-        config.background === "map0"
-          ? "bg-map0"
-          : config.background === "map1"
-          ? "bg-map1"
-          : "bg-map2"
-      }`}
-      key={level}
-    >
-      <Mark marks={currentRoute} level={level} clickAble={animationDone} />
-      <canvas ref={canvasRef} width={MapWidth} height={MapHeight}></canvas>
-    </div>
+    <>
+      <Head>
+        <link rel="preload" href="/assets/route/map0.png" as="image" />
+        <link rel="preload" href="/assets/route/map1.png" as="image" />
+        <link rel="preload" href="/assets/route/map2.png" as="image" />
+      </Head>
+      <div
+        className={`flex relative w-[600px] h-[400px] bg-contain ${
+          config.background === "map0"
+            ? "bg-map0"
+            : config.background === "map1"
+            ? "bg-map1"
+            : "bg-map2"
+        }`}
+        key={level}
+      >
+        <Mark marks={currentRoute} level={level} clickAble={animationDone} />
+        <canvas ref={canvasRef} width={MapWidth} height={MapHeight}></canvas>
+      </div>
+    </>
   );
 };
 
