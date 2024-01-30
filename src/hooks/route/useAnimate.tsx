@@ -45,6 +45,7 @@ export function useAnimate({
         setAnimationDone(true);
         return;
       }
+
       const { x: startX, y: startY } = marks[currentMark];
       const { x: endX, y: endY } = marks[currentMark + 1];
       const totalDistance = Math.sqrt(
