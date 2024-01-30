@@ -26,11 +26,11 @@ export default function Speed({ level }: Props) {
 
   return (
     <div className="flex items-center justify-center bg-white rounded-lg shadow-lg p-2 mt-2">
-      <label className="flex flex-row sm:flex-col items-center text-center">
+      <label className="flex flex-row sm:flex-col items-center text-center text-gray-500 text-sm font-semibold ">
         속도 (초)
         <input
           type="number"
-          className="flex px-3 py-2 sm:mt-2 ml-2 sm:ml-0 text-center bg-gray-100"
+          className="flex pl-3 py-2 sm:mt-2 ml-2 sm:ml-0 text-center bg-gray-100 text-black font-normal "
           placeholder="속도"
           min="0.5"
           max="5"

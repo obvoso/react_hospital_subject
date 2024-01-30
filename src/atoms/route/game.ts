@@ -1,4 +1,6 @@
-import { atom } from "recoil";
+import { DefaultValue, atom, selector } from "recoil";
+import { RouteGameSubject } from "./subject";
+import { Route } from "next";
 
 export const routeGameState = atom({
   key: "routeGameState",
@@ -7,12 +9,16 @@ export const routeGameState = atom({
   },
 });
 
-export const subjectState = atom({
-  key: "subjectState",
-  default: "",
-});
-
 export const vehicleSpeedState = atom({
   key: "vehicleSpeedState",
   default: 0,
+});
+
+export const subjectState = atom<RouteGameSubject>({
+  key: "subjectState",
+  default: {
+    fullSubject: "",
+    typing: "",
+    index: 0,
+  },
 });

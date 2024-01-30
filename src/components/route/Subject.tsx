@@ -10,29 +10,28 @@ interface SubjectProps {
 
 export default function Subject({ level, setSubjectInit }: SubjectProps) {
   const config = routeGameConfigList[level];
-  const [fullSubject, setFullSubject] = useRecoilState(subjectState);
-  const [typing, setTyping] = useState("");
-  const [index, setIndex] = useState(0);
+  const [subject, setSubject] = useRecoilState(subjectState);
 
   useEffect(() => {
     if (config) {
-      setFullSubject(config.subject);
+      setSubject({ fullSubject: config.subject, typing: "", index: 0 });
     } else {
-      setFullSubject("커스텀 경로 기억하기 페이지입니다.");
+      setSubject({
+        fullSubject: "커스텀 경로 기억하기 페이지입니다.",
+        typing: "커스텀 경로 기억하기 페이지입니다.",
+        index: 19,
+      });
     }
-    setTyping("");
   }, [level]);
 
   useEffect(() => {
-    setIndex(0);
-    setTyping("");
-  }, [fullSubject]);
-
-  useEffect(() => {
-    if (index < fullSubject.length + 1) {
+    if (subject.index < subject.fullSubject.length + 1) {
       const timer = setTimeout(() => {
-        setTyping((prev) => prev + fullSubject.charAt(index));
-        setIndex(index + 1);
+        setSubject({
+          ...subject,
+          typing: subject.typing + subject.fullSubject.charAt(subject.index),
+          index: subject.index + 1,
+        });
       }, 70);
 
       return () => clearTimeout(timer);
@@ -43,12 +42,12 @@ export default function Subject({ level, setSubjectInit }: SubjectProps) {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [index, fullSubject]);
+  }, [subject.index, subject.fullSubject]);
 
   return (
     <div className="flex items-center justify-center bg-whilte border-2 border-gray-500 rounded-md shadow-lg w-[500px] h-[100px] bg-contain">
       <span className="flex whitespace-pre-line leading-7 text-center">
-        {typing}
+        {subject.typing}
       </span>
     </div>
   );

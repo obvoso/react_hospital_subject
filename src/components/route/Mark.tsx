@@ -6,6 +6,7 @@ import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { useAutoCursor } from "@/hooks/route/useAutoCursor";
 import { customRouteState } from "@/atoms/route/custom";
 import DrawMark from "./DrawMark";
+import { isTransitMark } from "@/utils/route/arraysHaveSameSequence";
 
 interface MarkProps {
   marks: Mark[];
@@ -37,14 +38,13 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
      * 2. level이 11이면 정답(하드코딩..ㅋ)
      * 3. 경유 상태이고 현재 클릭한 마크가 목표 마크와 같으면 정답 (경유지는 마지막 인덱스에 있어서 클릭카운트랑 비교함)
      */
-
     if (
       clickCount === priority ||
       level === 11 ||
       (config.transit &&
         clickCount === config.mark &&
-        marks[priority].x === marks[config.mark].x &&
-        marks[priority].y === marks[config.mark].y)
+        clickCount !== priority &&
+        isTransitMark(marks, priority) == 2)
     )
       isCorrect = true;
     setClickedMarks({ ...clickedMarks, [priority]: isCorrect });
@@ -60,7 +60,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
       else if (config.transit) {
         setCorrectRoute({
           ...correctRoute,
-          [config.mark]: true,
+          [config.mark + 1]: true,
           [priority]: false,
         });
       }
@@ -101,7 +101,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
               handleMouseUp={handleMouseUp}
               key={mark.priority}
               isCorrect={clickedMarks[mark.priority]}
-              endIndex={config.mark}
+              endIndex={config.mark + 1}
               clickAble={level !== 11 && clickAble}
             />
           ))}

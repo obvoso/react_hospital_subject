@@ -15,11 +15,10 @@ interface Props {
 
 export function useRandomMark({ level, gridInitFlag }: Props) {
   const customRoute = useRecoilValue(customRouteState);
-  const config = level < 11 ? routeGameConfigList[level] : customRoute;
+  const config = level < 13 ? routeGameConfigList[level] : customRoute;
   const [grid, setGrid] = useRecoilState(gridState);
   const gameState = useRecoilValue(routeGameState);
   const [mark, setMark] = useState<Mark[]>([]);
-  const { cols, rows } = { cols: 4, rows: 6 };
 
   useEffect(() => {
     const randomMark: Cell[] = [];
