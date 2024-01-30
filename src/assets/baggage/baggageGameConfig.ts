@@ -1,7 +1,10 @@
 export const enum BaggageSpeed {
-  SLOW = 3.5,
-  MEDIUM = 5,
-  FAST = 7,
+  SPEED0 = 1, // 매우 느림
+  SPEED1 = 1.5, // 느림
+  SPEED2 = 2, // 조금 느림
+  SPEED3 = 2.5, //보통
+  SPEED4 = 3, //조금 빠름
+  SPEED5 = 3.5, //빠름
 }
 
 export interface BaggageItemAssets {
@@ -27,7 +30,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 0,
     classification: 2,
-    speed: BaggageSpeed.SLOW,
+    speed: BaggageSpeed.SPEED1,
     items: 5,
     direction: "forward",
     obstacle: 0,
@@ -48,7 +51,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 1,
     classification: 2,
-    speed: BaggageSpeed.SLOW,
+    speed: BaggageSpeed.SPEED1,
     items: 5,
     direction: "forward",
     obstacle: 1,
@@ -70,7 +73,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 2,
     classification: 2,
-    speed: BaggageSpeed.MEDIUM,
+    speed: BaggageSpeed.SPEED3,
     items: 10,
     direction: "forward",
     obstacle: 0,
@@ -95,7 +98,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 3,
     classification: 2,
-    speed: BaggageSpeed.MEDIUM,
+    speed: BaggageSpeed.SPEED3,
     items: 10,
     direction: "forward",
     obstacle: 2,
@@ -120,7 +123,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 4,
     classification: 2,
-    speed: BaggageSpeed.MEDIUM,
+    speed: BaggageSpeed.SPEED3,
     items: 10,
     direction: "backward",
     obstacle: 0,
@@ -145,7 +148,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 5,
     classification: 2,
-    speed: BaggageSpeed.MEDIUM,
+    speed: BaggageSpeed.SPEED3,
     items: 10,
     direction: "backward",
     obstacle: 2,
@@ -171,7 +174,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 6,
     classification: 3,
-    speed: BaggageSpeed.FAST,
+    speed: BaggageSpeed.SPEED5,
     items: 10,
     direction: "forward",
     obstacle: 0,
@@ -197,7 +200,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 7,
     classification: 3,
-    speed: BaggageSpeed.FAST,
+    speed: BaggageSpeed.SPEED5,
     items: 10,
     direction: "forward",
     obstacle: 3,
@@ -223,7 +226,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 8,
     classification: 2,
-    speed: BaggageSpeed.FAST,
+    speed: BaggageSpeed.SPEED5,
     items: 10,
     direction: "forward",
     obstacle: 0,
@@ -249,7 +252,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 9,
     classification: 2,
-    speed: BaggageSpeed.FAST,
+    speed: BaggageSpeed.SPEED5,
     items: 10,
     direction: "forward",
     obstacle: 3,
@@ -274,7 +277,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 10,
     classification: 3,
-    speed: BaggageSpeed.FAST,
+    speed: BaggageSpeed.SPEED5,
     items: 10,
     direction: "forward",
     obstacle: 0,
@@ -301,7 +304,7 @@ export const baggageGameLevels: BaggageLevelConfig[] = [
   {
     level: 11,
     classification: 3,
-    speed: BaggageSpeed.FAST,
+    speed: BaggageSpeed.SPEED5,
     items: 10,
     direction: "forward",
     obstacle: 2,

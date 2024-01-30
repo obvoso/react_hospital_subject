@@ -1,4 +1,3 @@
-import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
 import React from "react";
 
 interface DropDownButtonProps {

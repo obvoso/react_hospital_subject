@@ -13,6 +13,7 @@ import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
 import { useResetRecoilState } from "recoil";
 import Timer from "@/components/baggage/Timer";
 import { Classification } from "@/atoms/baggage/custom";
+import SpeedButton from "@/components/baggage/SpeedButton";
 
 export default function CustomGamePage() {
   const resetCurrentItemState = useResetRecoilState(CurrentItemIndex);
@@ -36,11 +37,11 @@ export default function CustomGamePage() {
     resetScore();
   };
 
-  const speedOptions = [
-    { label: "느림", value: BaggageSpeed.SLOW },
-    { label: "보통", value: BaggageSpeed.MEDIUM },
-    { label: "빠름", value: BaggageSpeed.FAST },
-  ];
+  //const speedOptions = [
+  //  { label: "느림", value: BaggageSpeed.SLOW },
+  //  { label: "보통", value: BaggageSpeed.MEDIUM },
+  //  { label: "빠름", value: BaggageSpeed.FAST },
+  //];
 
   const classificationOptions = [
     { label: "2개", value: 2 },
@@ -73,11 +74,12 @@ export default function CustomGamePage() {
           />
         </div>
         <div className="z-10 flex items-center flex-row sm:flex-col">
-          <DropDownButton
+          {/*<DropDownButton
             label="속도"
             options={speedOptions}
             onChange={(speed: BaggageSpeed) => setSpeed(speed)}
-          />
+          />*/}
+          <SpeedButton />
           <DropDownButton
             label="분류 수"
             options={classificationOptions}

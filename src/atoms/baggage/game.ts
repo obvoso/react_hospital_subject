@@ -20,7 +20,7 @@ export interface IGame {
 
 export const GameSpeed = atom<BaggageSpeed>({
   key: "GameSpeed",
-  default: BaggageSpeed.SLOW,
+  default: BaggageSpeed.SPEED1,
 });
 
 export const ItemScoreState = atom({

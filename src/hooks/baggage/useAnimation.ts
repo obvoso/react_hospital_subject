@@ -33,8 +33,20 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   const itemScoreRef = useRef(BaggageItemScore.BAD);
   const gameSpeed = useRecoilValue(GameSpeed);
 
-  const showNextItemTime =
-    gameSpeed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 750 : 500;
+  let showNextItemTime = 0;
+  if (gameSpeed === BaggageSpeed.SPEED0) {
+    showNextItemTime = 2000;
+  } else if (gameSpeed === BaggageSpeed.SPEED1) {
+    showNextItemTime = 1750;
+  } else if (gameSpeed === BaggageSpeed.SPEED2) {
+    showNextItemTime = 1500;
+  } else if (gameSpeed === BaggageSpeed.SPEED3) {
+    showNextItemTime = 1250;
+  } else if (gameSpeed === BaggageSpeed.SPEED4) {
+    showNextItemTime = 1000;
+  } else if (gameSpeed === BaggageSpeed.SPEED5) {
+    showNextItemTime = 750;
+  }
 
   useEffect(() => {
     itemAnimationsRef.current = itemAnimations;
