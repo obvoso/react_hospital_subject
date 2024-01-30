@@ -35,8 +35,13 @@ export default function useObstacleRoute({
     setCurrentRoute(mark);
     setOtherRoute([]);
     setAnimationDone(false);
-    if (config.obstacle)
-      setSubject("각 버스와 택시가 이동하는 경로를 모두 기억해주세요.");
+    if (config.obstacle) {
+      setSubject({
+        fullSubject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
+        typing: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
+        index: 29,
+      });
+    }
   }, [mark]);
 
   // 두번째 경로 할당
@@ -54,10 +59,15 @@ export default function useObstacleRoute({
     }
 
     function setSecondRoute() {
-      if (config.obstacle && !otherRoute.length && animationDone) {
+      if (
+        config.obstacle &&
+        !otherRoute.length &&
+        animationDone &&
+        mark.length
+      ) {
         let newRoute: Mark[];
         do {
-          const copyArr = config.transit ? getCopyArr(mark) : { ...mark };
+          const copyArr = config.transit ? getCopyArr(mark) : [...mark];
           newRoute = shuffleArray(copyArr).map((item, index) => ({
             ...item,
             priority: index,
@@ -73,7 +83,6 @@ export default function useObstacleRoute({
             newRoute.reverse();
           }
         } while (arraysHaveSameSequence(newRoute, mark));
-
         const timer = setTimeout(() => {
           setOtherRoute(newRoute);
           setCurrentRoute(newRoute);
@@ -92,11 +101,19 @@ export default function useObstacleRoute({
       const random = Math.floor(Math.random() * 2);
       const vehicle = random ? "버스" : "택시";
       setCurrentRoute(random ? mark : otherRoute);
-      if (config.transit)
-        setSubject(
-          vehicle + "가 이동하였던 경로 순서를 거꾸로 기억해서 눌러주세요."
-        );
-      else setSubject(vehicle + "가 이동하였던 경로 순서 여행지를 눌러주세요.");
+      if (config.direction === Direction.BACKWARD)
+        setSubject({
+          fullSubject:
+            vehicle + "가 이동하였던 경로 순서를 거꾸로 기억해서 눌러주세요.",
+          typing: "",
+          index: 0,
+        });
+      else
+        setSubject({
+          fullSubject: vehicle + "가 이동하였던 경로 순서 여행지를 눌러주세요.",
+          typing: "",
+          index: 0,
+        });
     }
   }, [animationDone, otherRoute]);
 }
