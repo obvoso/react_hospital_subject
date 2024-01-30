@@ -37,11 +37,14 @@ export default function CustomGamePage() {
     resetScore();
   };
 
-  //const speedOptions = [
-  //  { label: "느림", value: BaggageSpeed.SLOW },
-  //  { label: "보통", value: BaggageSpeed.MEDIUM },
-  //  { label: "빠름", value: BaggageSpeed.FAST },
-  //];
+  const speedOptions = [
+    { label: "매우 느림", value: BaggageSpeed.SPEED0 },
+    { label: "느림", value: BaggageSpeed.SPEED1 },
+    { label: "조금 느림", value: BaggageSpeed.SPEED2 },
+    { label: "보통", value: BaggageSpeed.SPEED3 },
+    { label: "조금 빠름", value: BaggageSpeed.SPEED4 },
+    { label: "빠름", value: BaggageSpeed.SPEED5 },
+  ];
 
   const classificationOptions = [
     { label: "2개", value: 2 },
@@ -74,12 +77,11 @@ export default function CustomGamePage() {
           />
         </div>
         <div className="z-10 flex items-center flex-row sm:flex-col">
-          {/*<DropDownButton
+          <DropDownButton
             label="속도"
             options={speedOptions}
-            onChange={(speed: BaggageSpeed) => setSpeed(speed)}
-          />*/}
-          <SpeedButton />
+            onChange={(speed: number) => setSpeed(speed)}
+          />
           <DropDownButton
             label="분류 수"
             options={classificationOptions}
