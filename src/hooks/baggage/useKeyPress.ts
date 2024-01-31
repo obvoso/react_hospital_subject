@@ -30,7 +30,6 @@ export const useKeyPress = () => {
   const updateScoreAndItem = (newScore: number, newText: string) => {
     setScore((prev) => prev + newScore);
     setLastScoredItemIndex(currentItemIndex);
-    console.log(newText);
     setScoreText(newText);
     setItemAnimations((prevItems) => {
       return prevItems.map((item, index) => {

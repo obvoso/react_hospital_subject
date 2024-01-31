@@ -76,7 +76,6 @@ export const useAnimation = ({ canvasRef, images }: params) => {
       yPosition >= CONVEYOR_SCORE_END_Y
     )
       return;
-
     if (yPosition + itemSize <= CONVEYOR_SCORE_START_Y) {
       itemScoreRef.current = BaggageItemScore.BAD;
     } else if (yPosition < CONVEYOR_SCORE_END_Y) {

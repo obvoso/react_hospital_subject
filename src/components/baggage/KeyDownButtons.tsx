@@ -20,7 +20,6 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
   const carrier_height = 80;
 
   useEffect(() => {
-    console.log(level, custom);
     if (level < 6 || (level > 11 && custom === Custom.COLOR_2)) {
       setKeyType(Custom.COLOR_2);
     } else if (
