@@ -108,7 +108,7 @@ export const useKeyPress = () => {
         );
       }
       if (miss)
-        updateScoreAndItem(BaggageItemScore.MISS[1], BaggageItemScore.MISS[0]);
+        updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
     };
 
     window.addEventListener("keydown", downHandler);

@@ -5,11 +5,8 @@ import {
 } from "@/assets/baggage/baggageGameConfig";
 
 export const BaggageItemScore = {
-  PERFECT: ["PERFECT", 1] as [string, number],
-  SLOW: ["SLOW", 0.5] as [string, number],
-  FAST: ["FAST", 0.5] as [string, number],
-  BAD: ["BAD", 0] as [string, number],
-  MISS: ["MISS", 0] as [string, number],
+  PERFECT: ["좋아요!", 1] as [string, number],
+  BAD: ["아쉬워요!", 0] as [string, number],
   INIT: ["", 0] as [string, number],
 };
 

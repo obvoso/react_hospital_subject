@@ -7,6 +7,7 @@ import KeyDownButtons from "./KeyDownButtons";
 import React from "react";
 import usePreLoadImages from "@/hooks/baggage/usePreLoadImages";
 import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
+import { CONVEYOR_HEIGHT, CONVEYOR_WIDTH } from "@/type/baggage/conveyor";
 
 interface BaggageCanvasProps {
   level: number;
@@ -29,28 +30,22 @@ function BaggageCanvas({ level }: BaggageCanvasProps) {
   return (
     <div className="flex relative flex-col items-center min-w-[500px]">
       <div className="flex flex-col z-10 bg-white p-4 rounded-xl shadow-md">
-        <span className="text-lg font-bold text-center">{leveling}</span>
-        <span className="font-semibold text-center whitespace-pre-line">
+        <span className="text-base font-bold text-center">{leveling}</span>
+        <span className="text-lg text-center whitespace-pre-line">
           {config.subject}
         </span>
       </div>
       <div
-        className={`flex w-[480px] h-[650px] justify-center ${
-          level <= 5 || (level > 11 && custom === Custom.COLOR_2)
-            ? "bg-bg0"
-            : level <= 7 || (level > 11 && custom === Custom.COLOR_3)
-            ? "bg-bg1"
-            : level <= 9 || (level > 11 && custom === Custom.TYPE_2)
-            ? "bg-bg2"
-            : "bg-bg3"
-        } bg-cover`}
+        className={`flex w-[220px] h-[550px] justify-center bg-conveyor`}
+        style={{ backgroundSize: "100% 100%" }}
       >
-        <div className="flex mt-[-80px]">
+        <div className="flex w-[220px] relative mt-[-80px] h-fit">
+          <div className="bg-white/40 absolute bottom-[50px] w-full h-[150px] rounded-2xl border-4 border-green-600" />
           <canvas
             ref={canvasRef}
-            width={cmToPixels(3)}
-            height={cmToPixels(8)}
-          ></canvas>
+            width={CONVEYOR_WIDTH}
+            height={CONVEYOR_HEIGHT}
+          />
         </div>
       </div>
       <div className="flex mt-4">
