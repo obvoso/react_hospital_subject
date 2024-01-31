@@ -37,7 +37,7 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   const setItemScore = useSetRecoilState(ItemScoreState);
   const itemScoreRef = useRef(BaggageItemScore.BAD);
   const gameSpeed = useRecoilValue(GameSpeed);
-  const itemSize = 100;
+  const itemSize = 80;
 
   let showNextItemTime = 0;
   if (gameSpeed === BaggageSpeed.SPEED0) {

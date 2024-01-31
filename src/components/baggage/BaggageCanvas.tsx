@@ -1,12 +1,9 @@
-import { useRef } from "react";
-import { cmToPixels } from "@/utils/unit";
+import { memo, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { BaggageGameConfigState } from "@/atoms/baggage/game";
 import { useAnimation } from "@/hooks/baggage/useAnimation";
 import KeyDownButtons from "./KeyDownButtons";
-import React from "react";
 import usePreLoadImages from "@/hooks/baggage/usePreLoadImages";
-import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
 import { CONVEYOR_HEIGHT, CONVEYOR_WIDTH } from "@/type/baggage/conveyor";
 
 interface BaggageCanvasProps {
@@ -18,8 +15,9 @@ function BaggageCanvas({ level }: BaggageCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const config = useRecoilValue(BaggageGameConfigState);
   const { images } = usePreLoadImages({ level, canvasRef });
-  const custom = useRecoilValue(BaggageCustomState);
+
   useAnimation({ canvasRef, images });
+
   const leveling =
     level > 11
       ? "버튼을 사용해 선택해주세요."
@@ -55,4 +53,4 @@ function BaggageCanvas({ level }: BaggageCanvasProps) {
   );
 }
 
-export default React.memo(BaggageCanvas);
+export default memo(BaggageCanvas);

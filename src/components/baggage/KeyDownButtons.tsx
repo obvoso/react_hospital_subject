@@ -1,11 +1,10 @@
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { useRecoilValue } from "recoil";
 import KeyDownButton from "./KeyDownButton";
-import React, { useEffect, useState } from "react";
 import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
-import { BaggageGameConfigState } from "@/atoms/baggage/game";
-import Image from "next/image";
 
 interface KeyDownButtonsProps {
   level: number;
@@ -45,13 +44,11 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
     }
   }, [custom, level]);
 
-  console.log("keyType", keyType);
-
   const getScoreClass = (score: string) => {
     switch (score) {
-      case "PERFECT":
+      case "좋아요!":
         return "perfect";
-      case "BAD":
+      case "아쉬워요!":
         return "bad";
       default:
         return "";
@@ -61,10 +58,10 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
   return (
     <div className="flex">
       <div className="flex flex-col absolute inset-0 items-center justify-center">
-        <div className={`flex mb-32 min-w-[200px] w-24 h-20 justify-center`}>
+        <div className={`flex min-w-[200px] mt-32 w-24 h-20 justify-center`}>
           <span
             key={scoreText}
-            className={`scoreAnimation font-semibold text-lg ${getScoreClass(
+            className={`scoreAnimation font-semibold text-2xl ${getScoreClass(
               scoreText
             )}`}
           >

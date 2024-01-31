@@ -28,6 +28,7 @@
   text-shadow: 0 0 5px white;
 }
 
+.bad,
 .fast,
 .slow {
   background: linear-gradient(
@@ -44,7 +45,7 @@
   text-shadow: 0 0 5px yellow;
 }
 
-.bad {
+/*.bad {
   background: linear-gradient(
     90deg,
     purple,
@@ -57,7 +58,7 @@
   background-clip: text;
   color: transparent;
   text-shadow: 0 0 5px rgb(240, 101, 136);
-}
+}*/
 
 .miss {
   background: linear-gradient(90deg, lightgrey, darkgrey, darkgrey, lightgrey);

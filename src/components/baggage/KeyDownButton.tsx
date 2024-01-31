@@ -27,7 +27,7 @@ function KeyDownButton({
       <IconButton
         sx={{
           color: downPressed || clicked ? "#2196f3" : "#64b5f6",
-          transform: downPressed || clicked ? "scale(1.5)" : "scale(2)",
+          transform: downPressed || clicked ? "scale(1.8)" : "scale(2)",
           transition: "transform 0.2s",
         }}
         onMouseDown={handleMouseDown}
