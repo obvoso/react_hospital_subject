@@ -98,7 +98,7 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
             >
               <Image
                 src={`/assets/baggage/${
-                  keyType === Custom.COLOR_3 ? "carrier_red" : "carrier_bag"
+                  keyType === Custom.COLOR_3 ? "carrier_red" : "bag"
                 }.png`}
                 alt="down_button"
                 width={carrier_height}

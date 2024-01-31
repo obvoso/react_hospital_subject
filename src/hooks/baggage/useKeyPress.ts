@@ -6,6 +6,7 @@ import {
   ItemAnimationState,
 } from "@/atoms/baggage/animationItem";
 import {
+  BaggageGameState,
   BaggageItemScore,
   BaggageScore,
   CurrentItemIndex,
@@ -24,10 +25,12 @@ export const useKeyPress = () => {
     useRecoilState(ItemAnimationState);
   const currentItemIndex = useRecoilValue(CurrentItemIndex);
   const setScore = useSetRecoilState(BaggageScore);
+  const gameState = useRecoilValue(BaggageGameState);
 
   const updateScoreAndItem = (newScore: number, newText: string) => {
     setScore((prev) => prev + newScore);
     setLastScoredItemIndex(currentItemIndex);
+    console.log(newText);
     setScoreText(newText);
     setItemAnimations((prevItems) => {
       return prevItems.map((item, index) => {
@@ -44,7 +47,8 @@ export const useKeyPress = () => {
       if (
         currentItemIndex === -1 ||
         currentItemIndex === lastScoredItemIndex ||
-        currentItemIndex >= itemAnimation.length
+        currentItemIndex >= itemAnimation.length ||
+        !gameState.start
       )
         return;
       const currentItem = itemAnimation[currentItemIndex];
@@ -58,16 +62,25 @@ export const useKeyPress = () => {
           : pressedKey === "ArrowDown"
           ? BaggageStatus.DOWN
           : BaggageStatus.PASS;
+
       if (
         currentItem.status === pressKey &&
         !currentItem.done &&
         !currentItem.scored &&
         currentItem.status !== BaggageStatus.PASS
-      )
+      ) {
         updateScoreAndItem(itemScoreState[1], itemScoreState[0]);
-      else updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
+      } else {
+        updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
+      }
     },
-    [currentItemIndex, itemAnimations, itemScoreState, lastScoredItemIndex]
+    [
+      currentItemIndex,
+      itemAnimations,
+      itemScoreState,
+      lastScoredItemIndex,
+      gameState.start,
+    ]
   );
 
   useEffect(() => {
@@ -107,8 +120,9 @@ export const useKeyPress = () => {
           BaggageItemScore.PERFECT[0]
         );
       }
-      if (miss)
+      if (miss) {
         updateScoreAndItem(BaggageItemScore.BAD[1], BaggageItemScore.BAD[0]);
+      }
     };
 
     window.addEventListener("keydown", downHandler);
