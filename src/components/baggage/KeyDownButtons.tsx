@@ -1,11 +1,9 @@
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import { useKeyPress } from "@/hooks/baggage/useKeyPress";
 import { useRecoilValue } from "recoil";
 import KeyDownButton from "./KeyDownButton";
-import ArrowCircleDownTwoToneIcon from "@mui/icons-material/ArrowCircleDownTwoTone";
-import ArrowCircleLeftTwoToneIcon from "@mui/icons-material/ArrowCircleLeftTwoTone";
-import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwoTone";
-import React from "react";
 import { BaggageCustomState, Custom } from "@/atoms/baggage/custom";
 
 interface KeyDownButtonsProps {
@@ -17,19 +15,40 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
   const { keysPressed, checkForMatchAndScore, scoreText } = useKeyPress();
   const [leftPressed, rightPressed, downPressed] = keysPressed;
   const custom = useRecoilValue(BaggageCustomState);
+  const [keyType, setKeyType] = useState(0);
+  const carrier_width = 50;
+  const carrier_height = 80;
+
+  useEffect(() => {
+    if (level < 6 || (level > 11 && custom === Custom.COLOR_2)) {
+      setKeyType(Custom.COLOR_2);
+    } else if (
+      level === 6 ||
+      level === 7 ||
+      (level > 11 && custom === Custom.COLOR_3)
+    ) {
+      setKeyType(Custom.COLOR_3);
+    } else if (
+      level === 8 ||
+      level === 9 ||
+      (level > 11 && custom === Custom.TYPE_2)
+    ) {
+      setKeyType(Custom.TYPE_2);
+    } else if (
+      level === 10 ||
+      level === 11 ||
+      (level > 11 && custom === Custom.TYPE_3)
+    ) {
+      setKeyType(Custom.TYPE_3);
+    }
+  }, [custom, level]);
 
   const getScoreClass = (score: string) => {
     switch (score) {
-      case "PERFECT":
+      case "좋아요!":
         return "perfect";
-      case "FAST":
-        return "fast";
-      case "SLOW":
-        return "slow";
-      case "BAD":
+      case "아쉬워요!":
         return "bad";
-      case "MISS":
-        return "miss";
       default:
         return "";
     }
@@ -38,48 +57,74 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
   return (
     <div className="flex">
       <div className="flex flex-col absolute inset-0 items-center justify-center">
-        <div className={`flex mb-32 min-w-[200px] w-24 h-20 justify-center`}>
+        <div className={`flex min-w-[200px] mt-32 w-24 h-20 justify-center`}>
           <span
             key={scoreText}
-            className={`scoreAnimation font-semibold text-lg ${getScoreClass(
+            className={`scoreAnimation font-semibold text-2xl ${getScoreClass(
               scoreText
             )}`}
           >
             {scoreText}
           </span>
         </div>
-        <div className="left-0 ml-10 mt-[26rem] absolute ">
+        <div className="left-0 mt-[26rem] absolute ">
           <KeyDownButton
             downPressed={leftPressed}
             checkForMatchAndScore={() =>
               checkForMatchAndScore("ArrowLeft", itemAnimations)
             }
           >
-            <ArrowCircleLeftTwoToneIcon />
+            <Image
+              src={`/assets/baggage/${
+                keyType === Custom.COLOR_2 || keyType === Custom.COLOR_3
+                  ? "carrier_blue"
+                  : "carrier_gray"
+              }.png`}
+              alt="left_button"
+              width={carrier_width}
+              height={carrier_height}
+              style={{ width: carrier_width, height: carrier_height }}
+            />
           </KeyDownButton>
         </div>
-        {((level >= 6 && level !== 8 && level !== 9 && level <= 11) ||
-          (level > 11 &&
-            (custom === Custom.COLOR_3 || custom === Custom.TYPE_3))) && (
-          <div className="bottom-[-20px] absolute">
+        {(keyType === Custom.COLOR_3 || keyType === Custom.TYPE_3) && (
+          <div className="bottom-[-100px] absolute">
             <KeyDownButton
               downPressed={downPressed}
               checkForMatchAndScore={() =>
                 checkForMatchAndScore("ArrowDown", itemAnimations)
               }
             >
-              <ArrowCircleDownTwoToneIcon />
+              <Image
+                src={`/assets/baggage/${
+                  keyType === Custom.COLOR_3 ? "carrier_red" : "bag"
+                }.png`}
+                alt="down_button"
+                width={carrier_height}
+                height={carrier_width}
+                style={{ width: carrier_height, height: carrier_width }}
+              />
             </KeyDownButton>
           </div>
         )}
-        <div className="right-0 mr-8 mt-[26rem] absolute">
+        <div className="right-0 mt-[26rem] absolute">
           <KeyDownButton
             downPressed={rightPressed}
             checkForMatchAndScore={() =>
               checkForMatchAndScore("ArrowRight", itemAnimations)
             }
           >
-            <ArrowCircleRightTwoToneIcon />
+            <Image
+              src={`/assets/baggage/${
+                keyType === Custom.COLOR_2 || keyType === Custom.COLOR_3
+                  ? "carrier_yellow"
+                  : "basket"
+              }.png`}
+              alt="right_button"
+              width={carrier_width}
+              height={carrier_height}
+              style={{ width: carrier_width, height: carrier_height }}
+            />
           </KeyDownButton>
         </div>
       </div>

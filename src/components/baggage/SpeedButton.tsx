@@ -1,42 +1,46 @@
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { BaggageGameConfigState, GameSpeed } from "@/atoms/baggage/game";
 import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
-import React, { use, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 
 export default function SpeedButton() {
-  const speed = ["느림", "보통", "빠름"];
-  const [currentSpeed, setCurrentSpeed] = useRecoilState(GameSpeed);
   const config = useRecoilValue(BaggageGameConfigState);
+  const [currentSpeed, setCurrentSpeed] = useRecoilState(GameSpeed);
 
   useEffect(() => {
     setCurrentSpeed(config?.speed);
   }, [config?.speed]);
 
-  const isClicked = (speed: string) => {
-    if (speed === "느림") return currentSpeed === BaggageSpeed.SLOW;
-    else if (speed === "보통") return currentSpeed === BaggageSpeed.MEDIUM;
-    else if (speed === "빠름") return currentSpeed === BaggageSpeed.FAST;
-  };
-
-  const handleSetSpeed = (speed: string) => {
-    if (speed === "느림") setCurrentSpeed(BaggageSpeed.SLOW);
-    else if (speed === "보통") setCurrentSpeed(BaggageSpeed.MEDIUM);
-    else if (speed === "빠름") setCurrentSpeed(BaggageSpeed.FAST);
+  const handleSetSpeed = (event: SelectChangeEvent) => {
+    setCurrentSpeed(Number(event.target.value));
   };
 
   return (
     <div className="flex sm:flex-col flex-row bg-white shadow-lg rounded-2xl p-3 w-fit h-fit z-10">
-      {speed.map((speed) => (
-        <button
-          className={`${
-            isClicked(speed) ? "bg-blue-500" : "bg-blue-200"
-          } hover:bg-blue-400 text-white text-sm font-semibold py-1 px-2 sm:my-1 mx-1 rounded w-14 shadow-md`}
-          key={speed}
-          onClick={() => handleSetSpeed(speed)}
+      <FormControl size="small">
+        <InputLabel id="demo-simple-select-label">속도</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={currentSpeed ? currentSpeed.toString() : ""}
+          label="Speed"
+          onChange={handleSetSpeed}
         >
-          {speed}
-        </button>
-      ))}
+          <MenuItem value={BaggageSpeed.SPEED0}>매우 느림</MenuItem>
+          <MenuItem value={BaggageSpeed.SPEED1}>느림</MenuItem>
+          <MenuItem value={BaggageSpeed.SPEED2}>조금 느림</MenuItem>
+          <MenuItem value={BaggageSpeed.SPEED3}>보통</MenuItem>
+          <MenuItem value={BaggageSpeed.SPEED4}>조금 빠름</MenuItem>
+          <MenuItem value={BaggageSpeed.SPEED5}>빠름</MenuItem>
+        </Select>
+      </FormControl>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { RefObject, useEffect, useRef } from "react";
-import { cmToPixels } from "@/utils/unit";
 import { ItemAnimationState } from "@/atoms/baggage/animationItem";
 import {
   BaggageGameConfigState,
@@ -11,6 +10,12 @@ import {
 } from "@/atoms/baggage/game";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
+import {
+  CONVEYOR_HEIGHT,
+  CONVEYOR_SCORE_END_Y,
+  CONVEYOR_SCORE_START_Y,
+  CONVEYOR_WIDTH,
+} from "@/type/baggage/conveyor";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -32,55 +37,51 @@ export const useAnimation = ({ canvasRef, images }: params) => {
   const setItemScore = useSetRecoilState(ItemScoreState);
   const itemScoreRef = useRef(BaggageItemScore.BAD);
   const gameSpeed = useRecoilValue(GameSpeed);
+  const itemSize = 80;
 
-  const showNextItemTime =
-    gameSpeed === BaggageSpeed.SLOW ? 1000 : BaggageSpeed.MEDIUM ? 750 : 500;
+  let showNextItemTime = 0;
+  if (gameSpeed === BaggageSpeed.SPEED0) {
+    showNextItemTime = 2000;
+  } else if (gameSpeed === BaggageSpeed.SPEED1) {
+    showNextItemTime = 1750;
+  } else if (gameSpeed === BaggageSpeed.SPEED2) {
+    showNextItemTime = 1500;
+  } else if (gameSpeed === BaggageSpeed.SPEED3) {
+    showNextItemTime = 1250;
+  } else if (gameSpeed === BaggageSpeed.SPEED4) {
+    showNextItemTime = 1000;
+  } else if (gameSpeed === BaggageSpeed.SPEED5) {
+    showNextItemTime = 750;
+  }
 
   useEffect(() => {
     itemAnimationsRef.current = itemAnimations;
   }, [itemAnimations]);
 
   const updateItemScore = ({ yPosition }: updateItemScoreParams) => {
-    const startFastZoneY = 100;
-    const startPerfectZoneY = 165;
-    const startSlowZoneY = 190;
     const currentItemScoreText = itemScoreRef.current;
 
     if (
       currentItemScoreText === BaggageItemScore.BAD &&
-      yPosition < startFastZoneY
-    ) {
+      yPosition + itemSize <= CONVEYOR_SCORE_START_Y
+    )
       return;
-    }
     if (
       currentItemScoreText === BaggageItemScore.PERFECT &&
-      yPosition >= startPerfectZoneY &&
-      yPosition <= startSlowZoneY
-    ) {
+      yPosition < CONVEYOR_SCORE_END_Y
+    )
       return;
-    }
     if (
-      currentItemScoreText === BaggageItemScore.FAST &&
-      yPosition >= startFastZoneY &&
-      yPosition < startPerfectZoneY
-    ) {
+      currentItemScoreText === BaggageItemScore.BAD &&
+      yPosition >= CONVEYOR_SCORE_END_Y
+    )
       return;
-    }
-    if (
-      currentItemScoreText === BaggageItemScore.SLOW &&
-      yPosition >= startSlowZoneY
-    ) {
-      return;
-    }
-
-    if (yPosition < startFastZoneY) {
+    if (yPosition + itemSize <= CONVEYOR_SCORE_START_Y) {
       itemScoreRef.current = BaggageItemScore.BAD;
-    } else if (yPosition >= startPerfectZoneY && yPosition <= startSlowZoneY) {
+    } else if (yPosition < CONVEYOR_SCORE_END_Y) {
       itemScoreRef.current = BaggageItemScore.PERFECT;
-    } else if (yPosition >= startFastZoneY && yPosition < startPerfectZoneY) {
-      itemScoreRef.current = BaggageItemScore.FAST;
-    } else if (yPosition >= startSlowZoneY) {
-      itemScoreRef.current = BaggageItemScore.SLOW;
+    } else if (yPosition >= CONVEYOR_SCORE_END_Y) {
+      itemScoreRef.current = BaggageItemScore.BAD;
     }
     setItemScore(itemScoreRef.current);
   };
@@ -90,9 +91,8 @@ export const useAnimation = ({ canvasRef, images }: params) => {
     const context = canvasRef.current.getContext("2d");
     if (!context) return;
 
-    const itemSize = 40;
-    const startPositionX = 30;
-    const endPositionY = 220; // 레일의 끝
+    const startPositionX = (CONVEYOR_WIDTH - itemSize) / 2;
+    const endPositionY = CONVEYOR_HEIGHT; // 레일의 끝
     const increaseY = gameSpeed;
     let yPosition = 0;
 
@@ -109,9 +109,15 @@ export const useAnimation = ({ canvasRef, images }: params) => {
         return;
       }
 
-      context.clearRect(0, 0, cmToPixels(3), cmToPixels(8));
+      context.clearRect(0, 0, CONVEYOR_WIDTH, CONVEYOR_HEIGHT);
       if (yPosition < endPositionY && !currentItem.done) {
-        context.drawImage(itemImage, startPositionX, yPosition, 80, itemSize);
+        context.drawImage(
+          itemImage,
+          startPositionX,
+          yPosition,
+          itemSize,
+          itemSize
+        );
         updateItemScore({ yPosition });
         requestAnimationFrame(animate);
         yPosition += increaseY;
