@@ -29,7 +29,7 @@ export default function SpeedButton() {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={currentSpeed.toString()}
+          value={currentSpeed ? currentSpeed.toString() : ""}
           label="Speed"
           onChange={handleSetSpeed}
         >
