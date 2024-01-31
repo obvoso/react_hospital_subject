@@ -3,6 +3,7 @@ import {
   CurrentItemIndex,
   BaggageGameState,
   BaggageScore,
+  GameSpeed,
 } from "@/atoms/baggage/game";
 import { BaggageCanvas } from "@/components/baggage";
 import CurrentScore from "@/components/baggage/CurrentScore";
@@ -10,10 +11,9 @@ import GameControlButtons from "@/components/baggage/GameControlButtons";
 import { DropDownButton } from "@/components/customBaggage/DropDownButton";
 import { useCustom } from "@/hooks/baggage/useCustom";
 import { BaggageSpeed } from "@/assets/baggage/baggageGameConfig";
-import { useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import Timer from "@/components/baggage/Timer";
 import { Classification } from "@/atoms/baggage/custom";
-import SpeedButton from "@/components/baggage/SpeedButton";
 
 export default function CustomGamePage() {
   const resetCurrentItemState = useResetRecoilState(CurrentItemIndex);
@@ -21,6 +21,8 @@ export default function CustomGamePage() {
   const resetCurrentItemIndex = useResetRecoilState(CurrentItemIndex);
   const resetScore = useResetRecoilState(BaggageScore);
   const [nextBtn, setNextBtn] = useState(false);
+  const speed = useRecoilValue(GameSpeed);
+  const [speedText, setSpeedText] = useState("");
   const {
     setSpeed,
     setClassification,
@@ -28,6 +30,29 @@ export default function CustomGamePage() {
     setObstacle,
     level,
   } = useCustom();
+
+  useEffect(() => {
+    switch (speed) {
+      case BaggageSpeed.SPEED0:
+        setSpeedText("2");
+        break;
+      case BaggageSpeed.SPEED1:
+        setSpeedText("1.75");
+        break;
+      case BaggageSpeed.SPEED2:
+        setSpeedText("1.5");
+        break;
+      case BaggageSpeed.SPEED3:
+        setSpeedText("1.25");
+        break;
+      case BaggageSpeed.SPEED4:
+        setSpeedText("1");
+        break;
+      case BaggageSpeed.SPEED5:
+        setSpeedText("0.75");
+        break;
+    }
+  }, [speed]);
 
   const reset = () => {
     resetGameState(); // 상태 리셋
@@ -82,6 +107,11 @@ export default function CustomGamePage() {
             options={speedOptions}
             onChange={(speed: number) => setSpeed(speed)}
           />
+          <div className="flex absolute sm:relative mt-28 sm:mt-0 ml-20 mb-3 sm:ml-0 flex-col items-center justify-center text-center">
+            <span className="sm:whitespace-pre-line">
+              {speedText}초 후에{`\n`}아이템이 내려옵니다.
+            </span>
+          </div>
           <DropDownButton
             label="분류 수"
             options={classificationOptions}
@@ -102,7 +132,7 @@ export default function CustomGamePage() {
             onChange={(obstacle: number) => setObstacle(obstacle)}
           />
         </div>
-        <div className="flex flex-row sm:flex-col items-center text-center mx-auto mt-4 gap-2">
+        <div className="flex flex-row sm:flex-col items-center text-center mx-auto mt-6 sm:mt-4 gap-2">
           <CurrentScore />
           <Timer />
         </div>
