@@ -21,7 +21,7 @@ import {
 } from "@/components/rotateCarrier/index";
 import LevelNav from "@/utils/LevelNav";
 import FindItemControlButton from "@/components/rotateCarrier/FindItemControlButton";
-import { useGameControl } from "@/hooks/rotateCarrier/useGameControl";
+import { useGameStageControl } from "@/hooks/rotateCarrier/useGameStageControl";
 import GameContolButton from "@/components/rotateCarrier/GameContolButton";
 
 export default function GamePage() {
@@ -38,7 +38,7 @@ export default function GamePage() {
     findItemExist,
     setFindDirection,
     setFindItemExist,
-  } = useGameControl(level);
+  } = useGameStageControl(level);
 
   useEffect(() => {
     const initConfig = () => {
@@ -75,7 +75,9 @@ export default function GamePage() {
     <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center">
       <div className="flex relative flex-col items-center">
         <div className="flex flex-col items-center justify-center w-[90%] p-4 bg-white rounded-xl shadow-md">
-          <span className="font-bold text-xl mb-2">{level + 1} 단계</span>
+          <span className="font-bold text-xl mb-2">
+            {level === 0 ? "연습" : level} 단계
+          </span>
           <p className="whitespace-pre-line text-center align-middle">
             {subject}
           </p>

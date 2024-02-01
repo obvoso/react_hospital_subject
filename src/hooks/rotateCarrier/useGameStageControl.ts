@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-export function useGameControl(level: number) {
+export function useGameStageControl(level: number) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [findDirection, setFindDirection] = useState(false);

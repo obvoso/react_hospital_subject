@@ -116,8 +116,7 @@ export const useAnimation = ({
   };
 
   const animateQuestion = (context: CanvasRenderingContext2D) => {
-    let startTime = Date.now(); // Record the start time
-    console.log(showItemTime);
+    let startTime = Date.now();
 
     const flash = () => {
       const elapsedTime = Date.now() - startTime;
@@ -148,7 +147,6 @@ export const useAnimation = ({
     if (!context) return;
 
     if (gameState.start) {
-      console.log(showItemTime);
       animateQuestion(context); // start 누르고 정해진 시간동안 문제 보여주기
       setSubject("물건의 위치를 잘 기억해주세요.");
       const timer = setTimeout(() => {
