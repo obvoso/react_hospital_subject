@@ -73,8 +73,8 @@ export default function GamePage() {
 
   return (
     <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center">
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col items-center justify-center w-[60%] p-4 bg-white rounded-xl shadow-md">
+      <div className="flex relative flex-col items-center">
+        <div className="flex flex-col items-center justify-center w-[90%] p-4 bg-white rounded-xl shadow-md">
           <span className="font-bold text-xl mb-2">{level + 1} 단계</span>
           <p className="whitespace-pre-line text-center align-middle">
             {subject}
@@ -111,6 +111,12 @@ export default function GamePage() {
           findDirection={findDirection}
           findItemExist={findItemExist}
         />
+        {/* 여기서 */}
+        {/*<div className="flex absolute items-center justify-center bg-red-200/20 w-full h-full ">
+          <span className={`scoreAnimation font-semibold text-2xl perfect`}>
+            좋아요!
+          </span>
+        </div>*/}
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
         <LevelNav

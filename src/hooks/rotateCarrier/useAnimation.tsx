@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { RotateCarrierLevelConfig } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import {
@@ -29,6 +29,7 @@ export const useAnimation = ({
   const RoundFloat = (num: number) => {
     return Math.round((num + Number.EPSILON) * 1000) / 1000;
   };
+  const [showItemTime, setShowItemTime] = useState(3000);
 
   const draw = (context: CanvasRenderingContext2D, angle: number) => {
     if (!context) {
@@ -115,22 +116,30 @@ export const useAnimation = ({
   };
 
   const animateQuestion = (context: CanvasRenderingContext2D) => {
-    let duration = 0;
+    let startTime = Date.now(); // Record the start time
+    console.log(showItemTime);
 
     const flash = () => {
-      context.setTransform(1, 0, 0, 1, 0, 0);
-      const progress = Math.min(duration, 1.5);
-      const alpha = Math.sin(progress * Math.PI);
-      duration += 0.01;
-      drawStaticElements(context, images, config, alpha);
-
-      if (progress < 1.5) {
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < showItemTime) {
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        const alpha = Math.sin((elapsedTime / showItemTime) * Math.PI);
+        drawStaticElements(context, images, config, alpha);
         requestAnimationFrame(flash);
       }
     };
 
     requestAnimationFrame(flash);
   };
+
+  //레벨별로 보여주는 시간 조절
+  useEffect(() => {
+    let showItemTime = 3000;
+    if (config.level <= 2) showItemTime = 3000;
+    else if (config.level <= 6) showItemTime = 4000;
+    else if (config.level <= 10) showItemTime = 5000;
+    setShowItemTime(showItemTime);
+  }, [config.level]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -139,13 +148,15 @@ export const useAnimation = ({
     if (!context) return;
 
     if (gameState.start) {
-      animateQuestion(context); // start 누르고 1초동안 문제 보여주기
+      console.log(showItemTime);
+      animateQuestion(context); // start 누르고 정해진 시간동안 문제 보여주기
       setSubject("물건의 위치를 잘 기억해주세요.");
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         animateRotation(context), setSubject("캐리어가 회전합니다.");
-      }, 1500); // start 누르고 1.5초 후 애니메이션 시작
+      }, showItemTime); // start 누르고 정해진 초 후 애니메이션 시작
+      return () => clearTimeout(timer);
     }
-  }, [gameState.start]);
+  }, [gameState.start, showItemTime]);
 
   //클릭시 클릭한 rect에 색칠
   useEffect(() => {
