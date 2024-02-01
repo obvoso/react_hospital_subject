@@ -110,8 +110,6 @@ export default function GamePage() {
           level={level}
           nextLevelBtn={nextLevelBtn}
           setNextLevelBtn={setNextLevelBtn}
-          findDirection={findDirection}
-          findItemExist={findItemExist}
         />
         {/* 여기서 */}
         {/*<div className="flex absolute items-center justify-center bg-red-200/20 w-full h-full ">

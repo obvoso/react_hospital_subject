@@ -7,24 +7,18 @@ interface params {
   level: number;
   nextLevelBtn: boolean;
   setNextLevelBtn: (value: boolean) => void;
-  findDirection: boolean;
-  findItemExist: boolean;
 }
 
 export default function GameContolButton({
   level,
   nextLevelBtn,
   setNextLevelBtn,
-  findDirection,
-  findItemExist,
 }: params) {
   const gameState = useRecoilValue(RotateCarrierGameState);
   const { handleRestart, handleNextLevel, handleStart, handleGameClear } =
     useGameControl({
       level,
       nextLevelBtn,
-      findDirection,
-      findItemExist,
       setNextLevelBtn,
     });
 

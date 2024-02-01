@@ -16,16 +16,12 @@ import {
 interface params {
   level: number;
   nextLevelBtn: boolean;
-  findDirection: boolean;
-  findItemExist: boolean;
   setNextLevelBtn: (value: boolean) => void;
 }
 
 export default function useGameControl({
   level,
   nextLevelBtn,
-  findDirection,
-  findItemExist,
   setNextLevelBtn,
 }: params) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
@@ -122,11 +118,12 @@ export default function useGameControl({
         if (randomIndex[i].y === -70) direction.push(0);
         else direction.push(1);
       } else if (config.space.length === 4) {
+        console.log(randomIndex[i].x, randomIndex[i].y);
         if (randomIndex[i].x === -85 && randomIndex[i].y === -70)
           direction.push(0);
         else if (randomIndex[i].x === -85 && randomIndex[i].y === 30)
           direction.push(1);
-        else if (randomIndex[i].x === -5 && randomIndex[i].y === -70)
+        else if (randomIndex[i].x === -2.5 && randomIndex[i].y === -70)
           direction.push(2);
         else direction.push(3);
       } else {
@@ -147,7 +144,6 @@ export default function useGameControl({
   };
 
   function handleRestart() {
-    //const levelConfig = RotateCarrierGameLevels[level];
     const randomIndex = shuffleArray(config.space);
     const shuffleAngle = shuffleArray(config.rotationAngle);
     const shuffleExistItem = shuffleArray(config.itemExamples);
@@ -165,8 +161,6 @@ export default function useGameControl({
       answerDirection,
       questions: shuffleQuestion,
       obstacles: shuffleObstacles,
-      findDirection: findDirection,
-      findExist: findItemExist,
       rotationAngle: shuffleAngle,
       itemExamples: shuffleExistItem,
       dirrectionExamples: shuffleDirectionItem,
