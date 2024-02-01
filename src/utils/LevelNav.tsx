@@ -20,24 +20,28 @@ function LevelButton({ game, level, isClicked, disabled }: LevelButtonProps) {
     : disabled
     ? "bg-gray-300"
     : "bg-blue-200";
-  const text =
-    level === 0 && game === "route"
-      ? "연습"
-      : game === "route"
-      ? level
-      : level === 0 && game === "bagage"
-      ? "연습 1"
-      : level === 1 && game === "bagage"
-      ? "연습 2"
-      : game === "bagage"
-      ? level - 1
-      : level + 1;
-  const destLevel = game === "route" && text === 3 ? 11 : level;
+
+  let text = level.toString();
+
+  if (game === "route") {
+    if (level === 0) text = "연습";
+    else text = level.toString();
+  } else if (game === "baggage") {
+    console.log(level);
+    if (level === 0) text = "연습 1";
+    else if (level === 1) text = "연습 2";
+    else text = (level - 1).toString();
+  } else if (game === "rotate-carrier") {
+    if (level === 0) text = "연습";
+    else text = level.toString();
+  }
+
+  const destLevel = level === 3 && game === "route" ? 11 : level;
 
   return (
     <Link href={`/${game}/${destLevel}`}>
       <button
-        className={` ${buttonColor} hover:bg-blue-400 text-white text-sm font-semibold py-1 px-2 sm:my-1 mx-1 rounded sm:w-16 shadow-md ${
+        className={` ${buttonColor} hover:bg-blue-400 text-white text-sm flex whitespace-nowrap justify-center font-semibold py-1 px-2 sm:my-1 mx-1 rounded sm:w-16 shadow-md ${
           disabled && "cursor-not-allowed"
         }`}
         disabled={disabled}
@@ -49,7 +53,7 @@ function LevelButton({ game, level, isClicked, disabled }: LevelButtonProps) {
 }
 
 function LevelNav({ game, curLevel, disabled }: LevelNavProps) {
-  const arrNum = game === "baggage" ? 12 : game === "route" ? 11 : 10;
+  const arrNum = game === "baggage" ? 12 : 11;
 
   return (
     <div className="flex sm:flex-col flex-row bg-white shadow-lg rounded-2xl p-3 w-fit h-fit z-10">
