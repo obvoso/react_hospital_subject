@@ -27,7 +27,6 @@ function LevelButton({ game, level, isClicked, disabled }: LevelButtonProps) {
     if (level === 0) text = "연습";
     else text = level.toString();
   } else if (game === "baggage") {
-    console.log(level);
     if (level === 0) text = "연습 1";
     else if (level === 1) text = "연습 2";
     else text = (level - 1).toString();

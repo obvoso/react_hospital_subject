@@ -37,10 +37,12 @@ export function useCustomGameControl({ level }: params) {
       gameState.existScore === config.findItems
     ) {
       if (findDirection)
-        setGameState({
-          ...gameState,
-          stage: RotateCarrierStage.FIND_DIRECTION,
-        });
+        setTimeout(() => {
+          setGameState({
+            ...gameState,
+            stage: RotateCarrierStage.FIND_DIRECTION,
+          });
+        }, 2000);
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });
@@ -57,12 +59,16 @@ export function useCustomGameControl({ level }: params) {
       gameState.stage === RotateCarrierStage.FIND_ITEM
     ) {
       if (findItemExist)
-        setGameState({ ...gameState, stage: RotateCarrierStage.FIND_EXIST });
+        setTimeout(() => {
+          setGameState({ ...gameState, stage: RotateCarrierStage.FIND_EXIST });
+        }, 2000);
       else if (findDirection)
-        setGameState({
-          ...gameState,
-          stage: RotateCarrierStage.FIND_DIRECTION,
-        });
+        setTimeout(() => {
+          setGameState({
+            ...gameState,
+            stage: RotateCarrierStage.FIND_DIRECTION,
+          });
+        }, 2000);
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });

@@ -45,21 +45,6 @@
   text-shadow: 0 0 5px yellow;
 }
 
-/*.bad {
-  background: linear-gradient(
-    90deg,
-    purple,
-    violet,
-    rgb(208, 0, 255),
-    rgb(255, 89, 0),
-    rgb(255, 128, 0)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 5px rgb(240, 101, 136);
-}*/
-
 .miss {
   background: linear-gradient(90deg, lightgrey, darkgrey, darkgrey, lightgrey);
   -webkit-background-clip: text;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Canvas from "@/components/rotateCarrier/Canvas";
 import { RotateCarrierGameLevels } from "@/assets/rotateCarrier/carrierRotateGameConfig";
@@ -7,6 +7,7 @@ import {
   RotateCarrierGameState,
   RotateCarrierStage,
   SubjectTextState,
+  currentSelectResultState,
 } from "@/atoms/rotateCarrier/config";
 import {
   useRecoilState,
@@ -21,8 +22,10 @@ import {
 } from "@/components/rotateCarrier/index";
 import LevelNav from "@/utils/LevelNav";
 import FindItemControlButton from "@/components/rotateCarrier/FindItemControlButton";
-import { useGameControl } from "@/hooks/rotateCarrier/useGameControl";
+import { useGameStageControl } from "@/hooks/rotateCarrier/useGameStageControl";
 import GameContolButton from "@/components/rotateCarrier/GameContolButton";
+import useGameControl from "@/hooks/rotateCarrier/useGameControl";
+import CurrentSelectResult from "@/components/rotateCarrier/CurrentSelectResult";
 
 export default function GamePage() {
   const router = useRouter();
@@ -30,6 +33,7 @@ export default function GamePage() {
   const subject = useRecoilValue(SubjectTextState);
   const setConfig = useSetRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
   const {
     nextLevelBtn,
@@ -38,7 +42,7 @@ export default function GamePage() {
     findItemExist,
     setFindDirection,
     setFindItemExist,
-  } = useGameControl(level);
+  } = useGameStageControl(level);
 
   useEffect(() => {
     const initConfig = () => {
@@ -73,9 +77,11 @@ export default function GamePage() {
 
   return (
     <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center">
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col items-center justify-center w-[60%] p-4 bg-white rounded-xl shadow-md">
-          <span className="font-bold text-xl mb-2">{level + 1} 단계</span>
+      <div className="flex relative flex-col items-center">
+        <div className="flex flex-col items-center justify-center w-[90%] p-4 bg-white rounded-xl shadow-md">
+          <span className="font-bold text-xl mb-2">
+            {level === 0 ? "연습" : level} 단계
+          </span>
           <p className="whitespace-pre-line text-center align-middle">
             {subject}
           </p>
@@ -108,8 +114,11 @@ export default function GamePage() {
           level={level}
           nextLevelBtn={nextLevelBtn}
           setNextLevelBtn={setNextLevelBtn}
-          findDirection={findDirection}
-          findItemExist={findItemExist}
+        />
+        <CurrentSelectResult
+          level={level}
+          nextLevelBtn={nextLevelBtn}
+          setNextLevelBtn={setNextLevelBtn}
         />
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">

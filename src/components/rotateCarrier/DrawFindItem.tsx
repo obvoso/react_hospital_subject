@@ -1,5 +1,7 @@
+import { currentSelectResultState } from "@/atoms/rotateCarrier/config";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 interface Props {
   image: string;
@@ -18,6 +20,7 @@ export const DrawFindItem = ({
   onImageLoaded,
   showImage = true,
 }: Props) => {
+  const setCurrentSelectResult = useSetRecoilState(currentSelectResultState);
   const [isActive, setIsActive] = useState(false);
 
   const handleMouseDown = () => {
@@ -25,6 +28,7 @@ export const DrawFindItem = ({
   };
 
   const handleMouseUp = () => {
+    if (!isAnswer) setCurrentSelectResult(false);
     setIsActive(false);
   };
 

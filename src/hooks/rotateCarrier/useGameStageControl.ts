@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-export function useGameControl(level: number) {
+export function useGameStageControl(level: number) {
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const [findDirection, setFindDirection] = useState(false);
@@ -35,10 +35,12 @@ export function useGameControl(level: number) {
       gameState.existScore === config.findItems
     ) {
       if (findDirection)
-        setGameState({
-          ...gameState,
-          stage: RotateCarrierStage.FIND_DIRECTION,
-        });
+        setTimeout(() => {
+          setGameState({
+            ...gameState,
+            stage: RotateCarrierStage.FIND_DIRECTION,
+          });
+        }, 2000);
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });
@@ -55,12 +57,16 @@ export function useGameControl(level: number) {
       gameState.stage === RotateCarrierStage.FIND_ITEM
     ) {
       if (findItemExist)
-        setGameState({ ...gameState, stage: RotateCarrierStage.FIND_EXIST });
+        setTimeout(() => {
+          setGameState({ ...gameState, stage: RotateCarrierStage.FIND_EXIST });
+        }, 2000);
       else if (findDirection)
-        setGameState({
-          ...gameState,
-          stage: RotateCarrierStage.FIND_DIRECTION,
-        });
+        setTimeout(() => {
+          setGameState({
+            ...gameState,
+            stage: RotateCarrierStage.FIND_DIRECTION,
+          });
+        }, 2000);
       else {
         setNextLevelBtn(true);
         setGameState({ ...gameState, start: false });

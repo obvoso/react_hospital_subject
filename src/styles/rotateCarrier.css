@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes growAndShrink {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.wrong {
+  background: linear-gradient(
+    90deg,
+    purple,
+    rgb(208, 0, 255),
+    violet,
+    rgb(208, 0, 255),
+    purple
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 25px rgb(255, 100, 255);
+}
+
+.correct {
+  background: linear-gradient(
+    90deg,
+    rgb(39, 17, 149),
+    rgb(23, 47, 233),
+    rgb(23, 118, 243),
+    rgb(23, 47, 233),
+    rgb(39, 17, 149)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 25px rgb(44, 160, 255);
+}
+
+.text-bg {
+  background: radial-gradient(
+    circle at center,
+    rgba(243, 244, 246, 1) 60%,
+    transparent 100%
+  );
+  padding: 15px;
+  border-radius: 15px;
+  display: inline-block; /* Adjust display to fit content */
+}
+
+.selectScore {
+  animation: growAndShrink 0.3s ease-in-out;
+}

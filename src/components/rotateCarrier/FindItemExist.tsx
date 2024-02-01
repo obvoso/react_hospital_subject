@@ -22,15 +22,16 @@ export default function FindItemExist() {
   const [loadedCount, setLoadedCount] = useState(0);
   const totalImages = 4; // 총 이미지 개수
 
-  const handleImageLoaded = () => {
-    setLoadedCount((prevCount) => prevCount + 1);
-  };
-
   useEffect(() => {
     if (loadedCount === totalImages) {
       setImagesLoaded(true);
     }
   }, [loadedCount, totalImages]);
+
+  const handleImageLoaded = () => {
+    setLoadedCount((prevCount) => prevCount + 1);
+  };
+
   const isAnswer = (itemName: string) =>
     config.questions.some((question) => itemName === question.imageKey);
 

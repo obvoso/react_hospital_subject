@@ -24,6 +24,11 @@ export const SubjectTextState = atom({
     "캐리어가 회전합니다.\n물건의 위치를 기억하고, 물건의 알맞은 방향도 선택해주세요.",
 });
 
+export const currentSelectResultState = atom({
+  key: "currentSelectResultState",
+  default: true,
+});
+
 export const RotateCarrierGameState = atom<IRotateCarrierGame>({
   key: "RotateCarrierGameState",
   default: {

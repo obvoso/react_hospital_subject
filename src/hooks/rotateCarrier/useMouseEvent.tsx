@@ -1,10 +1,13 @@
-import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
+import {
+  RotateCarrierGameState,
+  currentSelectResultState,
+} from "@/atoms/rotateCarrier/config";
 import {
   RotateCarrierLevelConfig,
   RotateCarrierSpacePoint,
 } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import { RefObject, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 export const useMouseEvent = (
   canvasRef: RefObject<HTMLCanvasElement>,
@@ -13,6 +16,7 @@ export const useMouseEvent = (
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const [clickedRectIndex, setClickedRectIndex] = useState<number>(-1);
   const [lastScoredIndex, setLastScoredIndex] = useState<number>(-1);
+  const setCurrentSelectResult = useSetRecoilState(currentSelectResultState);
 
   const isMouseOverRect = (
     rect: RotateCarrierSpacePoint,
@@ -61,6 +65,9 @@ export const useMouseEvent = (
         setLastScoredIndex(clickedRectIndex);
       }
     });
+    if (!config.answerDirection.includes(clickedRectIndex)) {
+      setCurrentSelectResult(false);
+    }
     setClickedRectIndex(-1);
   };
 
