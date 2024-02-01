@@ -61,7 +61,7 @@ export default function GamePage() {
       });
     };
 
-    if (level > 9) {
+    if (level > 10) {
       router.push("/404");
       return;
     }

@@ -86,7 +86,7 @@ export default function GameContolButton({
         onClick={handleStart}
         type={!gameState.start && !nextLevelBtn ? "activate" : "disabled"}
       />
-      {nextLevelBtn && level < 9 && (
+      {nextLevelBtn && level < 10 && (
         <CustomButton
           text="다음 단계"
           onClick={handleNextLevel}
