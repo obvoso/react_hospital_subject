@@ -63,7 +63,9 @@ function LevelNav({ game, curLevel, disabled }: LevelNavProps) {
           level={level}
           isClicked={
             level === curLevel ||
-            (level === 3 && (curLevel === 11 || curLevel === 12))
+            (game === "route" &&
+              level === 3 &&
+              (curLevel === 11 || curLevel === 12))
           }
           key={level}
           disabled={disabled}
