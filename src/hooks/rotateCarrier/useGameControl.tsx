@@ -68,14 +68,12 @@ export default function useGameControl({
 
   const shuffleObstacleArray = (randomIndex: RotateCarrierSpacePoint[]) => {
     const obstacleArray: RotateCarrierItemAssets[] = [];
-    console.log(config.space.length, config.obstacle);
-    console.log(config);
+
     for (
       let i = config.questions.length, j = 0;
       j < config.obstacle;
       i++, j++
     ) {
-      console.log(config.space.length, config.obstacle);
       if (config.space.length === 2) {
         obstacleArray.push({
           imageKey: `obstacle${j}`,
@@ -118,7 +116,6 @@ export default function useGameControl({
         if (randomIndex[i].y === -70) direction.push(0);
         else direction.push(1);
       } else if (config.space.length === 4) {
-        console.log(randomIndex[i].x, randomIndex[i].y);
         if (randomIndex[i].x === -85 && randomIndex[i].y === -70)
           direction.push(0);
         else if (randomIndex[i].x === -85 && randomIndex[i].y === 30)

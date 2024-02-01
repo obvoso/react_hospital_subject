@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Canvas from "@/components/rotateCarrier/Canvas";
 import { RotateCarrierGameLevels } from "@/assets/rotateCarrier/carrierRotateGameConfig";
@@ -7,6 +7,7 @@ import {
   RotateCarrierGameState,
   RotateCarrierStage,
   SubjectTextState,
+  currentSelectResultState,
 } from "@/atoms/rotateCarrier/config";
 import {
   useRecoilState,
@@ -23,6 +24,8 @@ import LevelNav from "@/utils/LevelNav";
 import FindItemControlButton from "@/components/rotateCarrier/FindItemControlButton";
 import { useGameStageControl } from "@/hooks/rotateCarrier/useGameStageControl";
 import GameContolButton from "@/components/rotateCarrier/GameContolButton";
+import useGameControl from "@/hooks/rotateCarrier/useGameControl";
+import CurrentSelectResult from "@/components/rotateCarrier/CurrentSelectResult";
 
 export default function GamePage() {
   const router = useRouter();
@@ -30,6 +33,7 @@ export default function GamePage() {
   const subject = useRecoilValue(SubjectTextState);
   const setConfig = useSetRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
+
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
   const {
     nextLevelBtn,
@@ -111,12 +115,11 @@ export default function GamePage() {
           nextLevelBtn={nextLevelBtn}
           setNextLevelBtn={setNextLevelBtn}
         />
-        {/* 여기서 */}
-        {/*<div className="flex absolute items-center justify-center bg-red-200/20 w-full h-full ">
-          <span className={`scoreAnimation font-semibold text-2xl perfect`}>
-            좋아요!
-          </span>
-        </div>*/}
+        <CurrentSelectResult
+          level={level}
+          nextLevelBtn={nextLevelBtn}
+          setNextLevelBtn={setNextLevelBtn}
+        />
       </div>
       <div className="flex flex-col sm:flex-row items-center justify-between h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10">
         <LevelNav

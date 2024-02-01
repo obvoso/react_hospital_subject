@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import "./baggage.css";
+@import "./rotateCarrier.css";
 @import "./error.css";
 
 :root {

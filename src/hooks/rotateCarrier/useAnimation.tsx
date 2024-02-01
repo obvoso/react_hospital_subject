@@ -62,7 +62,6 @@ export const useAnimation = ({
           : clickedRectIndex == index
           ? "red"
           : "rgb(243,244,246)";
-
       drawRect(context, rect.x, rect.y, rect.w, rect.h, color);
     });
 
