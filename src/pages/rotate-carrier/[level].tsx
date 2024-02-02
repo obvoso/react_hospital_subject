@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Canvas from "@/components/rotateCarrier/Canvas";
 import { RotateCarrierGameLevels } from "@/assets/rotateCarrier/carrierRotateGameConfig";
@@ -7,7 +7,6 @@ import {
   RotateCarrierGameState,
   RotateCarrierStage,
   SubjectTextState,
-  currentSelectResultState,
 } from "@/atoms/rotateCarrier/config";
 import {
   useRecoilState,
@@ -24,7 +23,6 @@ import LevelNav from "@/utils/LevelNav";
 import FindItemControlButton from "@/components/rotateCarrier/FindItemControlButton";
 import { useGameStageControl } from "@/hooks/rotateCarrier/useGameStageControl";
 import GameContolButton from "@/components/rotateCarrier/GameContolButton";
-import useGameControl from "@/hooks/rotateCarrier/useGameControl";
 import CurrentSelectResult from "@/components/rotateCarrier/CurrentSelectResult";
 
 export default function GamePage() {
