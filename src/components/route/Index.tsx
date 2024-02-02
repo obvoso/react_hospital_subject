@@ -6,6 +6,7 @@ import LevelNav from "@/utils/LevelNav";
 import DrawMarkAndCanvas from "./DrawMarkAndCanvas";
 import Speed from "./Speed";
 import CustomControl from "../customRoute/CustomControl";
+import ShowRouteLineToggle from "./ShowRouteLineToggle";
 
 interface RouteProps {
   level: number;
@@ -20,7 +21,7 @@ export default function Route({ level }: RouteProps) {
 
   return (
     <div className="flex flex-col-reverse sm:flex-row justify-center items-center py-4 gap-x-10">
-      <div className="flex flex-col items-center justify-center p-10 gap-y-14">
+      <div className="flex flex-col items-center justify-center sm:p-10 gap-y-14">
         <Subject
           level={level}
           setSubjectInit={() => setSubjectInitFlag(true)}
@@ -35,7 +36,10 @@ export default function Route({ level }: RouteProps) {
       </div>
       {level < 13 ? (
         <>
-          <Speed level={level} />
+          <div className="flex sm:flex-col p-2 items-center gap-3">
+            <ShowRouteLineToggle />
+            <Speed level={level} />
+          </div>
           <LevelNav game="route" curLevel={level} />
         </>
       ) : (

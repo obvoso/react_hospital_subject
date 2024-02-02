@@ -20,3 +20,8 @@ export const customRouteState = atom<RouteGameConfig>({
     subject: "",
   },
 });
+
+export const showRotueLineState = atom<boolean>({
+  key: "showRotueLineState",
+  default: true,
+});
