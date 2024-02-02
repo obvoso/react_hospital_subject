@@ -16,6 +16,7 @@ import {
 } from "@/assets/route/InvalidGrid";
 import SelectMap from "./SelectMap";
 import Speed from "../route/Speed";
+import ShowRouteLineToggle from "../route/ShowRouteLineToggle";
 
 export default function CustomControl() {
   const [customRoute, setCustomRoute] = useRecoilState(customRouteState);
@@ -57,7 +58,7 @@ export default function CustomControl() {
         }
       />
       <DropDownButton
-        label="장애물 여부"
+        label="경로 갯수"
         options={obstacleOptions}
         curValue={customRoute.obstacle ? 1 : 0}
         onChange={(value) =>
@@ -75,6 +76,7 @@ export default function CustomControl() {
           setCustomRoute((prev) => ({ ...prev, transit: value }))
         }
       />
+      <ShowRouteLineToggle />
       <Speed level={customRoute.level} />
     </div>
   );

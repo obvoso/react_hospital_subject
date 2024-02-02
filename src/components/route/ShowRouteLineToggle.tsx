@@ -9,11 +9,13 @@ export default function ShowRouteLineToggle() {
   const gameState = useRecoilValue(routeGameState);
 
   return (
-    <Toggle
-      label="이동 경로 보기"
-      isOn={showRouteLine}
-      handleToggle={() => setShowRouteLine(!showRouteLine)}
-      disabled={gameState.start}
-    />
+    <div className="min-w-max">
+      <Toggle
+        label="이동 경로 보기"
+        isOn={showRouteLine}
+        handleToggle={() => setShowRouteLine(!showRouteLine)}
+        disabled={gameState.start}
+      />
+    </div>
   );
 }

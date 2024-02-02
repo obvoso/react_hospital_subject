@@ -83,7 +83,7 @@ export default React.memo(function DrawMark({
         {correctRoute[endIndex] && !correctRoute[mark.priority] && (
           <>
             <DrawRoutePriority priority={mark.priority + 1} />
-            <DrawRoutePriority priority={endIndex} />
+            <DrawRoutePriority priority={endIndex + 1} />
           </>
         )}
       </div>

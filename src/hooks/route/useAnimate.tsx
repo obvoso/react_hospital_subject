@@ -41,7 +41,7 @@ export function useAnimate({
     const correctionY = 25;
 
     context.lineWidth = 5;
-    context.strokeStyle = " rgb(129 140 248)";
+    context.strokeStyle = "rgb(129 140 248)";
 
     const animate = () => {
       //종료 조건

@@ -24,6 +24,6 @@ export const transitOptions = [
 ];
 
 export const obstacleOptions = [
-  { label: "장애물 없음", value: 0 },
-  { label: "장애물 있음", value: 1 },
+  { label: "경로 1개", value: 0 },
+  { label: "경로 2개", value: 1 },
 ];

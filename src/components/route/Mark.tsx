@@ -7,6 +7,7 @@ import { useAutoCursor } from "@/hooks/route/useAutoCursor";
 import { customRouteState } from "@/atoms/route/custom";
 import DrawMark from "./DrawMark";
 import { isTransitMark } from "@/utils/route/arraysHaveSameSequence";
+import useDrawRouteLine from "@/hooks/route/useDrawRouteLine";
 
 interface MarkProps {
   marks: Mark[];
@@ -16,6 +17,7 @@ interface MarkProps {
 
 export default function Mark({ marks, level, clickAble }: MarkProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const customRoute = useRecoilValue(customRouteState);
   const config = level < 13 ? routeGameConfigList[level] : customRoute;
   const setGameState = useSetRecoilState(routeGameState);
@@ -24,6 +26,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
   const [clickedMarks, setClickedMarks] = useState<
     Record<number, boolean | null>
   >({});
+  useDrawRouteLine({ canvasRef, level, marks, correctRoute });
 
   useEffect(() => {
     setCorrectRoute({});
@@ -60,7 +63,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
       else if (config.transit) {
         setCorrectRoute({
           ...correctRoute,
-          [config.mark + 1]: true,
+          [config.mark]: true,
           [priority]: false,
         });
       }
@@ -88,6 +91,12 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
       ref={containerRef}
       className={`flex absolute w-[${MapWidth}px] h-[${MapHeight}px]`}
     >
+      <canvas
+        ref={canvasRef}
+        width={MapWidth}
+        height={MapHeight}
+        className="absolute z-0"
+      ></canvas>
       <div className="flex relative w-full h-full z-10">
         {marks
           .filter((mark) =>
@@ -101,7 +110,7 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
               handleMouseUp={handleMouseUp}
               key={mark.priority}
               isCorrect={clickedMarks[mark.priority]}
-              endIndex={config.mark + 1}
+              endIndex={config.mark}
               clickAble={level !== 11 && clickAble}
             />
           ))}
