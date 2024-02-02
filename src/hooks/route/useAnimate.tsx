@@ -4,7 +4,7 @@ import { RouteGameConfig } from "@/type/route/routeGameConfigType";
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
 import { useRecoilValue } from "recoil";
 import { routeGameState, vehicleSpeedState } from "@/atoms/route/game";
-import { customRouteState } from "@/atoms/route/custom";
+import { customRouteState, showRotueLineState } from "@/atoms/route/custom";
 
 interface Props {
   level: number;
@@ -26,6 +26,7 @@ export function useAnimate({
   const speed = useRecoilValue(vehicleSpeedState);
   const customRoute = useRecoilValue(customRouteState);
   const gameState = useRecoilValue(routeGameState);
+  const showRouteLine = useRecoilValue(showRotueLineState);
 
   const startAnimation = (
     context: CanvasRenderingContext2D,
@@ -60,7 +61,7 @@ export function useAnimate({
       let speed = 0;
 
       // 선의 시작지점 설정
-      if (currentMark === 0) {
+      if (currentMark === 0 && showRouteLine) {
         path.moveTo(startX + correctionX, startY + correctionY);
       }
 
@@ -71,10 +72,11 @@ export function useAnimate({
         const x = startX + (endX - startX) * distanceFraction;
         const y = startY + (endY - startY) * distanceFraction;
 
-        path.lineTo(x + correctionX, y + correctionY);
+        if (showRouteLine) path.lineTo(x + correctionX, y + correctionY);
+
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         context.drawImage(vehicle, x, y, 50, 50);
-        context.stroke(path);
+        if (showRouteLine) context.stroke(path);
 
         if (distanceFraction < 1) {
           //맨 처음 시작하는 경우 0.5초뒤에 시작
@@ -91,7 +93,8 @@ export function useAnimate({
           const timer = setTimeout(() => {
             animationFrameIdRef.current = requestAnimationFrame(animate);
             //다음 선의 시작지점 설정
-            path.moveTo(endX + correctionX, endY + correctionY);
+            if (showRouteLine)
+              path.moveTo(endX + correctionX, endY + correctionY);
           }, 300);
           return () => {
             clearTimeout(timer);
