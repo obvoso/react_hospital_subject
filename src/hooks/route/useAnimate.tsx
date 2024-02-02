@@ -34,7 +34,13 @@ export function useAnimate({
     marks: Mark[]
   ) => {
     let currentMark = 0;
+    let path = new Path2D();
     const increaseSpeed = speed;
+    const correctionX = 25;
+    const correctionY = 25;
+
+    context.lineWidth = 5;
+    context.strokeStyle = " rgb(129 140 248)";
 
     const animate = () => {
       //종료 조건
@@ -53,6 +59,11 @@ export function useAnimate({
       );
       let speed = 0;
 
+      // 선의 시작지점 설정
+      if (currentMark === 0) {
+        path.moveTo(startX + correctionX, startY + correctionY);
+      }
+
       const move = () => {
         speed += increaseSpeed;
         const distanceFraction = Math.min(speed / totalDistance, 1);
@@ -60,8 +71,10 @@ export function useAnimate({
         const x = startX + (endX - startX) * distanceFraction;
         const y = startY + (endY - startY) * distanceFraction;
 
+        path.lineTo(x + correctionX, y + correctionY);
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         context.drawImage(vehicle, x, y, 50, 50);
+        context.stroke(path);
 
         if (distanceFraction < 1) {
           //맨 처음 시작하는 경우 0.5초뒤에 시작
@@ -77,6 +90,8 @@ export function useAnimate({
           currentMark++;
           const timer = setTimeout(() => {
             animationFrameIdRef.current = requestAnimationFrame(animate);
+            //다음 선의 시작지점 설정
+            path.moveTo(endX + correctionX, endY + correctionY);
           }, 300);
           return () => {
             clearTimeout(timer);
