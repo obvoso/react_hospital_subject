@@ -6,6 +6,7 @@ import { useCustomGameControl } from "@/hooks/rotateCarrier/useCustomGameContol"
 import CustomButtons from "@/components/customRotateCarrier/CustomButtons";
 import GameContolButton from "@/components/customRotateCarrier/GameContolButton";
 import Canvas from "@/components/rotateCarrier/Canvas";
+import CurrentSelectResult from "@/components/rotateCarrier/CurrentSelectResult";
 
 export default function CustomGamePage() {
   const {
@@ -35,7 +36,7 @@ export default function CustomGamePage() {
 
   return (
     <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center">
-      <div className="flex flex-col items-center">
+      <div className="flex relative flex-col items-center">
         <CustomButtons
           gridSize={gridSize}
           obstacleSize={obstacle}
@@ -69,6 +70,11 @@ export default function CustomGamePage() {
           <div className="w-[500px] h-[500px]" />
         )}
         <GameContolButton
+          nextLevelBtn={nextLevelBtn}
+          setNextLevelBtn={setNextLevelBtn}
+        />
+        <CurrentSelectResult
+          level={level}
           nextLevelBtn={nextLevelBtn}
           setNextLevelBtn={setNextLevelBtn}
         />
