@@ -76,6 +76,12 @@ export default function GamePage() {
       case BaggageSpeed.SPEED5:
         setSpeedText("0.75");
         break;
+      case BaggageSpeed.SPEED6:
+        setSpeedText("0.5");
+        break;
+      case BaggageSpeed.SPEED7:
+        setSpeedText("0.25");
+        break;
     }
   }, [speed]);
 

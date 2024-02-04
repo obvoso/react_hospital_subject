@@ -52,6 +52,10 @@ export const useAnimation = ({ canvasRef, images }: params) => {
     showNextItemTime = 1000;
   } else if (gameSpeed === BaggageSpeed.SPEED5) {
     showNextItemTime = 750;
+  } else if (gameSpeed === BaggageSpeed.SPEED6) {
+    showNextItemTime = 500;
+  } else if (gameSpeed === BaggageSpeed.SPEED7) {
+    showNextItemTime = 250;
   }
 
   useEffect(() => {

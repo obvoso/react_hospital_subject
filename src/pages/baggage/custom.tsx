@@ -51,6 +51,12 @@ export default function CustomGamePage() {
       case BaggageSpeed.SPEED5:
         setSpeedText("0.75");
         break;
+      case BaggageSpeed.SPEED6:
+        setSpeedText("0.5");
+        break;
+      case BaggageSpeed.SPEED7:
+        setSpeedText("0.25");
+        break;
     }
   }, [speed]);
 
@@ -69,6 +75,8 @@ export default function CustomGamePage() {
     { label: "보통", value: BaggageSpeed.SPEED3 },
     { label: "조금 빠름", value: BaggageSpeed.SPEED4 },
     { label: "빠름", value: BaggageSpeed.SPEED5 },
+    { label: "매우 빠름", value: BaggageSpeed.SPEED6 },
+    { label: "더욱 빠름", value: BaggageSpeed.SPEED7 },
   ];
 
   const classificationOptions = [

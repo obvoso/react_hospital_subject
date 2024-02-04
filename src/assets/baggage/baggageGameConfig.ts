@@ -5,6 +5,8 @@ export const enum BaggageSpeed {
   SPEED3 = 3, //보통
   SPEED4 = 4, //조금 빠름
   SPEED5 = 5, //빠름
+  SPEED6 = 7, //매우 빠름
+  SPEED7 = 10, //더욱 빠름
 }
 
 export interface BaggageItemAssets {

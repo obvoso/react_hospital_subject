@@ -39,6 +39,8 @@ export default function SpeedButton() {
           <MenuItem value={BaggageSpeed.SPEED3}>보통</MenuItem>
           <MenuItem value={BaggageSpeed.SPEED4}>조금 빠름</MenuItem>
           <MenuItem value={BaggageSpeed.SPEED5}>빠름</MenuItem>
+          <MenuItem value={BaggageSpeed.SPEED6}>매우 빠름</MenuItem>
+          <MenuItem value={BaggageSpeed.SPEED7}>더욱 빠름</MenuItem>
         </Select>
       </FormControl>
     </div>
