@@ -75,6 +75,7 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
             }
           >
             <Image
+              key={keyType}
               src={`/assets/baggage/${
                 keyType === Custom.COLOR_2 || keyType === Custom.COLOR_3
                   ? "carrier_blue"
@@ -96,6 +97,7 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
               }
             >
               <Image
+                key={keyType}
                 src={`/assets/baggage/${
                   keyType === Custom.COLOR_3 ? "carrier_red" : "bag"
                 }.png`}
@@ -115,6 +117,7 @@ function KeyDownButtons({ level }: KeyDownButtonsProps) {
             }
           >
             <Image
+              key={keyType}
               src={`/assets/baggage/${
                 keyType === Custom.COLOR_2 || keyType === Custom.COLOR_3
                   ? "carrier_yellow"
