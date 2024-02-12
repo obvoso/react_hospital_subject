@@ -169,7 +169,7 @@ export default function useGameControl({
       existScore: 0,
       start: true,
       lastAngle: 0,
-      lastDirection: 0,
+      lastDirection: -1,
     });
     setNextLevelBtn(false);
   }
