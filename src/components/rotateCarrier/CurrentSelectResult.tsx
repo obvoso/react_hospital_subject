@@ -31,6 +31,7 @@ export default function CurrentSelectResult({
   });
 
   useEffect(() => {
+    if (gameState.lastDirection === -1) return;
     if (!currentSelectResult && gameState.start) {
       setCurrentSelectResultText("아쉬워요!");
       setGameState((prev) => {

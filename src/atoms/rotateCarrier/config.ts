@@ -38,7 +38,7 @@ export const RotateCarrierGameState = atom<IRotateCarrierGame>({
     existScore: 0,
     start: false,
     lastAngle: 0,
-    lastDirection: 0,
+    lastDirection: -1,
   },
 });
 

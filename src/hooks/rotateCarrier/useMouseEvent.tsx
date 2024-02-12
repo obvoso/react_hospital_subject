@@ -72,7 +72,7 @@ export const useMouseEvent = (
   };
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || gameState.lastDirection === -1) return;
     canvasRef.current.addEventListener("mousedown", handleMouseDown);
     canvasRef.current.addEventListener("mouseup", handleMouseUp);
 
@@ -81,11 +81,11 @@ export const useMouseEvent = (
       canvasRef.current.removeEventListener("mousedown", handleMouseDown);
       canvasRef.current.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [gameState.start, gameState.lastAngle, clickedRectIndex]);
+  }, [gameState.start, gameState.lastDirection, clickedRectIndex]);
 
   useEffect(() => {
     setLastScoredIndex(-1);
-  }, [config]);
+  }, [config, gameState.lastDirection]);
 
   return { clickedRectIndex };
 };
