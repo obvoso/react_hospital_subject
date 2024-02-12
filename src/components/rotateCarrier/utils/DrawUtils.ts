@@ -45,7 +45,7 @@ export const drawStaticElements = (
   });
 
   config.obstacles.forEach((item) => {
-    if (!images.current) return;
+    if (!images.current || !images.current[item.imageKey]) return;
     context.drawImage(
       images.current[item.imageKey],
       item.point.x,
