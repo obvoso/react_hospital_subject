@@ -1,4 +1,4 @@
-export interface Isouvenir {
+export interface ISouvenir {
   name: string;
   radius: number;
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Engine, Render, Runner, World, Bodies, Body, Events } from "matter-js";
 import { ITEM_BASE } from "@/assets/souvenir/item";
-import { Isouvenir } from "@/type/souvenir/Isouvenir";
+import { ISouvenir } from "@/type/souvenir/Isouvenir";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
 import {
   createSmoke,
@@ -13,7 +13,7 @@ const GamePage = () => {
   const engineRef = useRef<Engine | null>(null); // engine을 useRef로 관리
   const [disableAction, setDisableAction] = useState(false);
   const disableActionRef = useRef(false);
-  const [currentFruit, setCurrentFruit] = useState<Isouvenir | null>(null);
+  const [currentFruit, setCurrentFruit] = useState<ISouvenir | null>(null);
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
   let interval: NodeJS.Timeout | null = null;
 
@@ -21,7 +21,7 @@ const GamePage = () => {
     const engine = engineRef.current;
     if (!engine) return; // engine이 없으면 함수를 빠져나옴
 
-    const index = Math.floor(Math.random() * 5);
+    const index = Math.floor(Math.random() * 6);
     const fruit = ITEM_BASE[index];
 
     const body = Bodies.circle(300, 50, fruit.radius, {

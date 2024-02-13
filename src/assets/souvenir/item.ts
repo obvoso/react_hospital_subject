@@ -1,48 +1,52 @@
-import { Isouvenir } from "@/type/souvenir/Isouvenir";
+import { ISouvenir } from "@/type/souvenir/Isouvenir";
 
-export const ITEM_BASE: Isouvenir[] = [
+export const ITEM_BASE: ISouvenir[] = [
   {
-    name: "assets/souvenir/base/00_cherry",
+    name: "assets/souvenir/item/item0",
     radius: 33 / 2,
   },
   {
-    name: "assets/souvenir/base/01_strawberry",
+    name: "assets/souvenir/item/item1",
     radius: 48 / 2,
   },
   {
-    name: "assets/souvenir/base/02_grape",
+    name: "assets/souvenir/item/item2",
     radius: 61 / 2,
   },
   {
-    name: "assets/souvenir/base/03_gyool",
+    name: "assets/souvenir/item/item3",
     radius: 69 / 2,
   },
   {
-    name: "assets/souvenir/base/04_orange",
+    name: "assets/souvenir/item/item4",
     radius: 89 / 2,
   },
   {
-    name: "assets/souvenir/base/05_apple",
+    name: "assets/souvenir/item/item5",
     radius: 114 / 2,
   },
   {
-    name: "assets/souvenir/base/06_pear",
+    name: "assets/souvenir/item/item6",
     radius: 129 / 2,
   },
   {
-    name: "assets/souvenir/base/07_peach",
+    name: "assets/souvenir/item/item7",
     radius: 156 / 2,
   },
   {
-    name: "assets/souvenir/base/08_pineapple",
+    name: "assets/souvenir/item/item8",
     radius: 177 / 2,
   },
   {
-    name: "assets/souvenir/base/09_melon",
+    name: "assets/souvenir/item/item9",
     radius: 220 / 2,
   },
   {
-    name: "assets/souvenir/base/10_watermelon",
+    name: "assets/souvenir/item/item10",
     radius: 259 / 2,
+  },
+  {
+    name: "assets/souvenir/item/item11",
+    radius: 289 / 2,
   },
 ];
