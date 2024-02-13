@@ -2,11 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { Engine, Render, Runner, World, Bodies, Body, Events } from "matter-js";
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { Isouvenir } from "@/type/souvenir/Isouvenir";
+import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
 
 const GamePage = () => {
   const boxRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Engine | null>(null); // engine을 useRef로 관리
   const [disableAction, setDisableAction] = useState(false);
+  const disableActionRef = useRef(false);
   const [currentFruit, setCurrentFruit] = useState<Isouvenir | null>(null);
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
   let interval: NodeJS.Timeout | null = null;
@@ -19,13 +21,13 @@ const GamePage = () => {
     const fruit = ITEM_BASE[index];
 
     const body = Bodies.circle(300, 50, fruit.radius, {
-      id: index,
+      index: index,
       isSleeping: true,
       render: {
         sprite: { texture: `${fruit.name}.png`, xScale: 1, yScale: 1 },
       },
       restitution: 0.2,
-    });
+    } as ICustomBodyDefinition);
 
     setCurrentFruit(fruit);
     setCurrentBody(body);
@@ -91,7 +93,6 @@ const GamePage = () => {
     // 키보드 이벤트 핸들러
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log("disableAction", disableAction, event.code, currentBody);
       if (disableAction || !currentBody) return;
       switch (event.code) {
         case "ArrowLeft":
@@ -122,8 +123,8 @@ const GamePage = () => {
         case "ArrowDown":
           //키보드 연타, 과일 떨어트린 후 조작 불가
           // disableAction = true;
-          console.log("disableAction", disableAction);
           setDisableAction(true);
+          disableActionRef.current = true;
           // 떨어트리기
           currentBody.isSleeping = false;
           //1초 뒤에 다음 과일 추가,
@@ -131,6 +132,7 @@ const GamePage = () => {
             addFruit();
             // disableAction = false;
             setDisableAction(false);
+            disableActionRef.current = false;
           }, 1000);
           break;
       }
@@ -150,57 +152,60 @@ const GamePage = () => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
-    const engine = engineRef.current;
-    if (!engine) return;
-    // Events.on(engine, "collisionStart", (event) => {
-    //   event.pairs.forEach((pair) => {
-    //     // 충돌한 두 객체의 'index' 속성을 확인
-    //     const bodyA: any = pair.bodyA;
-    //     const bodyB: any = pair.bodyB;
-
-    //     // 과일 합치기 로직
-    //     if (bodyA.id === bodyB.id) {
-    //       const index = bodyA.id;
-    //       if (index === ITEM_BASE.length - 1) return;
-
-    //       World.remove(engine.world, [bodyA, bodyB]);
-
-    //       const newFruit = ITEM_BASE[index + 1];
-    //       const newBody = Bodies.circle(
-    //         pair.collision.supports[0].x,
-    //         pair.collision.supports[0].y,
-    //         newFruit.radius,
-    //         {
-    //           render: {
-    //             sprite: {
-    //               texture: `/images/${newFruit.name}.png`,
-    //               xScale: 1,
-    //               yScale: 1,
-    //             },
-    //           },
-    //           restitution: 0.2,
-    //         }
-    //       );
-    //       newBody.id = index + 1;
-
-    //       World.add(engine.world, newBody);
-    //     }
-    //     console.log(disableAction);
-    //     // 게임 오버 조건
-    //     if (
-    //       !disableAction &&
-    //       (bodyA.label === "topLine" || bodyB.label === "topLine")
-    //     ) {
-    //       alert("Game over");
-    //     }
-    //   });
-    // });
-
-    // window.addEventListener("keydown", handleKeyDown);
-
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
   }, [disableAction, currentBody, currentFruit]);
   // }, [currentBody, currentFruit]);
+
+  useEffect(() => {
+    const engine = engineRef.current;
+    if (!engine) return;
+    Events.on(engine, "collisionStart", (event) => {
+      event.pairs.forEach((pair) => {
+        // 충돌한 두 객체의 'index' 속성을 확인
+        const bodyA: any = pair.bodyA;
+        const bodyB: any = pair.bodyB;
+
+        // 과일 합치기 로직
+        if (bodyA.index === bodyB.index) {
+          const index = bodyA.index;
+          if (index === ITEM_BASE.length - 1) return;
+
+          console.log(bodyA, bodyB);
+          World.remove(engine.world, [bodyA, bodyB]);
+
+          const newFruit = ITEM_BASE[index + 1];
+          const newBody = Bodies.circle(
+            pair.collision.supports[0].x,
+            pair.collision.supports[0].y,
+            newFruit.radius,
+            {
+              index: index + 1,
+              render: {
+                sprite: {
+                  texture: `${newFruit.name}.png`,
+                  xScale: 1,
+                  yScale: 1,
+                },
+              },
+              restitution: 0.2,
+            } as ICustomBodyDefinition
+          );
+
+          World.add(engine.world, newBody);
+        }
+        // 게임 오버 조건
+        if (
+          !disableActionRef.current &&
+          (bodyA.label === "topLine" || bodyB.label === "topLine")
+        ) {
+          alert("Game over");
+        }
+      });
+    });
+  }, []);
 
   return <div ref={boxRef} />;
 };
