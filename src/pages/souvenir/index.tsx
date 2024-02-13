@@ -9,7 +9,7 @@ const GamePage = () => {
   const [disableAction, setDisableAction] = useState(false);
   const [currentFruit, setCurrentFruit] = useState<Isouvenir | null>(null);
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
-  let interval: null | NodeJS.Timeout = null;
+  let interval: NodeJS.Timeout | null = null;
 
   const addFruit = () => {
     const engine = engineRef.current;
@@ -99,22 +99,24 @@ const GamePage = () => {
           interval = setInterval(() => {
             if (!currentBody || !currentFruit) return;
             //벽 못뚫게 조건문 추가
-            if (currentBody.position.x - currentFruit.radius > 30)
+            if (currentBody.position.x - currentFruit.radius > 30) {
               Body.setPosition(currentBody, {
                 x: currentBody.position.x - 1,
                 y: currentBody.position.y,
               });
+            }
           }, 5);
           break;
         case "ArrowRight":
           if (interval) return;
           interval = setInterval(() => {
             if (!currentBody || !currentFruit) return;
-            if (currentBody.position.x + currentFruit.radius > 590)
+            if (currentBody.position.x + currentFruit.radius < 590) {
               Body.setPosition(currentBody, {
                 x: currentBody.position.x + 1,
                 y: currentBody.position.y,
               });
+            }
           }, 5);
           break;
         case "ArrowDown":
@@ -134,7 +136,19 @@ const GamePage = () => {
       }
     };
 
+    const handleKeyUp = (event: KeyboardEvent) => {
+      switch (event.code) {
+        case "ArrowLeft":
+        case "ArrowRight":
+          if (interval) {
+            clearInterval(interval);
+            interval = null;
+          }
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
 
     const engine = engineRef.current;
     if (!engine) return;
