@@ -18,68 +18,131 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
   let interval: NodeJS.Timeout | null = null;
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    let mouseDown = false;
+    let startX = 0; // 마우스 클릭 시작 X 위치
+
+    const handleMouseDown = (event: MouseEvent) => {
       if (disableActionRef.current || !currentBody) return;
-      switch (event.code) {
-        case "ArrowLeft":
-          if (interval) return;
-          interval = setInterval(() => {
-            if (!currentBody || !currentItem) return;
-            //벽 못뚫게 조건문 추가
-            if (currentBody.position.x - currentItem.radius > 10) {
-              Body.setPosition(currentBody, {
-                x: currentBody.position.x - 1,
-                y: currentBody.position.y,
-              });
-            }
-          }, 5);
-          break;
-        case "ArrowRight":
-          if (interval) return;
-          interval = setInterval(() => {
-            if (!currentBody || !currentItem) return;
-            if (currentBody.position.x + currentItem.radius < 390) {
-              Body.setPosition(currentBody, {
-                x: currentBody.position.x + 1,
-                y: currentBody.position.y,
-              });
-            }
-          }, 5);
-          break;
-        case "ArrowDown":
-          //키보드 연타, 과일 떨어트린 후 조작 불가능
-          disableActionRef.current = true;
-          // 떨어트리기
-          currentBody.isSleeping = false;
-
-          //1초 뒤에 다음 과일 추가,
-          setTimeout(() => {
-            addItem(engineRef, setCurrentItemAndBody);
-            disableActionRef.current = false;
-          }, 1000);
-          break;
-      }
+      mouseDown = true;
+      startX = event.clientX;
     };
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-      switch (event.code) {
-        case "ArrowLeft":
-        case "ArrowRight":
-          if (interval) {
-            clearInterval(interval);
-            interval = null;
-          }
+    const handleMouseMove = (event: MouseEvent) => {
+      if (
+        !mouseDown ||
+        disableActionRef.current ||
+        !currentBody ||
+        !currentItem
+      )
+        return;
+
+      const currentX = event.clientX;
+      const moveDistance = currentX - startX;
+
+      let newPositionX = currentBody.position.x + moveDistance;
+
+      if (
+        newPositionX - currentItem.radius > 10 &&
+        newPositionX + currentItem.radius < 390
+      ) {
+        Body.setPosition(currentBody, {
+          x: newPositionX,
+          y: currentBody.position.y,
+        });
       }
+
+      startX = currentX;
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+    const handleMouseUp = () => {
+      if (!mouseDown) return;
+      mouseDown = false;
+      if (!currentBody) return;
+
+      disableActionRef.current = true;
+      currentBody.isSleeping = false;
+
+      setTimeout(() => {
+        if (!engineRef.current) return;
+        addItem(engineRef, setCurrentItemAndBody);
+        disableActionRef.current = false;
+      }, 1000);
+    };
+
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [currentBody, currentItem]);
+
+  //useEffect(() => {
+  //  const handleKeyDown = (event: KeyboardEvent) => {
+  //    if (disableActionRef.current || !currentBody) return;
+  //    switch (event.code) {
+  //      case "ArrowLeft":
+  //        if (interval) return;
+  //        interval = setInterval(() => {
+  //          if (!currentBody || !currentItem) return;
+  //          //벽 못뚫게 조건문 추가
+  //          if (currentBody.position.x - currentItem.radius > 10) {
+  //            Body.setPosition(currentBody, {
+  //              x: currentBody.position.x - 1,
+  //              y: currentBody.position.y,
+  //            });
+  //          }
+  //        }, 5);
+  //        break;
+  //      case "ArrowRight":
+  //        if (interval) return;
+  //        interval = setInterval(() => {
+  //          if (!currentBody || !currentItem) return;
+  //          if (currentBody.position.x + currentItem.radius < 390) {
+  //            Body.setPosition(currentBody, {
+  //              x: currentBody.position.x + 1,
+  //              y: currentBody.position.y,
+  //            });
+  //          }
+  //        }, 5);
+  //        break;
+  //      case "ArrowDown":
+  //        //키보드 연타, 과일 떨어트린 후 조작 불가능
+  //        disableActionRef.current = true;
+  //        // 떨어트리기
+  //        currentBody.isSleeping = false;
+
+  //        //1초 뒤에 다음 과일 추가,
+  //        setTimeout(() => {
+  //          addItem(engineRef, setCurrentItemAndBody);
+  //          disableActionRef.current = false;
+  //        }, 1000);
+  //        break;
+  //    }
+  //  };
+
+  //  const handleKeyUp = (event: KeyboardEvent) => {
+  //    switch (event.code) {
+  //      case "ArrowLeft":
+  //      case "ArrowRight":
+  //        if (interval) {
+  //          clearInterval(interval);
+  //          interval = null;
+  //        }
+  //    }
+  //  };
+
+  //  window.addEventListener("keydown", handleKeyDown);
+  //  window.addEventListener("keyup", handleKeyUp);
+
+  //  return () => {
+  //    window.removeEventListener("keydown", handleKeyDown);
+  //    window.removeEventListener("keyup", handleKeyUp);
+  //  };
+  //}, [currentBody, currentItem]);
 
   //충돌 이벤트
   useEffect(() => {
