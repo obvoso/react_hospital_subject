@@ -3,6 +3,10 @@ import { Engine, Render, Runner, World, Bodies, Body, Events } from "matter-js";
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { Isouvenir } from "@/type/souvenir/Isouvenir";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
+import {
+  createSmoke,
+  updateAndDrawSmoke,
+} from "@/components/souvenir/createSmoke";
 
 const GamePage = () => {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -73,11 +77,17 @@ const GamePage = () => {
     // 첫 번째 과일 추가
     addFruit();
 
+    Events.on(render, "afterRender", () => {
+      const ctx = render.context; // matter-js 렌더러의 콘텍스트를 가져옵니다.
+      updateAndDrawSmoke(ctx); // 연기 업데이트 및 그리기 함수 호출
+    });
+
     Render.run(render);
     Runner.run(Runner.create(), engine);
 
     // 컴포넌트 언마운트 시 리소스 정리
     return () => {
+      //Runner.stop(runner);
       Render.stop(render);
       World.clear(engine.world, false);
       Engine.clear(engine);
@@ -171,6 +181,11 @@ const GamePage = () => {
         // 과일 합치기 로직
         if (bodyA.index === bodyB.index) {
           const index = bodyA.index;
+          const collisionPointX = (bodyA.position.x + bodyB.position.x) / 2;
+          const collisionPointY = (bodyA.position.y + bodyB.position.y) / 2;
+
+          createSmoke(collisionPointX, collisionPointY, (bodyA.index + 1) * 10);
+
           if (index === ITEM_BASE.length - 1) return;
 
           console.log(bodyA, bodyB);
