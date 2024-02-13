@@ -24,7 +24,7 @@ const GamePage = () => {
     const index = Math.floor(Math.random() * 6);
     const fruit = ITEM_BASE[index];
 
-    const body = Bodies.circle(300, 50, fruit.radius, {
+    const body = Bodies.circle(200, 50, fruit.radius, {
       index: index,
       isSleeping: true,
       render: {
@@ -47,25 +47,24 @@ const GamePage = () => {
       options: {
         wireframes: false,
         background: "#F7F4C8",
-        width: 620,
-        height: 850,
+        width: 400,
+        height: 650,
       },
     });
 
-    // 게임 로직 여기에 구현
-    const leftWall = Bodies.rectangle(15, 395, 30, 790, {
+    const leftWall = Bodies.rectangle(5, 400, 10, 500, {
       isStatic: true,
       render: { fillStyle: "#E6B143" },
     });
-    const rightWall = Bodies.rectangle(605, 395, 30, 790, {
+    const rightWall = Bodies.rectangle(395, 400, 10, 500, {
       isStatic: true,
       render: { fillStyle: "#E6B143" },
     });
-    const ground = Bodies.rectangle(310, 820, 620, 60, {
+    const ground = Bodies.rectangle(200, 640, 400, 20, {
       isStatic: true,
       render: { fillStyle: "#E6B143" },
     });
-    const topLine = Bodies.rectangle(310, 150, 620, 2, {
+    const topLine = Bodies.rectangle(200, 150, 400, 2, {
       isSensor: true,
       isStatic: true,
       render: { fillStyle: "#E6B143" },
@@ -110,7 +109,7 @@ const GamePage = () => {
           interval = setInterval(() => {
             if (!currentBody || !currentFruit) return;
             //벽 못뚫게 조건문 추가
-            if (currentBody.position.x - currentFruit.radius > 30) {
+            if (currentBody.position.x - currentFruit.radius > 10) {
               Body.setPosition(currentBody, {
                 x: currentBody.position.x - 1,
                 y: currentBody.position.y,
@@ -122,7 +121,7 @@ const GamePage = () => {
           if (interval) return;
           interval = setInterval(() => {
             if (!currentBody || !currentFruit) return;
-            if (currentBody.position.x + currentFruit.radius < 590) {
+            if (currentBody.position.x + currentFruit.radius < 390) {
               Body.setPosition(currentBody, {
                 x: currentBody.position.x + 1,
                 y: currentBody.position.y,
@@ -183,15 +182,37 @@ const GamePage = () => {
           const index = bodyA.index;
           const collisionPointX = (bodyA.position.x + bodyB.position.x) / 2;
           const collisionPointY = (bodyA.position.y + bodyB.position.y) / 2;
+          let newX = pair.collision.supports[0].x;
+          let newY = pair.collision.supports[0].y;
 
           createSmoke(collisionPointX, collisionPointY, (bodyA.index + 1) * 10);
 
           if (index === ITEM_BASE.length - 1) return;
 
-          console.log(bodyA, bodyB);
           World.remove(engine.world, [bodyA, bodyB]);
 
           const newFruit = ITEM_BASE[index + 1];
+
+          // 10번째 아이템이 합쳐지면 바닥 추가
+          if (index + 1 === 3) {
+            // ground 객체 참조를 가정, 실제 ground 객체의 위치 및 크기에 맞게 조정 필요
+            const groundHeight = 20; // ground의 높이
+            const newWallHeight = 40; // 추가할 벽의 높이
+            const newWall = Bodies.rectangle(
+              200,
+              650 - groundHeight - newWallHeight / 2,
+              400,
+              newWallHeight,
+              {
+                isStatic: true,
+                render: { fillStyle: "#E66143" },
+              }
+            );
+
+            newY -= 40;
+            World.add(engine.world, newWall);
+          }
+
           const newBody = Bodies.circle(
             pair.collision.supports[0].x,
             pair.collision.supports[0].y,
