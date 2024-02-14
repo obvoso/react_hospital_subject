@@ -5,6 +5,8 @@ import { ISouvenir } from "@/type/souvenir/ISouvenir";
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
 import { createSmoke } from "@/utils/souvenir/createSmoke";
+import { useSetRecoilState } from "recoil";
+import { gameScore } from "@/atoms/souvenir/gameScore";
 
 interface IUseMouseEvent {
   engineRef: React.MutableRefObject<Engine | null>;
@@ -13,8 +15,10 @@ interface IUseMouseEvent {
 export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
   const disableActionRef = useRef<boolean>(false);
   const prevCollisionRefs = useRef<number[]>([]);
+  const gameEndedRef = useRef<boolean>(false);
   const [currentItem, setCurrentItem] = useState<ISouvenir | null>(null);
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
+  const setScore = useSetRecoilState(gameScore);
   let timer: NodeJS.Timeout;
 
   useEffect(() => {
@@ -88,8 +92,9 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
     if (!engine) return;
     // 첫 번째 과일 추가
     addItem(engineRef, setCurrentItemAndBody);
+    console.log("충돌 이벤트");
 
-    Events.on(engine, "collisionActive", (event) => {
+    Events.on(engine, "collisionStart", (event) => {
       event.pairs.forEach((pair) => {
         // 충돌한 두 객체의 'index' 속성을 확인
         const bodyA: any = pair.bodyA;
@@ -103,24 +108,30 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
           let newX = pair.collision.supports[0].x;
           let newY = pair.collision.supports[0].y;
 
-          createSmoke(collisionPointX, collisionPointY, (bodyA.index + 1) * 10);
+          setScore((prev) => prev + (index + 1) * 2);
 
+          createSmoke(collisionPointX, collisionPointY, (bodyA.index + 1) * 10);
+          console.log(bodyA.index, bodyB.index, index, "충돌");
           if (index === ITEM_BASE.length - 1) return;
           if (
             prevCollisionRefs.current.includes(bodyA.id) ||
             prevCollisionRefs.current.includes(bodyB.id)
-          )
+          ) {
+            console.log(prevCollisionRefs.current, bodyA.id, bodyB.id);
             return;
+          }
           World.remove(engine.world, [bodyA, bodyB]);
 
           const newFruit = ITEM_BASE[index + 1];
 
           // 10번째 아이템이 합쳐지면 바닥 추가
-          if (index === 1 || index === 2 || index === 3) {
+          if (index === 8) {
             // ground 객체 참조를 가정, 실제 ground 객체의 위치 및 크기에 맞게 조정 필요
             const groundHeight = 20; // ground의 높이
             const newWallHeight = 40; // 추가할 벽의 높이
+
             adjustBodiesForNewWall(engine, newWallHeight, groundHeight);
+
             const newWall = Bodies.rectangle(
               200,
               650 - groundHeight - newWallHeight / 2,
@@ -151,15 +162,24 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
           prevCollisionRefs.current.push(bodyA.id, bodyB.id);
           World.add(engine.world, newBody);
         }
+      });
+    });
+
+    Events.on(engine, "collisionActive", (event) => {
+      if (gameEndedRef.current) return;
+      event.pairs.forEach((pair) => {
+        const bodyA: any = pair.bodyA;
+        const bodyB: any = pair.bodyB;
 
         // 게임 오버 조건
         if (
           (bodyA.label === "topLine" && isBodyStopped(bodyB)) ||
           (bodyB.label === "topLine" && isBodyStopped(bodyA))
         ) {
-          alert("Game over");
-          //Engine.clear(engine); // 엔진이 초기화되어서 아이템들이 다 아래로 떨어짐
           engine.timing.timeScale = 0; // 엔진 시간을 멈춤, 렌더는 되어있는데 일시정지 상태
+          Engine.clear(engine); // 엔진이 초기화되어서 아이템들이 다 아래로 떨어짐
+          gameEndedRef.current = true;
+          alert("Game over");
         }
       });
     });

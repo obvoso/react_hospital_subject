@@ -28,14 +28,17 @@ export default function useMatterJs({ boxRef }: IUseMatterJs) {
     const leftWall = Bodies.rectangle(5, 400, 10, 500, {
       isStatic: true,
       render: { fillStyle: "#E6B143" },
+      label: "leftWall",
     });
     const rightWall = Bodies.rectangle(395, 400, 10, 500, {
       isStatic: true,
       render: { fillStyle: "#E6B143" },
+      label: "rightWall",
     });
     const ground = Bodies.rectangle(200, 640, 400, 20, {
       isStatic: true,
       render: { fillStyle: "#E6B143" },
+      label: "ground",
     });
     const topLine = Bodies.rectangle(200, 150, 400, 2, {
       isSensor: true,

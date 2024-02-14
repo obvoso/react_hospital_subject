@@ -22,3 +22,11 @@ body {
 .custom-cursor {
   cursor: url("/assets/whackAmole/hammer.png"), auto;
 }
+
+.outline-title {
+  font-family: sans-serif;
+  color: #f7cc80;
+  text-shadow: 1px 1px 0 #eda11e, -1px -1px 0 #eda11e, 1px -1px 0 #eda11e,
+    -1px 1px 0 #eda11e, 1px 1px 0 #eda11e;
+  /*font-size: 50px;*/
+}

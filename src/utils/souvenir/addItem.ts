@@ -13,7 +13,7 @@ export const addItem = (
   if (!engine) return; // engine이 없으면 함수를 빠져나옴
 
   const index = Math.floor(Math.random() * 6);
-  //const index = 7;
+  //const index = 11;
   const fruit = ITEM_BASE[index];
   const body = Bodies.circle(200, 50, fruit.radius, {
     index: index,
