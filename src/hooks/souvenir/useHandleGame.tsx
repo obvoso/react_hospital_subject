@@ -186,7 +186,6 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
           Engine.clear(engine); // 엔진이 초기화되어서 아이템들이 다 아래로 떨어짐
           gameEndedRef.current = true;
           setGame(false);
-          alert("Game over");
         }
       });
     });

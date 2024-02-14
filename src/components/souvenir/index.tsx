@@ -5,7 +5,12 @@ import useMatterJs from "@/hooks/souvenir/useMatterJs";
 export default function SouvenirGame() {
   const boxRef = useRef<HTMLDivElement>(null);
   const engineRef = useMatterJs({ boxRef });
+
   useHandleGame(engineRef);
 
-  return <div ref={boxRef} />;
+  return (
+    <div>
+      <div ref={boxRef} />
+    </div>
+  );
 }

@@ -12,13 +12,16 @@ export const Timer = () => {
   );
   const second = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, "0");
   const [gameState, setGameState] = useRecoilState(gameStatus);
+  const [stop, setStop] = useState<boolean>(false);
+  let timer: NodeJS.Timeout;
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    if (stop) return;
+    timer = setInterval(() => {
       setTimeLeft((prevTime) => prevTime + INTERVAL);
     }, INTERVAL);
 
-    if (timeLeft === 1000 * 60 * 5 || gameState === false) {
+    if (timeLeft === 1000 * 60 * 5) {
       clearInterval(timer);
       setGameState(false);
     }
@@ -26,7 +29,18 @@ export const Timer = () => {
     return () => {
       clearInterval(timer);
     };
-  }, [timeLeft, gameState]);
+  }, [timeLeft, stop]);
+
+  useEffect(() => {
+    if (gameState) {
+      setTimeLeft(0);
+      setStop(false);
+    } else {
+      //setTimeLeft(0);
+      setStop(true);
+      clearInterval(timer);
+    }
+  }, [gameState]);
 
   return (
     <div className="flex absolute w-[100px] mt-4 ml-72">
