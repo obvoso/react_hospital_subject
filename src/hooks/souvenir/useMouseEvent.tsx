@@ -5,8 +5,9 @@ import { ISouvenir } from "@/type/souvenir/ISouvenir";
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
 import { createSmoke } from "@/utils/souvenir/createSmoke";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { gameScore } from "@/atoms/souvenir/gameScore";
+import { itemsArray } from "@/atoms/souvenir/itemsArray";
 
 interface IUseMouseEvent {
   engineRef: React.MutableRefObject<Engine | null>;
@@ -18,6 +19,7 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
   const gameEndedRef = useRef<boolean>(false);
   const [currentItem, setCurrentItem] = useState<ISouvenir | null>(null);
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
+  const [itemsArr, setItemsArr] = useRecoilState(itemsArray);
   const setScore = useSetRecoilState(gameScore);
   let timer: NodeJS.Timeout;
 
@@ -68,7 +70,7 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
 
       timer = setTimeout(() => {
         if (!engineRef.current) return;
-        addItem(engineRef, setCurrentItemAndBody);
+        addItem(engineRef, setCurrentItemAndBody, [...itemsArr], setItemsArray);
         disableActionRef.current = false;
       }, 1000);
     };
@@ -91,7 +93,8 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
 
     if (!engine) return;
     // 첫 번째 과일 추가
-    addItem(engineRef, setCurrentItemAndBody);
+    const items = initItemsArray();
+    addItem(engineRef, setCurrentItemAndBody, [...items], setItemsArray);
     console.log("충돌 이벤트");
 
     Events.on(engine, "collisionStart", (event) => {
@@ -222,5 +225,19 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
         });
       }
     });
+  };
+
+  const initItemsArray = () => {
+    let items = [];
+
+    for (let i = 0; i < 12; i++) {
+      items.push(Math.floor(Math.random() * 6));
+    }
+    setItemsArr(items);
+    return items;
+  };
+
+  const setItemsArray = (items: number[]) => {
+    setItemsArr(items);
   };
 }

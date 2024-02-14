@@ -1,0 +1,40 @@
+.circle-container {
+  position: absolute;
+  left: 25px;
+  top: 50px;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.center-item {
+  position: absolute;
+  z-index: 2;
+}
+
+.egg-outline {
+  position: absolute;
+  width: 115%;
+  height: 115%;
+  border-radius: 50%;
+  border: 30px solid rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.circle-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.outline-title {
+  font-family: sans-serif;
+  color: #f7cc80;
+  text-shadow: 1px 1px 0 #eda11e, -1px -1px 0 #eda11e, 1px -1px 0 #eda11e,
+    -1px 1px 0 #eda11e, 1px 1px 0 #eda11e;
+  /*font-size: 50px;*/
+}

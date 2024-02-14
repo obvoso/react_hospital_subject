@@ -6,17 +6,24 @@ import { RefObject } from "react";
 
 export const addItem = (
   engineRef: RefObject<Engine | null>,
-  setCurrentFruitAndBody: (fruit: ISouvenir, body: Matter.Body) => void
+  setCurrentFruitAndBody: (fruit: ISouvenir, body: Matter.Body) => void,
+  itemsArray: number[],
+  setItemsArray: (itemsArray: number[]) => void
 ) => {
   if (!engineRef.current) return;
   const engine = engineRef.current;
   if (!engine) return; // engine이 없으면 함수를 빠져나옴
 
-  const index = Math.floor(Math.random() * 6);
-  //const index = 11;
-  const fruit = ITEM_BASE[index];
+  console.log(itemsArray);
+  const popIndex = itemsArray.shift();
+  const pushIndex = Math.floor(Math.random() * 6);
+
+  if (popIndex === undefined) return;
+  setItemsArray([...itemsArray, pushIndex]);
+
+  const fruit = ITEM_BASE[popIndex];
   const body = Bodies.circle(200, 70, fruit.radius, {
-    index: index,
+    index: popIndex,
     isSleeping: true,
     render: {
       sprite: { texture: `${fruit.name}.png`, xScale: 1, yScale: 1 },
