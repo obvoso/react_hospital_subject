@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { addItem } from "@/utils/souvenir/addItem";
-import { Bodies, Body, Composite, Engine, Events, World } from "matter-js";
+import {
+  Bodies,
+  Body,
+  Composite,
+  Engine,
+  Events,
+  Render,
+  World,
+} from "matter-js";
 import { ISouvenir } from "@/type/souvenir/Isouvenir";
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
 import { createSmoke } from "@/utils/souvenir/createSmoke";
-import Matter from "matter-js";
 
 interface IUseMouseEvent {
   engineRef: React.MutableRefObject<Engine | null>;
@@ -13,9 +20,11 @@ interface IUseMouseEvent {
 
 export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
   const disableActionRef = useRef<boolean>(false);
+  const prevCollisionRefs = useRef<number[]>([]);
+  const collisionRef = useRef<boolean>(false);
   const [currentItem, setCurrentItem] = useState<ISouvenir | null>(null);
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
-  let interval: NodeJS.Timeout | null = null;
+  let timer: NodeJS.Timeout;
 
   useEffect(() => {
     let mouseDown = false;
@@ -60,9 +69,10 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
       if (!currentBody) return;
 
       disableActionRef.current = true;
+      collisionRef.current = false;
       currentBody.isSleeping = false;
 
-      setTimeout(() => {
+      timer = setTimeout(() => {
         if (!engineRef.current) return;
         addItem(engineRef, setCurrentItemAndBody);
         disableActionRef.current = false;
@@ -74,75 +84,12 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
     window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [currentBody, currentItem]);
-
-  //useEffect(() => {
-  //  const handleKeyDown = (event: KeyboardEvent) => {
-  //    if (disableActionRef.current || !currentBody) return;
-  //    switch (event.code) {
-  //      case "ArrowLeft":
-  //        if (interval) return;
-  //        interval = setInterval(() => {
-  //          if (!currentBody || !currentItem) return;
-  //          //벽 못뚫게 조건문 추가
-  //          if (currentBody.position.x - currentItem.radius > 10) {
-  //            Body.setPosition(currentBody, {
-  //              x: currentBody.position.x - 1,
-  //              y: currentBody.position.y,
-  //            });
-  //          }
-  //        }, 5);
-  //        break;
-  //      case "ArrowRight":
-  //        if (interval) return;
-  //        interval = setInterval(() => {
-  //          if (!currentBody || !currentItem) return;
-  //          if (currentBody.position.x + currentItem.radius < 390) {
-  //            Body.setPosition(currentBody, {
-  //              x: currentBody.position.x + 1,
-  //              y: currentBody.position.y,
-  //            });
-  //          }
-  //        }, 5);
-  //        break;
-  //      case "ArrowDown":
-  //        //키보드 연타, 과일 떨어트린 후 조작 불가능
-  //        disableActionRef.current = true;
-  //        // 떨어트리기
-  //        currentBody.isSleeping = false;
-
-  //        //1초 뒤에 다음 과일 추가,
-  //        setTimeout(() => {
-  //          addItem(engineRef, setCurrentItemAndBody);
-  //          disableActionRef.current = false;
-  //        }, 1000);
-  //        break;
-  //    }
-  //  };
-
-  //  const handleKeyUp = (event: KeyboardEvent) => {
-  //    switch (event.code) {
-  //      case "ArrowLeft":
-  //      case "ArrowRight":
-  //        if (interval) {
-  //          clearInterval(interval);
-  //          interval = null;
-  //        }
-  //    }
-  //  };
-
-  //  window.addEventListener("keydown", handleKeyDown);
-  //  window.addEventListener("keyup", handleKeyUp);
-
-  //  return () => {
-  //    window.removeEventListener("keydown", handleKeyDown);
-  //    window.removeEventListener("keyup", handleKeyUp);
-  //  };
-  //}, [currentBody, currentItem]);
 
   //충돌 이벤트
   useEffect(() => {
@@ -152,7 +99,7 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
     // 첫 번째 과일 추가
     addItem(engineRef, setCurrentItemAndBody);
 
-    Events.on(engine, "collisionStart", (event) => {
+    Events.on(engine, "collisionActive", (event) => {
       event.pairs.forEach((pair) => {
         // 충돌한 두 객체의 'index' 속성을 확인
         const bodyA: any = pair.bodyA;
@@ -169,7 +116,11 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
           createSmoke(collisionPointX, collisionPointY, (bodyA.index + 1) * 10);
 
           if (index === ITEM_BASE.length - 1) return;
-
+          if (
+            prevCollisionRefs.current.includes(bodyA.id) ||
+            prevCollisionRefs.current.includes(bodyB.id)
+          )
+            return;
           World.remove(engine.world, [bodyA, bodyB]);
 
           const newFruit = ITEM_BASE[index + 1];
@@ -231,14 +182,21 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
             restitution: 0.2,
           } as ICustomBodyDefinition);
 
+          prevCollisionRefs.current.push(bodyA.id, bodyB.id);
           World.add(engine.world, newBody);
+        }
+        if (bodyA.label === "topLine" || bodyB.label === "topLine") {
+          //console.log(bodyA, bodyB);
+          //console.log(disableActionRef.current);
         }
         // 게임 오버 조건
         if (
-          !disableActionRef.current &&
-          (bodyA.label === "topLine" || bodyB.label === "topLine")
+          (bodyA.label === "topLine" && isBodyStopped(bodyB)) ||
+          (bodyB.label === "topLine" && isBodyStopped(bodyA))
         ) {
           alert("Game over");
+          //Engine.clear(engine); // 엔진이 초기화되어서 아이템들이 다 아래로 떨어짐
+          engine.timing.timeScale = 0; // 엔진 시간을 멈춤, 렌더는 되어있는데 일시정지 상태
         }
       });
     });
@@ -248,4 +206,14 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
     setCurrentItem(fruit);
     setCurrentBody(body);
   }
+
+  const isBodyStopped = (body: Body) => {
+    const threshold = 0.01; // 움직임을 감지할 최소 속도 값
+
+    return (
+      Math.abs(body.velocity.x) < threshold &&
+      Math.abs(body.velocity.y) < threshold &&
+      Math.abs(body.angularVelocity) < threshold
+    );
+  };
 }

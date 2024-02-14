@@ -12,7 +12,8 @@ export const addItem = (
   const engine = engineRef.current;
   if (!engine) return; // engine이 없으면 함수를 빠져나옴
 
-  const index = Math.floor(Math.random() * 6);
+  //const index = Math.floor(Math.random() * 6);
+  const index = 7;
   const fruit = ITEM_BASE[index];
   const body = Bodies.circle(200, 50, fruit.radius, {
     index: index,
