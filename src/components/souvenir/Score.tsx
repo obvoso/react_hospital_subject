@@ -1,4 +1,4 @@
-import { gameScore } from "@/atoms/souvenir/gameScore";
+import { gameScore } from "@/atoms/souvenir/game";
 import React from "react";
 import { useRecoilValue } from "recoil";
 

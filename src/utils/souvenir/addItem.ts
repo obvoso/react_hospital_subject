@@ -14,7 +14,6 @@ export const addItem = (
   const engine = engineRef.current;
   if (!engine) return; // engine이 없으면 함수를 빠져나옴
 
-  console.log(itemsArray);
   const popIndex = itemsArray.shift();
   const pushIndex = Math.floor(Math.random() * 6);
 

@@ -9,7 +9,6 @@ export default function ItemQueue() {
   const radius = 55; // 원의 반지름
   const centerItem = itemsArr[0]; // 중앙 요소
   const angleStep = (2 * Math.PI) / itemCount; // 각 요소 간의 각도 차이
-  //console.log(angleStep);
 
   if (itemsArr.length === 0) return null;
 
@@ -40,8 +39,8 @@ export default function ItemQueue() {
       />
       {itemsArr.slice(1).map((item, index) => {
         const angle = angleStep * (index + 6) - 0.2;
-        const y = Math.cos(angle) * radius;
         const x = Math.sin(angle) * radius;
+        const y = Math.cos(angle) * radius;
         return (
           <div
             key={index}

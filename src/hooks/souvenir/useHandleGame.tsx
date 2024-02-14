@@ -6,14 +6,14 @@ import { ITEM_BASE } from "@/assets/souvenir/item";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
 import { createSmoke } from "@/utils/souvenir/createSmoke";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { gameScore } from "@/atoms/souvenir/gameScore";
+import { gameScore, gameStatus } from "@/atoms/souvenir/game";
 import { itemsArray } from "@/atoms/souvenir/itemsArray";
 
-interface IUseMouseEvent {
+interface IUseHandleGame {
   engineRef: React.MutableRefObject<Engine | null>;
 }
 
-export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
+export default function useHandleGame({ engineRef }: IUseHandleGame) {
   const disableActionRef = useRef<boolean>(false);
   const prevCollisionRefs = useRef<number[]>([]);
   const gameEndedRef = useRef<boolean>(false);
@@ -21,11 +21,13 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
   const [itemsArr, setItemsArr] = useRecoilState(itemsArray);
   const setScore = useSetRecoilState(gameScore);
+  const [game, setGame] = useRecoilState(gameStatus);
   let timer: NodeJS.Timeout;
 
   useEffect(() => {
     let mouseDown = false;
     let startX = 0; // 마우스 클릭 시작 X 위치
+    if (!game) return;
 
     const handleMouseDown = (event: MouseEvent) => {
       if (disableActionRef.current || !currentBody) return;
@@ -85,7 +87,7 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [currentBody, currentItem]);
+  }, [currentBody, currentItem, game]);
 
   //충돌 이벤트
   useEffect(() => {
@@ -95,7 +97,6 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
     // 첫 번째 과일 추가
     const items = initItemsArray();
     addItem(engineRef, setCurrentItemAndBody, [...items], setItemsArray);
-    console.log("충돌 이벤트");
 
     Events.on(engine, "collisionStart", (event) => {
       event.pairs.forEach((pair) => {
@@ -112,15 +113,17 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
           let newY = pair.collision.supports[0].y;
 
           setScore((prev) => prev + (index + 1) * 2);
-
-          createSmoke(collisionPointX, collisionPointY, (bodyA.index + 1) * 10);
-          console.log(bodyA.index, bodyB.index, index, "충돌");
+          if (index !== 11)
+            createSmoke(
+              collisionPointX,
+              collisionPointY,
+              (bodyA.index + 1) * 10
+            );
           if (index === ITEM_BASE.length - 1) return;
           if (
             prevCollisionRefs.current.includes(bodyA.id) ||
             prevCollisionRefs.current.includes(bodyB.id)
           ) {
-            console.log(prevCollisionRefs.current, bodyA.id, bodyB.id);
             return;
           }
           World.remove(engine.world, [bodyA, bodyB]);
@@ -182,6 +185,7 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
           engine.timing.timeScale = 0; // 엔진 시간을 멈춤, 렌더는 되어있는데 일시정지 상태
           Engine.clear(engine); // 엔진이 초기화되어서 아이템들이 다 아래로 떨어짐
           gameEndedRef.current = true;
+          setGame(false);
           alert("Game over");
         }
       });
