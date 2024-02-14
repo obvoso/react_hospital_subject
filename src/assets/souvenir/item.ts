@@ -1,4 +1,4 @@
-import { ISouvenir } from "@/type/souvenir/Isouvenir";
+import { ISouvenir } from "@/type/souvenir/ISouvenir";
 
 export const ITEM_BASE: ISouvenir[] = [
   {
@@ -23,30 +23,30 @@ export const ITEM_BASE: ISouvenir[] = [
   },
   {
     name: "assets/souvenir/item/item5",
-    radius: 114 / 2,
+    radius: 104 / 2,
   },
   {
     name: "assets/souvenir/item/item6",
-    radius: 129 / 2,
+    radius: 119 / 2,
   },
   {
     name: "assets/souvenir/item/item7",
-    radius: 156 / 2,
+    radius: 128 / 2,
   },
   {
     name: "assets/souvenir/item/item8",
-    radius: 177 / 2,
+    radius: 146 / 2,
   },
   {
     name: "assets/souvenir/item/item9",
-    radius: 220 / 2,
+    radius: 160 / 2,
   },
   {
     name: "assets/souvenir/item/item10",
-    radius: 259 / 2,
+    radius: 182 / 2,
   },
   {
     name: "assets/souvenir/item/item11",
-    radius: 289 / 2,
+    radius: 198 / 2,
   },
 ];

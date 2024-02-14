@@ -9,7 +9,7 @@ import {
   Render,
   World,
 } from "matter-js";
-import { ISouvenir } from "@/type/souvenir/Isouvenir";
+import { ISouvenir } from "@/type/souvenir/ISouvenir";
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
 import { createSmoke } from "@/utils/souvenir/createSmoke";

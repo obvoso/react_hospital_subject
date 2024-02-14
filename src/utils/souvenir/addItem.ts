@@ -1,6 +1,6 @@
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
-import { ISouvenir } from "@/type/souvenir/Isouvenir";
+import { ISouvenir } from "@/type/souvenir/ISouvenir";
 import { Bodies, Engine, World } from "matter-js";
 import { RefObject } from "react";
 
@@ -12,8 +12,8 @@ export const addItem = (
   const engine = engineRef.current;
   if (!engine) return; // engine이 없으면 함수를 빠져나옴
 
-  //const index = Math.floor(Math.random() * 6);
-  const index = 7;
+  const index = Math.floor(Math.random() * 6);
+  //const index = 7;
   const fruit = ITEM_BASE[index];
   const body = Bodies.circle(200, 50, fruit.radius, {
     index: index,
