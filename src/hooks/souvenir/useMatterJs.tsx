@@ -13,12 +13,13 @@ export default function useMatterJs({ boxRef }: IUseMatterJs) {
     // Engine, World 및 Render 객체 생성
     engineRef.current = Engine.create(); // engineRef에 Engine 인스턴스 저장
     const engine = engineRef.current;
+    engine.world.gravity.y = 2;
     const render = Render.create({
       engine: engine,
       element: boxRef.current!,
       options: {
         wireframes: false,
-        background: "#F7F4C8",
+        background: "#FFF2CC",
         width: 400,
         height: 650,
       },
@@ -44,9 +45,6 @@ export default function useMatterJs({ boxRef }: IUseMatterJs) {
     });
 
     World.add(engine.world, [leftWall, rightWall, ground, topLine]);
-
-    //// 첫 번째 과일 추가
-    //addItem(engineRef, setCurrentItemAndBody);
 
     Events.on(render, "afterRender", () => {
       const ctx = render.context;

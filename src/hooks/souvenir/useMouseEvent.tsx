@@ -1,14 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { addItem } from "@/utils/souvenir/addItem";
-import {
-  Bodies,
-  Body,
-  Composite,
-  Engine,
-  Events,
-  Render,
-  World,
-} from "matter-js";
+import { Bodies, Body, Composite, Engine, Events, World } from "matter-js";
 import { ISouvenir } from "@/type/souvenir/ISouvenir";
 import { ITEM_BASE } from "@/assets/souvenir/item";
 import { ICustomBodyDefinition } from "@/type/souvenir/ICustomBodyDefinition";
@@ -21,7 +13,6 @@ interface IUseMouseEvent {
 export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
   const disableActionRef = useRef<boolean>(false);
   const prevCollisionRefs = useRef<number[]>([]);
-  const collisionRef = useRef<boolean>(false);
   const [currentItem, setCurrentItem] = useState<ISouvenir | null>(null);
   const [currentBody, setCurrentBody] = useState<Body | null>(null);
   let timer: NodeJS.Timeout;
@@ -69,7 +60,6 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
       if (!currentBody) return;
 
       disableActionRef.current = true;
-      collisionRef.current = false;
       currentBody.isSleeping = false;
 
       timer = setTimeout(() => {
@@ -125,30 +115,6 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
 
           const newFruit = ITEM_BASE[index + 1];
 
-          const adjustBodiesForNewWall = (
-            engine: Engine,
-            newWallHeight: number,
-            groundHeight: number
-          ) => {
-            const bodies = Composite.allBodies(engine.world);
-            const newWallY = 650 - groundHeight - newWallHeight / 2; // 새로운 벽의 y 좌표 계산
-
-            bodies.forEach((body) => {
-              const customBody = body as unknown as ICustomBodyDefinition;
-              if (
-                customBody.index === 0 &&
-                customBody.position &&
-                customBody.position.y > newWallY - 33 / 2
-              ) {
-                // 기존 벽 위에 있는 index가 0인 물체를 새로운 벽 위로 옮김
-                Body.setPosition(customBody as any, {
-                  x: customBody.position.x,
-                  y: newWallY - newWallHeight / 2 - 33 / 2,
-                });
-              }
-            });
-          };
-
           // 10번째 아이템이 합쳐지면 바닥 추가
           if (index === 1 || index === 2 || index === 3) {
             // ground 객체 참조를 가정, 실제 ground 객체의 위치 및 크기에 맞게 조정 필요
@@ -158,11 +124,11 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
             const newWall = Bodies.rectangle(
               200,
               650 - groundHeight - newWallHeight / 2,
-              400,
+              380,
               newWallHeight,
               {
                 isStatic: true,
-                render: { fillStyle: "#E66143" },
+                render: { fillStyle: "#FFBFAE" },
               }
             );
 
@@ -185,10 +151,7 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
           prevCollisionRefs.current.push(bodyA.id, bodyB.id);
           World.add(engine.world, newBody);
         }
-        if (bodyA.label === "topLine" || bodyB.label === "topLine") {
-          //console.log(bodyA, bodyB);
-          //console.log(disableActionRef.current);
-        }
+
         // 게임 오버 조건
         if (
           (bodyA.label === "topLine" && isBodyStopped(bodyB)) ||
@@ -215,5 +178,29 @@ export default function useMouseEvent({ engineRef }: IUseMouseEvent) {
       Math.abs(body.velocity.y) < threshold &&
       Math.abs(body.angularVelocity) < threshold
     );
+  };
+
+  const adjustBodiesForNewWall = (
+    engine: Engine,
+    newWallHeight: number,
+    groundHeight: number
+  ) => {
+    const bodies = Composite.allBodies(engine.world);
+    const newWallY = 650 - groundHeight - newWallHeight / 2; // 새로운 벽의 y 좌표 계산
+
+    bodies.forEach((body) => {
+      const customBody = body as unknown as ICustomBodyDefinition;
+      if (
+        customBody.index === 0 &&
+        customBody.position &&
+        customBody.position.y > newWallY - 33 / 2
+      ) {
+        // 기존 벽 위에 있는 index가 0인 물체를 새로운 벽 위로 옮김
+        Body.setPosition(customBody as any, {
+          x: customBody.position.x,
+          y: newWallY - newWallHeight / 2 - 33 / 2,
+        });
+      }
+    });
   };
 }
