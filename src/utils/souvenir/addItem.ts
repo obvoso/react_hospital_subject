@@ -15,7 +15,7 @@ export const addItem = (
   const index = Math.floor(Math.random() * 6);
   //const index = 11;
   const fruit = ITEM_BASE[index];
-  const body = Bodies.circle(200, 50, fruit.radius, {
+  const body = Bodies.circle(200, 70, fruit.radius, {
     index: index,
     isSleeping: true,
     render: {

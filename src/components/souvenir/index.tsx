@@ -9,8 +9,10 @@ export default function SouvenirGame() {
   useMouseEvent(engineRef);
 
   return (
-    <div>
-      <Score />
+    <div className="flex flex-col items-center h-full">
+      <div className="flex-none">
+        <Score />
+      </div>
       <div ref={boxRef} />
     </div>
   );
