@@ -15,8 +15,7 @@ export const addItem = (
   if (!engine) return; // engine이 없으면 함수를 빠져나옴
 
   const popIndex = itemsArray.shift();
-  //const pushIndex = Math.floor(Math.random() * 6);
-  const pushIndex = 11;
+  const pushIndex = Math.floor(Math.random() * 6);
 
   if (popIndex === undefined) return;
   setItemsArray([...itemsArray, pushIndex]);
