@@ -1,0 +1,25 @@
+.circle-container {
+  position: absolute;
+  left: 0px;
+  top: 35px;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.circle-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.outline-title {
+  font-family: sans-serif;
+  color: #f7cc80;
+  text-shadow: 1px 1px 0 #eda11e, -1px -1px 0 #eda11e, 1px -1px 0 #eda11e,
+    -1px 1px 0 #eda11e, 1px 1px 0 #eda11e;
+}

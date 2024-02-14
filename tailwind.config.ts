@@ -20,6 +20,8 @@ const config: Config = {
         map1: "url('/assets/route/map1.png')",
         map2: "url('/assets/route/map2.png')",
         sign: "url('/assets/route/sign.png')",
+        bubble: "url('/assets/souvenir/bubble.png')",
+        queue: "url('/assets/souvenir/queue.png')",
       },
     },
   },

@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import "./baggage.css";
 @import "./rotateCarrier.css";
+@import "./souvenir.css";
 @import "./error.css";
 
 :root {
