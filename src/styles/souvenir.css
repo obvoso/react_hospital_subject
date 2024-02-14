@@ -1,9 +1,9 @@
 .circle-container {
   position: absolute;
-  left: 25px;
-  top: 50px;
-  width: 130px;
-  height: 130px;
+  left: 0px;
+  top: 35px;
+  width: 160px;
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,8 +11,8 @@
 }
 
 .center-item {
-  position: absolute;
-  z-index: 2;
+  /*position: absolute;*/
+  /*z-index: -2;*/
 }
 
 .egg-outline {
@@ -21,7 +21,7 @@
   height: 115%;
   border-radius: 50%;
   border: 30px solid rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  /*z-index: -1;*/
 }
 
 .circle-item {
