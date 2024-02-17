@@ -1,10 +1,8 @@
-import { routeGameConfigList } from "@/assets/route/routeGameConfig";
-import { customRouteState } from "@/atoms/route/custom";
 import { routeGameState } from "@/atoms/route/game";
 import CustomButton from "@/utils/CustomButton";
 import { useRouter } from "next/router";
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 
 interface GameControlButtonProps {
   level: number;
@@ -39,6 +37,13 @@ export default function GameControlButton({ level }: GameControlButtonProps) {
         <CustomButton
           text="다시 시작"
           onClick={handleRestart}
+          type={gameStatus.start ? "disabled" : "activate"}
+        />
+      )}
+      {level < 10 && (
+        <CustomButton
+          text="다음 단계"
+          onClick={handleNextPractice}
           type={gameStatus.start ? "disabled" : "activate"}
         />
       )}

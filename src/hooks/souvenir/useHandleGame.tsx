@@ -220,7 +220,7 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
   useEffect(() => {
     const engine = engineRef.current;
     if (!engine) return;
-    if (newWallFlag) {
+    if (newWallFlag && gameEndedRef.current === false) {
       const addNewWall = () => {
         console.log("effect");
         const groundHeight = 20; // ground의 높이

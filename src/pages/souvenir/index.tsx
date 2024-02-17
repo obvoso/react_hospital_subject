@@ -41,7 +41,7 @@ const GamePage = () => {
         className="flex flex-col items-center h-fit"
         style={{
           transform: `scale(${scale})`,
-          transformOrigin: "center top", // 스케일링의 기준점을 중앙으로 설정
+          transformOrigin: "center top",
         }}
       >
         <ItemQueue />

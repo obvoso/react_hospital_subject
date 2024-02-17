@@ -20,7 +20,7 @@ export default function Route({ level }: RouteProps) {
   }
 
   return (
-    <div className="flex flex-col-reverse sm:flex-row justify-center items-center py-4 gap-x-10">
+    <div className="flex flex-col-reverse sm:flex-row justify-center items-center py-4 sm:gap-x-10">
       <div className="flex flex-col items-center justify-center sm:p-10 gap-y-14">
         <Subject
           level={level}
