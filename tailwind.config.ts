@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        "souvenir-main": "#E6B143",
+      },
       backgroundImage: {
         grass: "url('/assets/whackAmole/background.png')",
         conveyor: "url('/assets/baggage/conveyor.png')",

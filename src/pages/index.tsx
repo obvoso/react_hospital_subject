@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-w-[500px] min-h-screen items-center justify-center">
+    <main className="flex min-w-max min-h-screen items-center justify-center">
       <section className="w-fit h-fit grid grid-rows-2 grid-cols-2 justify-center gap-10">
         <Link href="/baggage">
           <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mx-auto flex">

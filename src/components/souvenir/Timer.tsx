@@ -21,6 +21,7 @@ export const Timer = () => {
       setTimeLeft((prevTime) => prevTime + INTERVAL);
     }, INTERVAL);
 
+    // if (timeLeft === 1000 * 5) {
     if (timeLeft === 1000 * 60 * 5) {
       clearInterval(timer);
       setGameState(false);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { addItem } from "@/utils/souvenir/addItem";
 import { Bodies, Body, Composite, Engine, Events, World } from "matter-js";
 import { ISouvenir } from "@/type/souvenir/ISouvenir";
@@ -10,7 +10,7 @@ import { gameScore, gameStatus } from "@/atoms/souvenir/game";
 import { itemsArray } from "@/atoms/souvenir/itemsArray";
 
 interface IUseHandleGame {
-  engineRef: React.MutableRefObject<Engine | null>;
+  engineRef: React.RefObject<Engine | null>;
 }
 
 export default function useHandleGame({ engineRef }: IUseHandleGame) {
@@ -22,20 +22,34 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
   const [itemsArr, setItemsArr] = useRecoilState(itemsArray);
   const setScore = useSetRecoilState(gameScore);
   const [game, setGame] = useRecoilState(gameStatus);
+  const [newWallFlag, setNewWallFlag] = useState<boolean>(false);
+  const newWallFlagRef = useRef<boolean>(false);
   let timer: NodeJS.Timeout;
+  let currGroundRef = useRef<number>(650);
 
+  //마우스 이벤트
   useEffect(() => {
     let mouseDown = false;
-    let startX = 0; // 마우스 클릭 시작 X 위치
+    let startX = 0;
     if (!game) return;
 
-    const handleMouseDown = (event: MouseEvent) => {
+    const handleMouseDown = (event: MouseEvent | TouchEvent) => {
+      let clientX: number;
+
+      if ("touches" in event) clientX = event.touches[0].clientX;
+      else clientX = event.clientX;
+
       if (disableActionRef.current || !currentBody) return;
       mouseDown = true;
-      startX = event.clientX;
+      startX = clientX;
     };
 
-    const handleMouseMove = (event: MouseEvent) => {
+    const handleMouseMove = (event: MouseEvent | TouchEvent) => {
+      let currentX: number;
+
+      if ("touches" in event) currentX = event.touches[0].clientX;
+      else currentX = event.clientX;
+
       if (
         !mouseDown ||
         disableActionRef.current ||
@@ -44,7 +58,6 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
       )
         return;
 
-      const currentX = event.clientX;
       const moveDistance = currentX - startX;
 
       let newPositionX = currentBody.position.x + moveDistance;
@@ -77,12 +90,18 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
       }, 1000);
     };
 
+    window.addEventListener("touchstart", handleMouseDown);
+    window.addEventListener("touchmove", handleMouseMove);
+    window.addEventListener("touchend", handleMouseUp);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
       clearTimeout(timer);
+      window.removeEventListener("touchstart", handleMouseDown);
+      window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchend", handleMouseUp);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
@@ -131,8 +150,7 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
           const newFruit = ITEM_BASE[index + 1];
 
           // 10번째 아이템이 합쳐지면 바닥 추가
-          if (index === 8) {
-            // ground 객체 참조를 가정, 실제 ground 객체의 위치 및 크기에 맞게 조정 필요
+          if (index === 8 && newWallFlagRef.current === false) {
             const groundHeight = 20; // ground의 높이
             const newWallHeight = 40; // 추가할 벽의 높이
 
@@ -140,17 +158,25 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
 
             const newWall = Bodies.rectangle(
               200,
-              650 - groundHeight - newWallHeight / 2,
+              currGroundRef.current - groundHeight - newWallHeight / 2,
               380,
               newWallHeight,
               {
                 isStatic: true,
-                render: { fillStyle: "#FFBFAE" },
+                render: {
+                  fillStyle: "#FFBFAE",
+                  strokeStyle: "#E6B143",
+                  lineWidth: 5,
+                },
               }
             );
 
             newY -= 40;
+            currGroundRef.current -= 40;
+            console.log("fuc");
             World.add(engine.world, newWall);
+            setNewWallFlag(true);
+            newWallFlagRef.current = true;
           }
 
           const newBody = Bodies.circle(newX, newY, newFruit.radius, {
@@ -190,6 +216,38 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
       });
     });
   }, []);
+
+  useEffect(() => {
+    const engine = engineRef.current;
+    if (!engine) return;
+    if (newWallFlag && gameEndedRef.current === false) {
+      const addNewWall = () => {
+        console.log("effect");
+        const groundHeight = 20; // ground의 높이
+        const newWallHeight = 40; // 추가할 벽의 높이
+
+        adjustBodiesForNewWall(engine, newWallHeight, groundHeight);
+
+        const newWall = Bodies.rectangle(
+          200,
+          currGroundRef.current - groundHeight - newWallHeight / 2,
+          380,
+          newWallHeight,
+          {
+            isStatic: true,
+            render: {
+              fillStyle: "#FFBFAE",
+              strokeStyle: "#E6B143",
+              lineWidth: 5,
+            },
+          }
+        );
+        currGroundRef.current -= 40;
+        World.add(engine.world, newWall);
+      };
+      setInterval(addNewWall, 1000 * 60);
+    }
+  }, [newWallFlag]);
 
   function setCurrentItemAndBody(fruit: ISouvenir, body: Body) {
     setCurrentItem(fruit);
