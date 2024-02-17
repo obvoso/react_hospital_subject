@@ -6,6 +6,7 @@ import GameEndModal from "@/components/souvenir/GameEndModal";
 import ItemQueue from "@/components/souvenir/ItemQueue";
 import Score from "@/components/souvenir/Score";
 import { Timer } from "@/components/souvenir/Timer";
+import RankButton from "@/components/souvenir/RankButton";
 
 const GamePage = () => {
   const gameState = useRecoilValue(gameStatus);
@@ -46,6 +47,7 @@ const GamePage = () => {
       >
         <ItemQueue />
         <Timer />
+        <RankButton />
         <div className="flex-none">
           <Score />
         </div>

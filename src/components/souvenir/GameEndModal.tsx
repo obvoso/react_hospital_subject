@@ -1,6 +1,7 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { gameScore, gameStatus } from "@/atoms/souvenir/game";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { Gold } from "./RankModal";
 
 interface ButtonProps {
   text: string;
@@ -11,6 +12,20 @@ export default function GameEndModal() {
   const [modal, setModal] = useState(true);
   const [score, setScore] = useRecoilState(gameScore);
   const setGameState = useSetRecoilState(gameStatus);
+  const scoredString = localStorage.getItem("scored");
+  const scored = scoredString ? JSON.parse(scoredString) : [];
+
+  useEffect(() => {
+    scored.push(score);
+
+    scored.sort((a: number, b: number) => b - a);
+
+    if (scored.length > 3) {
+      scored.pop();
+    }
+
+    localStorage.setItem("scored", JSON.stringify(scored));
+  }, []);
 
   const closeModal = () => {
     setModal(false);
@@ -38,7 +53,11 @@ export default function GameEndModal() {
         >
           <span className="outline-title text-lg">최종 점수</span>
           <span className="outline-title text-3xl">{score} 점</span>
-          <div className="flex flex-row h-[70px] items-end justify-between">
+          <div className="flex flex-row mt-2">
+            <Gold />
+            <span className="outline-title text-lg ml-1">{scored[0]}</span>
+          </div>
+          <div className="flex flex-row h-[60px] items-end justify-between">
             <Button text="다시하기" onClick={handleRestart} />
             <Button text="닫기" onClick={() => setModal(false)} />
           </div>
