@@ -1,5 +1,7 @@
+import { gameStatus } from "@/atoms/souvenir/game";
 import { Modal } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 interface RankModalProps {
   modal: boolean;
@@ -7,13 +9,14 @@ interface RankModalProps {
 }
 
 export default function RankModal({ modal, closeModal }: RankModalProps) {
+  const gameState = useRecoilValue(gameStatus);
   const [scoredArr, setScoredArr] = useState<number[]>([]);
 
   useEffect(() => {
     const scoredString = localStorage.getItem("scored");
     const scored = scoredString ? JSON.parse(scoredString) : [];
     setScoredArr(scored);
-  }, []);
+  }, [gameState]);
 
   return (
     <Modal
