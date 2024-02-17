@@ -27,7 +27,10 @@ export default function GameEndModal() {
   }
 
   return (
-    <div className="bg-black/20 w-full h-full fixed z-20" onClick={closeModal}>
+    <div
+      className="bg-black/20 w-full h-full min-h-[700px] fixed z-20"
+      onClick={closeModal}
+    >
       <div className="flex absolute flex-col items-center justify-center w-full h-full">
         <div
           className="flex flex-col w-[250px] h-[200px] mb-[400px] bg-gray-50 rounded-xl shadow-xl items-center justify-center"

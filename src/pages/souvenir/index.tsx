@@ -35,10 +35,10 @@ const GamePage = () => {
   }, []);
 
   return (
-    <div className="flex h-screen justify-center items-center min-w-max bg-[#FFF2CC]">
+    <div className="flex h-screen justify-center min-w-max bg-[#FFF2CC]">
       {gameState === false && <GameEndModal />}
       <div
-        className="flex flex-col items-center h-full"
+        className="flex flex-col items-center h-fit"
         style={{
           transform: `scale(${scale})`,
           transformOrigin: "center top", // 스케일링의 기준점을 중앙으로 설정
