@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import { Gold } from "./RankModal";
 
 export default function Score() {
+  const gameState = useRecoilValue(gameScore);
   const score = useRecoilValue(gameScore);
   const [highScore, setHighScore] = useState(0);
 
@@ -11,7 +12,8 @@ export default function Score() {
     const scoredString = localStorage.getItem("scored");
     const scored = scoredString ? JSON.parse(scoredString) : [];
     setHighScore(scored[0] ? scored[0] : 0);
-  }, []);
+    console.log(scored, scored[0] ? scored[0] : 0);
+  }, [gameState]);
 
   return (
     <div className="flex flex-col bg-bubble bg-cover w-[110px] h-[110px] items-center justify-center">
