@@ -7,6 +7,7 @@ import ItemQueue from "@/components/souvenir/ItemQueue";
 import Score from "@/components/souvenir/Score";
 import { Timer } from "@/components/souvenir/Timer";
 import RankButton from "@/components/souvenir/RankButton";
+import Head from "next/head";
 
 const GamePage = () => {
   const gameState = useRecoilValue(gameStatus);
@@ -35,24 +36,37 @@ const GamePage = () => {
   }, []);
 
   return (
-    <div className="flex h-screen justify-center min-w-max bg-[#FFF2CC]">
-      {gameState === false && <GameEndModal />}
-      <div
-        className="flex flex-col items-center h-fit"
-        style={{
-          transform: `scale(${scale})`,
-          transformOrigin: "center top",
-        }}
-      >
-        <ItemQueue />
-        <Timer />
-        <RankButton />
-        <div className="flex-none">
-          <Score />
+    <>
+      <Head>
+        <link rel="preload" href="/assets/souvenir/bubble.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/queue.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/item/item0.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/item/item1.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/item/item2.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/item/item3.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/item/item4.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/item/item5.png" as="image" />
+        <link rel="preload" href="/assets/souvenir/item/item6.png" as="image" />
+      </Head>
+      <div className="flex h-screen justify-center min-w-max bg-[#FFF2CC]">
+        {gameState === false && <GameEndModal />}
+        <div
+          className="flex flex-col items-center h-fit"
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: "center top",
+          }}
+        >
+          <ItemQueue />
+          <Timer />
+          <RankButton />
+          <div className="flex-none">
+            <Score />
+          </div>
+          <SouvenirGame key={key} />
         </div>
-        <SouvenirGame key={key} />
       </div>
-    </div>
+    </>
   );
 };
 

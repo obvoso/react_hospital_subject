@@ -50,6 +50,13 @@ const DrawMarkAndCanvas = ({
         <link rel="preload" href="/assets/route/map0.png" as="image" />
         <link rel="preload" href="/assets/route/map1.png" as="image" />
         <link rel="preload" href="/assets/route/map2.png" as="image" />
+        <link rel="preload" href="/assets/route/mark0.png" as="image" />
+        <link rel="preload" href="/assets/route/mark1.png" as="image" />
+        <link rel="preload" href="/assets/route/mark2.png" as="image" />
+        <link rel="preload" href="/assets/route/mark3.png" as="image" />
+        <link rel="preload" href="/assets/route/mark4.png" as="image" />
+        <link rel="preload" href="/assets/route/mark5.png" as="image" />
+        <link rel="preload" href="/assets/route/mark6.png" as="image" />
       </Head>
       <div
         className={`flex relative w-[600px] h-[400px] bg-contain ${
