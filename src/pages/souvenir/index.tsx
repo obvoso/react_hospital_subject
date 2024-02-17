@@ -29,7 +29,6 @@ const GamePage = () => {
 
     updateScale();
     window.addEventListener("resize", updateScale);
-
     return () => {
       window.removeEventListener("resize", updateScale);
     };

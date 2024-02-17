@@ -9,6 +9,7 @@ interface ButtonProps {
 }
 
 export default function GameEndModal() {
+  if (typeof window === "undefined") return <div />;
   const [modal, setModal] = useState(true);
   const [score, setScore] = useRecoilState(gameScore);
   const setGameState = useSetRecoilState(gameStatus);

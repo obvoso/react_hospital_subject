@@ -1,5 +1,5 @@
-import { Box, Modal } from "@mui/material";
-import React from "react";
+import { Modal } from "@mui/material";
+import React, { useEffect, useState } from "react";
 
 interface RankModalProps {
   modal: boolean;
@@ -7,8 +7,13 @@ interface RankModalProps {
 }
 
 export default function RankModal({ modal, closeModal }: RankModalProps) {
-  const scoredString = localStorage.getItem("scored");
-  const scored = scoredString ? JSON.parse(scoredString) : [];
+  const [scoredArr, setScoredArr] = useState<number[]>([]);
+
+  useEffect(() => {
+    const scoredString = localStorage.getItem("scored");
+    const scored = scoredString ? JSON.parse(scoredString) : [];
+    setScoredArr(scored);
+  }, []);
 
   return (
     <Modal
@@ -28,19 +33,23 @@ export default function RankModal({ modal, closeModal }: RankModalProps) {
         </button>
         <div className="flex flex-col border-t-2 border-b-2 border-souvenir-main items-center h-fit mt-2 w-[60%] py-1">
           <span className="outline-title text-2xl">최고 점수</span>
-          <span className="outline-title text-2xl">{scored[0]}</span>
+          <span className="outline-title text-2xl">{scoredArr[0]}</span>
         </div>
         <div className="bg-[#fce4bb] w-[70%] h-[220px] rounded-3xl mt-5 border-souvenir-main border-4">
           <div className="flex flex-col items-center justify-center h-full">
-            <Rank Icon={<Gold />} score={scored[0] ? scored[0] : 0} rank={1} />
+            <Rank
+              Icon={<Gold />}
+              score={scoredArr[0] ? scoredArr[0] : 0}
+              rank={1}
+            />
             <Rank
               Icon={<Silver />}
-              score={scored[1] ? scored[1] : 0}
+              score={scoredArr[1] ? scoredArr[1] : 0}
               rank={2}
             />
             <Rank
               Icon={<Bronze />}
-              score={scored[2] ? scored[2] : 0}
+              score={scoredArr[2] ? scoredArr[2] : 0}
               rank={3}
             />
           </div>
