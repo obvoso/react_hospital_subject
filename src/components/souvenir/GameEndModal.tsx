@@ -28,15 +28,17 @@ export default function GameEndModal() {
 
   return (
     <div className="bg-black/20 w-full h-full fixed z-20" onClick={closeModal}>
-      <div
-        className="flex absolute flex-col top-[100px] left-[37%] w-[250px] h-[200px] bg-gray-50 rounded-xl shadow-xl items-center justify-center"
-        onClick={(e: MouseEvent) => e.stopPropagation()}
-      >
-        <span className="outline-title text-lg">최종 점수</span>
-        <span className="outline-title text-3xl">{score} 점</span>
-        <div className="flex flex-row h-[70px] items-end justify-between">
-          <Button text="다시하기" onClick={handleRestart} />
-          <Button text="닫기" onClick={() => setModal(false)} />
+      <div className="flex absolute flex-col items-center justify-center w-full h-full">
+        <div
+          className="flex flex-col w-[250px] h-[200px] mb-[400px] bg-gray-50 rounded-xl shadow-xl items-center justify-center"
+          onClick={(e: MouseEvent) => e.stopPropagation()}
+        >
+          <span className="outline-title text-lg">최종 점수</span>
+          <span className="outline-title text-3xl">{score} 점</span>
+          <div className="flex flex-row h-[70px] items-end justify-between">
+            <Button text="다시하기" onClick={handleRestart} />
+            <Button text="닫기" onClick={() => setModal(false)} />
+          </div>
         </div>
       </div>
     </div>
