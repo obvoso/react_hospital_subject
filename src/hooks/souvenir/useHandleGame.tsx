@@ -173,7 +173,6 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
 
             newY -= 40;
             currGroundRef.current -= 40;
-            console.log("fuc");
             World.add(engine.world, newWall);
             setNewWallFlag(true);
             newWallFlagRef.current = true;
@@ -222,7 +221,6 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
     if (!engine) return;
     if (newWallFlag && gameEndedRef.current === false) {
       const addNewWall = () => {
-        console.log("effect");
         const groundHeight = 20; // ground의 높이
         const newWallHeight = 40; // 추가할 벽의 높이
 
