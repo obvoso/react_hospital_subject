@@ -8,22 +8,24 @@ interface IUseMatterJs {
 
 export default function useMatterJs({ boxRef }: IUseMatterJs) {
   const engineRef = useRef<Engine | null>(null);
+  const renderRef = useRef<Render | null>(null);
 
   useEffect(() => {
     // Engine, World 및 Render 객체 생성
-    engineRef.current = Engine.create(); // engineRef에 Engine 인스턴스 저장
+    engineRef.current = Engine.create();
     const engine = engineRef.current;
     engine.world.gravity.y = 2;
-    const render = Render.create({
+    renderRef.current = Render.create({
       engine: engine,
       element: boxRef.current!,
       options: {
         wireframes: false,
         background: "#FFF2CC",
-        width: 400,
+        width: 400, // 초기 크기 설정
         height: 650,
       },
     });
+    const render = renderRef.current;
 
     const leftWall = Bodies.rectangle(5, 400, 10, 500, {
       isStatic: true,
@@ -61,8 +63,8 @@ export default function useMatterJs({ boxRef }: IUseMatterJs) {
       Render.stop(render);
       World.clear(engine.world, false);
       Engine.clear(engine);
-      if (render.canvas) {
-        render.canvas.remove();
+      if (renderRef.current && renderRef.current.canvas) {
+        renderRef.current.canvas.remove();
       }
       render.textures = {};
     };
