@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { addItem } from "@/utils/souvenir/addItem";
 import { Bodies, Body, Composite, Engine, Events, World } from "matter-js";
 import { ISouvenir } from "@/type/souvenir/ISouvenir";
@@ -22,7 +22,10 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
   const [itemsArr, setItemsArr] = useRecoilState(itemsArray);
   const setScore = useSetRecoilState(gameScore);
   const [game, setGame] = useRecoilState(gameStatus);
+  const [newWallFlag, setNewWallFlag] = useState<boolean>(false);
+  const newWallFlagRef = useRef<boolean>(false);
   let timer: NodeJS.Timeout;
+  let currGroundRef = useRef<number>(650);
 
   //마우스 이벤트
   useEffect(() => {
@@ -147,8 +150,7 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
           const newFruit = ITEM_BASE[index + 1];
 
           // 10번째 아이템이 합쳐지면 바닥 추가
-          if (index === 8) {
-            // ground 객체 참조를 가정, 실제 ground 객체의 위치 및 크기에 맞게 조정 필요
+          if (index === 8 && newWallFlagRef.current === false) {
             const groundHeight = 20; // ground의 높이
             const newWallHeight = 40; // 추가할 벽의 높이
 
@@ -156,17 +158,25 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
 
             const newWall = Bodies.rectangle(
               200,
-              650 - groundHeight - newWallHeight / 2,
+              currGroundRef.current - groundHeight - newWallHeight / 2,
               380,
               newWallHeight,
               {
                 isStatic: true,
-                render: { fillStyle: "#FFBFAE" },
+                render: {
+                  fillStyle: "#FFBFAE",
+                  strokeStyle: "#E6B143",
+                  lineWidth: 5,
+                },
               }
             );
 
             newY -= 40;
+            currGroundRef.current -= 40;
+            console.log("fuc");
             World.add(engine.world, newWall);
+            setNewWallFlag(true);
+            newWallFlagRef.current = true;
           }
 
           const newBody = Bodies.circle(newX, newY, newFruit.radius, {
@@ -206,6 +216,38 @@ export default function useHandleGame({ engineRef }: IUseHandleGame) {
       });
     });
   }, []);
+
+  useEffect(() => {
+    const engine = engineRef.current;
+    if (!engine) return;
+    if (newWallFlag) {
+      const addNewWall = () => {
+        console.log("effect");
+        const groundHeight = 20; // ground의 높이
+        const newWallHeight = 40; // 추가할 벽의 높이
+
+        adjustBodiesForNewWall(engine, newWallHeight, groundHeight);
+
+        const newWall = Bodies.rectangle(
+          200,
+          currGroundRef.current - groundHeight - newWallHeight / 2,
+          380,
+          newWallHeight,
+          {
+            isStatic: true,
+            render: {
+              fillStyle: "#FFBFAE",
+              strokeStyle: "#E6B143",
+              lineWidth: 5,
+            },
+          }
+        );
+        currGroundRef.current -= 40;
+        World.add(engine.world, newWall);
+      };
+      setInterval(addNewWall, 1000 * 60);
+    }
+  }, [newWallFlag]);
 
   function setCurrentItemAndBody(fruit: ISouvenir, body: Body) {
     setCurrentItem(fruit);
