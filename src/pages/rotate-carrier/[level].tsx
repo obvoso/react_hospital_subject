@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Canvas from "@/components/rotateCarrier/Canvas";
 import { RotateCarrierGameLevels } from "@/assets/rotateCarrier/carrierRotateGameConfig";
@@ -18,6 +18,7 @@ import shuffleArray from "@/utils/arrayShuffle";
 import {
   FindItemDirection,
   FindItemExist,
+  preLoadImages,
 } from "@/components/rotateCarrier/index";
 import LevelNav from "@/utils/LevelNav";
 import FindItemControlButton from "@/components/rotateCarrier/FindItemControlButton";
@@ -28,6 +29,7 @@ import CurrentSelectResult from "@/components/rotateCarrier/CurrentSelectResult"
 export default function GamePage() {
   const router = useRouter();
   const level = Number(router.query.level);
+  const images = useRef<{ [key: string]: HTMLImageElement }>({});
   const subject = useRecoilValue(SubjectTextState);
   const setConfig = useSetRecoilState(RotateCarrierConfigState);
   const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
@@ -41,6 +43,10 @@ export default function GamePage() {
     setFindDirection,
     // setFindItemExist,
   } = useGameStageControl(level);
+
+  useEffect(() => {
+    preLoadImages(images);
+  }, []);
 
   useEffect(() => {
     const initConfig = () => {
@@ -92,7 +98,7 @@ export default function GamePage() {
           disabled={gameState.start}
         />
         {gameState.stage === RotateCarrierStage.FIND_ITEM && (
-          <Canvas key={level} />
+          <Canvas key={level} images={images} />
         )}
         {gameState.start &&
           gameState.stage === RotateCarrierStage.FIND_DIRECTION && (

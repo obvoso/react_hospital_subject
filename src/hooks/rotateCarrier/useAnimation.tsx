@@ -114,21 +114,21 @@ export const useAnimation = ({
     requestAnimationFrame(animateStep);
   };
 
-  const animateQuestion = (context: CanvasRenderingContext2D) => {
-    let startTime = Date.now();
+  // const animateQuestion = (context: CanvasRenderingContext2D) => {
+  // let startTime = Date.now();
 
-    const flash = () => {
-      const elapsedTime = Date.now() - startTime;
-      if (elapsedTime < showItemTime) {
-        // context.setTransform(1, 0, 0, 1, 0, 0);
-        // const alpha = Math.sin((elapsedTime / showItemTime) * Math.PI);
-        drawStaticElements(context, images, config);
-        requestAnimationFrame(flash);
-      }
-    };
+  // const flash = () => {
+  //   const elapsedTime = Date.now() - startTime;
+  //   if (elapsedTime < showItemTime) {
+  //     // context.setTransform(1, 0, 0, 1, 0, 0);
+  //     // const alpha = Math.sin((elapsedTime / showItemTime) * Math.PI);
+  // drawStaticElements(context, images, config);
+  //     requestAnimationFrame(flash);
+  //   }
+  // };
 
-    requestAnimationFrame(flash);
-  };
+  // requestAnimationFrame(flash);
+  // };
 
   //레벨별로 보여주는 시간 조절
   useEffect(() => {
@@ -146,10 +146,13 @@ export const useAnimation = ({
     if (!context) return;
 
     if (gameState.start) {
-      animateQuestion(context); // start 누르고 정해진 시간동안 문제 보여주기
+      drawStaticElements(context, images, config);
       setSubject("물건의 위치를 잘 기억해주세요.");
       const timer = setTimeout(() => {
-        animateRotation(context), setSubject("캐리어가 회전합니다.");
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        animateRotation(context);
+        setSubject("캐리어가 회전합니다.");
       }, showItemTime); // start 누르고 정해진 초 후 애니메이션 시작
       return () => clearTimeout(timer);
     }
@@ -162,6 +165,7 @@ export const useAnimation = ({
     if (!canvas) return;
     const context = canvas.getContext("2d");
     if (!context) return;
+    if (clickedRectIndex === -1) return;
 
     draw(context, gameState.lastAngle);
   }, [clickedRectIndex, gameState.start, images, gameState.lastAngle]);

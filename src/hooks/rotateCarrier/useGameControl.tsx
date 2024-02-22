@@ -32,11 +32,10 @@ export default function useGameControl({
 
   function shuffleQuestionArray(randomIndex: RotateCarrierSpacePoint[]) {
     const findItemArray: RotateCarrierItemAssets[] = [];
-    const itemImageCorrection = config.itemLevel === ITEMLEVEL.EASY ? 3 : 0;
     for (let i = 0; i < config.questions.length; i++) {
       if (config.space.length === 2)
         findItemArray.push({
-          imageKey: config.questions[i + itemImageCorrection].imageKey,
+          imageKey: config.questions[i].imageKey,
           point: {
             ...randomIndex[i],
             x: randomIndex[i].x + 40,
@@ -46,7 +45,7 @@ export default function useGameControl({
         });
       else if (config.space.length === 4)
         findItemArray.push({
-          imageKey: config.questions[i + itemImageCorrection].imageKey,
+          imageKey: config.questions[i].imageKey,
           point: {
             x: randomIndex[i].x + 10,
             y: randomIndex[i].y + 15,
@@ -56,7 +55,7 @@ export default function useGameControl({
         });
       else
         findItemArray.push({
-          imageKey: config.questions[i + itemImageCorrection].imageKey,
+          imageKey: config.questions[i].imageKey,
           point: {
             x: randomIndex[i].x + 15,
             y: randomIndex[i].y + 10,
@@ -180,7 +179,7 @@ export default function useGameControl({
     resetGameState(); // 상태 리셋
     resetSubjuect();
     setNextLevelBtn(false);
-    if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
+    if (level < 10) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
   }, [nextLevelBtn, level]);
 
   function handleStart() {
