@@ -50,18 +50,19 @@ export const useCustom = () => {
     setConfig({
       level: 9 + gridSize + obstacle + rotate + findItem.length,
       findItems: findItem.length,
-      obstacle: obstacle,
+      // obstacle: obstacle,
       findDirection: config.findDirection,
-      findExist: config.findDirection,
+      // findExist: config.findDirection,
       answerDirection: initAnswerDirection(randomIndex),
       space: initGrid(),
       rotation: rotate,
       rotationAngle: initRotateAngle(),
       carrier: { imageKey: "carrier", point: carrier },
       questions: initFindItem(randomIndex, findItem),
-      obstacles: initObstacle(randomIndex),
-      itemExamples: initItemExamples(),
+      // obstacles: initObstacle(randomIndex),
+      // itemExamples: initItemExamples(),
       dirrectionExamples: initDirectionExamples(),
+      itemLevel: 1,
     });
 
     resetGameState();

@@ -17,7 +17,7 @@ export function useGameStageControl(level: number) {
 
   useEffect(() => {
     setFindDirection(config.findDirection);
-    setFindItemExist(config.findExist);
+    // setFindItemExist(config.findExist);
     setNextLevelBtn(false);
   }, [config.level]);
 
