@@ -86,7 +86,7 @@ export default function GamePage() {
   }, [speed]);
 
   return (
-    <div className="flex flex-col-reverse sm:flex-row justify-between min-w-[500px] mx-auto p-4">
+    <div className="flex flex-col-reverse sm:flex-row justify-center min-w-[500px] mx-auto p-4">
       <div className="flex flex-col items-center sm:items-start">
         <BaggageCanvas level={level} key={level} />
       </div>

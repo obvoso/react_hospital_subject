@@ -5,6 +5,7 @@ import shuffleArray from "@/utils/arrayShuffle";
 import {
   RotateCarrierSpacePoint,
   RotateCarrierItemAssets,
+  ITEMLEVEL,
 } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import {
   RotateCarrierConfigState,
@@ -66,47 +67,47 @@ export default function useGameControl({
     return findItemArray;
   }
 
-  const shuffleObstacleArray = (randomIndex: RotateCarrierSpacePoint[]) => {
-    const obstacleArray: RotateCarrierItemAssets[] = [];
+  // const shuffleObstacleArray = (randomIndex: RotateCarrierSpacePoint[]) => {
+  //   const obstacleArray: RotateCarrierItemAssets[] = [];
 
-    for (
-      let i = config.questions.length, j = 0;
-      j < config.obstacle;
-      i++, j++
-    ) {
-      if (config.space.length === 2) {
-        obstacleArray.push({
-          imageKey: `obstacle${j}`,
-          point: {
-            ...randomIndex[i],
-            x: randomIndex[i].x + 30,
-            w: 90,
-            h: 90,
-          },
-        });
-      } else if (config.space.length === 4)
-        obstacleArray.push({
-          imageKey: `obstacle${j}`,
-          point: {
-            x: randomIndex[i].x + 10,
-            y: randomIndex[i].y + 20,
-            w: 60,
-            h: 60,
-          },
-        });
-      else
-        obstacleArray.push({
-          imageKey: `obstacle${j}`,
-          point: {
-            x: randomIndex[i].x + 15,
-            y: randomIndex[i].y + 10,
-            w: 50,
-            h: 50,
-          },
-        });
-    }
-    return obstacleArray;
-  };
+  //   for (
+  //     let i = config.questions.length, j = 0;
+  //     j < config.obstacle;
+  //     i++, j++
+  //   ) {
+  //     if (config.space.length === 2) {
+  //       obstacleArray.push({
+  //         imageKey: `obstacle${j}`,
+  //         point: {
+  //           ...randomIndex[i],
+  //           x: randomIndex[i].x + 30,
+  //           w: 90,
+  //           h: 90,
+  //         },
+  //       });
+  //     } else if (config.space.length === 4)
+  //       obstacleArray.push({
+  //         imageKey: `obstacle${j}`,
+  //         point: {
+  //           x: randomIndex[i].x + 10,
+  //           y: randomIndex[i].y + 20,
+  //           w: 60,
+  //           h: 60,
+  //         },
+  //       });
+  //     else
+  //       obstacleArray.push({
+  //         imageKey: `obstacle${j}`,
+  //         point: {
+  //           x: randomIndex[i].x + 15,
+  //           y: randomIndex[i].y + 10,
+  //           w: 50,
+  //           h: 50,
+  //         },
+  //       });
+  //   }
+  //   return obstacleArray;
+  // };
 
   //ㄱㅃㅊㄷ................ㅋ
   const setAnswerDirection = (randomIndex: RotateCarrierSpacePoint[]) => {
@@ -143,9 +144,9 @@ export default function useGameControl({
   function handleRestart() {
     const randomIndex = shuffleArray(config.space);
     const shuffleAngle = shuffleArray(config.rotationAngle);
-    const shuffleExistItem = shuffleArray(config.itemExamples);
+    // const shuffleExistItem = shuffleArray(config.itemExamples);
     const shuffleQuestion = shuffleQuestionArray(randomIndex);
-    const shuffleObstacles = shuffleObstacleArray(randomIndex);
+    // const shuffleObstacles = shuffleObstacleArray(randomIndex);
     const answerDirection = setAnswerDirection(randomIndex);
     const shuffleDirectionItem = config.dirrectionExamples.map((item) => {
       return {
@@ -157,9 +158,9 @@ export default function useGameControl({
       ...config,
       answerDirection,
       questions: shuffleQuestion,
-      obstacles: shuffleObstacles,
+      // obstacles: shuffleObstacles,
       rotationAngle: shuffleAngle,
-      itemExamples: shuffleExistItem,
+      // itemExamples: shuffleExistItem,
       dirrectionExamples: shuffleDirectionItem,
     });
     setGameState({
@@ -178,7 +179,7 @@ export default function useGameControl({
     resetGameState(); // 상태 리셋
     resetSubjuect();
     setNextLevelBtn(false);
-    if (level < 9) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
+    if (level < 10) router.push(`/rotate-carrier/${level + 1}`); // 다음 레벨로 이동
   }, [nextLevelBtn, level]);
 
   function handleStart() {

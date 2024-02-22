@@ -21,16 +21,15 @@ export const drawRect = (
 export const drawStaticElements = (
   context: CanvasRenderingContext2D,
   images: RefObject<{ [key: string]: HTMLImageElement }>,
-  config: RotateCarrierLevelConfig,
-  alpha: number
+  config: RotateCarrierLevelConfig
+  // alpha: number
 ) => {
   if (!context || !context.canvas) return;
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   context.save();
   context.translate(context.canvas.width / 2, context.canvas.height / 2);
 
-  if (!images.current) return;
-  if (!images.current["carrier"]) return;
+  if (!images || !images.current || !images.current["carrier"]) return;
 
   context.drawImage(
     images.current["carrier"],
@@ -44,7 +43,7 @@ export const drawStaticElements = (
     drawRect(context, rect.x, rect.y, rect.w, rect.h, "rgb(243,244,246)");
   });
 
-  config.obstacles.forEach((item) => {
+  config.questions.forEach((item) => {
     if (!images.current || !images.current[item.imageKey]) return;
     context.drawImage(
       images.current[item.imageKey],
@@ -55,35 +54,35 @@ export const drawStaticElements = (
     );
   });
 
-  config.questions.forEach((item) => {
-    context.save();
+  // config.questions.forEach((item) => {
+  //   context.save();
 
-    // 네온 효과를 위한 설정
-    context.shadowBlur = 20;
-    context.shadowColor = "#6CB4EE";
+  //   // 네온 효과를 위한 설정
+  //   context.shadowBlur = 20;
+  //   context.shadowColor = "#6CB4EE";
 
-    context.globalAlpha = alpha;
+  //   context.globalAlpha = alpha;
 
-    // 이미지 그리기
-    if (!images.current) return;
-    context.drawImage(
-      images.current[item.imageKey],
-      item.point.x,
-      item.point.y,
-      item.point.w,
-      item.point.h
-    );
+  //   // 이미지 그리기
+  //   if (!images.current) return;
+  //   context.drawImage(
+  //     images.current[item.imageKey],
+  //     item.point.x,
+  //     item.point.y,
+  //     item.point.w,
+  //     item.point.h
+  //   );
 
-    // 네온 효과
-    context.fillStyle = "rgba(0, 0, 0, 0)";
-    context.fillRect(
-      item.point.x - context.shadowBlur,
-      item.point.y - context.shadowBlur,
-      item.point.w + context.shadowBlur * 2,
-      item.point.h + context.shadowBlur * 2
-    );
+  //   // 네온 효과
+  //   context.fillStyle = "rgba(0, 0, 0, 0)";
+  //   context.fillRect(
+  //     item.point.x - context.shadowBlur,
+  //     item.point.y - context.shadowBlur,
+  //     item.point.w + context.shadowBlur * 2,
+  //     item.point.h + context.shadowBlur * 2
+  //   );
 
-    context.restore();
-  });
+  //   context.restore();
+  // });
   context.restore();
 };

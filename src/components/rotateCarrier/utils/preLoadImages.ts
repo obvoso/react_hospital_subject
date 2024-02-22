@@ -7,25 +7,28 @@ import { RefObject } from "react";
 function loadImage(
   images: RefObject<{ [key: string]: HTMLImageElement }>,
   path: string,
-  file: RotateCarrierItemAssets
+  // file: RotateCarrierItemAssets
+  imageKey: string
 ) {
   const img = new Image();
-  img.src = `${path}/${file.imageKey}.png`;
+  img.src = `${path}/${imageKey}.png`;
   img.onload = () => {
     if (!images.current) return;
-    images.current[file.imageKey] = img;
+    images.current[imageKey] = img;
   };
 }
 
 export function preLoadImages(
-  images: RefObject<{ [key: string]: HTMLImageElement }>,
-  config: RotateCarrierLevelConfig
+  images: RefObject<{ [key: string]: HTMLImageElement }>
+  // config: RotateCarrierLevelConfig
 ) {
   const path = "/assets/rotateCarrier";
-
-  loadImage(images, path, config.carrier);
-  config.obstacles.forEach((file) => loadImage(images, path, file));
-  config.questions.forEach((file) => loadImage(images, path, file));
+  loadImage(images, path, "carrier");
+  // config.obstacles.forEach((file) => loadImage(images, path, file));
+  // config.questions.forEach((file) => loadImage(images, path, file));
+  for (let i = 0; i < 7; i++) {
+    loadImage(images, path, `item${i}_0`);
+  }
 }
 
 export default preLoadImages;
