@@ -5,6 +5,7 @@ import shuffleArray from "@/utils/arrayShuffle";
 import {
   RotateCarrierSpacePoint,
   RotateCarrierItemAssets,
+  ITEMLEVEL,
 } from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import {
   RotateCarrierConfigState,
@@ -31,10 +32,11 @@ export default function useGameControl({
 
   function shuffleQuestionArray(randomIndex: RotateCarrierSpacePoint[]) {
     const findItemArray: RotateCarrierItemAssets[] = [];
+    const itemImageCorrection = config.itemLevel === ITEMLEVEL.EASY ? 3 : 0;
     for (let i = 0; i < config.questions.length; i++) {
       if (config.space.length === 2)
         findItemArray.push({
-          imageKey: config.questions[i].imageKey,
+          imageKey: config.questions[i + itemImageCorrection].imageKey,
           point: {
             ...randomIndex[i],
             x: randomIndex[i].x + 40,
@@ -44,7 +46,7 @@ export default function useGameControl({
         });
       else if (config.space.length === 4)
         findItemArray.push({
-          imageKey: config.questions[i].imageKey,
+          imageKey: config.questions[i + itemImageCorrection].imageKey,
           point: {
             x: randomIndex[i].x + 10,
             y: randomIndex[i].y + 15,
@@ -54,7 +56,7 @@ export default function useGameControl({
         });
       else
         findItemArray.push({
-          imageKey: config.questions[i].imageKey,
+          imageKey: config.questions[i + itemImageCorrection].imageKey,
           point: {
             x: randomIndex[i].x + 15,
             y: randomIndex[i].y + 10,
@@ -66,47 +68,47 @@ export default function useGameControl({
     return findItemArray;
   }
 
-  const shuffleObstacleArray = (randomIndex: RotateCarrierSpacePoint[]) => {
-    const obstacleArray: RotateCarrierItemAssets[] = [];
+  // const shuffleObstacleArray = (randomIndex: RotateCarrierSpacePoint[]) => {
+  //   const obstacleArray: RotateCarrierItemAssets[] = [];
 
-    for (
-      let i = config.questions.length, j = 0;
-      j < config.obstacle;
-      i++, j++
-    ) {
-      if (config.space.length === 2) {
-        obstacleArray.push({
-          imageKey: `obstacle${j}`,
-          point: {
-            ...randomIndex[i],
-            x: randomIndex[i].x + 30,
-            w: 90,
-            h: 90,
-          },
-        });
-      } else if (config.space.length === 4)
-        obstacleArray.push({
-          imageKey: `obstacle${j}`,
-          point: {
-            x: randomIndex[i].x + 10,
-            y: randomIndex[i].y + 20,
-            w: 60,
-            h: 60,
-          },
-        });
-      else
-        obstacleArray.push({
-          imageKey: `obstacle${j}`,
-          point: {
-            x: randomIndex[i].x + 15,
-            y: randomIndex[i].y + 10,
-            w: 50,
-            h: 50,
-          },
-        });
-    }
-    return obstacleArray;
-  };
+  //   for (
+  //     let i = config.questions.length, j = 0;
+  //     j < config.obstacle;
+  //     i++, j++
+  //   ) {
+  //     if (config.space.length === 2) {
+  //       obstacleArray.push({
+  //         imageKey: `obstacle${j}`,
+  //         point: {
+  //           ...randomIndex[i],
+  //           x: randomIndex[i].x + 30,
+  //           w: 90,
+  //           h: 90,
+  //         },
+  //       });
+  //     } else if (config.space.length === 4)
+  //       obstacleArray.push({
+  //         imageKey: `obstacle${j}`,
+  //         point: {
+  //           x: randomIndex[i].x + 10,
+  //           y: randomIndex[i].y + 20,
+  //           w: 60,
+  //           h: 60,
+  //         },
+  //       });
+  //     else
+  //       obstacleArray.push({
+  //         imageKey: `obstacle${j}`,
+  //         point: {
+  //           x: randomIndex[i].x + 15,
+  //           y: randomIndex[i].y + 10,
+  //           w: 50,
+  //           h: 50,
+  //         },
+  //       });
+  //   }
+  //   return obstacleArray;
+  // };
 
   //ㄱㅃㅊㄷ................ㅋ
   const setAnswerDirection = (randomIndex: RotateCarrierSpacePoint[]) => {
@@ -143,9 +145,9 @@ export default function useGameControl({
   function handleRestart() {
     const randomIndex = shuffleArray(config.space);
     const shuffleAngle = shuffleArray(config.rotationAngle);
-    const shuffleExistItem = shuffleArray(config.itemExamples);
+    // const shuffleExistItem = shuffleArray(config.itemExamples);
     const shuffleQuestion = shuffleQuestionArray(randomIndex);
-    const shuffleObstacles = shuffleObstacleArray(randomIndex);
+    // const shuffleObstacles = shuffleObstacleArray(randomIndex);
     const answerDirection = setAnswerDirection(randomIndex);
     const shuffleDirectionItem = config.dirrectionExamples.map((item) => {
       return {
@@ -157,9 +159,9 @@ export default function useGameControl({
       ...config,
       answerDirection,
       questions: shuffleQuestion,
-      obstacles: shuffleObstacles,
+      // obstacles: shuffleObstacles,
       rotationAngle: shuffleAngle,
-      itemExamples: shuffleExistItem,
+      // itemExamples: shuffleExistItem,
       dirrectionExamples: shuffleDirectionItem,
     });
     setGameState({

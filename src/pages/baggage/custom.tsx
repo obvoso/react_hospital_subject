@@ -96,11 +96,11 @@ export default function CustomGamePage() {
 
   if (level === 12) return null;
   return (
-    <div className="flex flex-col-reverse sm:flex-row justify-between min-w-[500px] mx-auto px-4 py-5">
+    <div className="flex flex-col-reverse sm:flex-row justify-center min-w-[500px] mx-auto px-4 py-5">
       <div className="flex flex-col items-center sm:items-start">
         <BaggageCanvas level={level} key={level} />
       </div>
-      <div className="flex flex-col sm:w-[325px] items-center mx-auto justify-center h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10 mt-3">
+      <div className="flex flex-col sm:w-[325px] items-center justify-center h-fit md:ml-16 sm:ml-10 sm:mt-20 mb-10 mt-3">
         <div className="mb-5">
           <GameControlButtons
             reset={reset}
@@ -140,7 +140,7 @@ export default function CustomGamePage() {
             onChange={(obstacle: number) => setObstacle(obstacle)}
           />
         </div>
-        <div className="flex flex-row sm:flex-col items-center text-center mx-auto mt-6 sm:mt-4 gap-2">
+        <div className="flex flex-row sm:flex-col items-center min-w-max text-center mx-auto mt-6 sm:mt-4 gap-2">
           <CurrentScore />
           <Timer />
         </div>

@@ -120,9 +120,9 @@ export const useAnimation = ({
     const flash = () => {
       const elapsedTime = Date.now() - startTime;
       if (elapsedTime < showItemTime) {
-        context.setTransform(1, 0, 0, 1, 0, 0);
-        const alpha = Math.sin((elapsedTime / showItemTime) * Math.PI);
-        drawStaticElements(context, images, config, alpha);
+        // context.setTransform(1, 0, 0, 1, 0, 0);
+        // const alpha = Math.sin((elapsedTime / showItemTime) * Math.PI);
+        drawStaticElements(context, images, config);
         requestAnimationFrame(flash);
       }
     };

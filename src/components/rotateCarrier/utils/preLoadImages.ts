@@ -24,7 +24,7 @@ export function preLoadImages(
   const path = "/assets/rotateCarrier";
 
   loadImage(images, path, config.carrier);
-  config.obstacles.forEach((file) => loadImage(images, path, file));
+  // config.obstacles.forEach((file) => loadImage(images, path, file));
   config.questions.forEach((file) => loadImage(images, path, file));
 }
 

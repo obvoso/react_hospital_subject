@@ -29,13 +29,13 @@ export default function CustomGamePage() {
     nextLevelBtn,
     setNextLevelBtn,
     setFindDirection,
-    setFindItemExist,
+    // setFindItemExist,
   } = useCustomGameControl({
     level,
   });
 
   return (
-    <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center">
+    <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center justify-center">
       <div className="flex relative flex-col items-center">
         <CustomButtons
           gridSize={gridSize}
@@ -43,9 +43,9 @@ export default function CustomGamePage() {
           itemSize={findItem.length}
           rotate={rotate}
           findDirection={findDirection}
-          findExist={findItemExist}
+          // findExist={findItemExist}
           setFindDirection={setFindDirection}
-          setFindExist={setFindItemExist}
+          // setFindExist={setFindItemExist}
           setGridSize={setGridSize}
           setObstacle={setObstacle}
           setFindItem={setFindItem}

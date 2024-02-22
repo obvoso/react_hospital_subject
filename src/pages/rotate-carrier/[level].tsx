@@ -37,16 +37,16 @@ export default function GamePage() {
     nextLevelBtn,
     setNextLevelBtn,
     findDirection,
-    findItemExist,
+    // findItemExist,
     setFindDirection,
-    setFindItemExist,
+    // setFindItemExist,
   } = useGameStageControl(level);
 
   useEffect(() => {
     const initConfig = () => {
       const levelConfig = RotateCarrierGameLevels[level];
       const shuffleAngle = shuffleArray(levelConfig.rotationAngle);
-      const shuffleExistItem = shuffleArray(levelConfig.itemExamples);
+      // const shuffleExistItem = shuffleArray(levelConfig.itemExamples);
       const shuffleDirectionItem = levelConfig.dirrectionExamples.map(
         (item) => {
           return {
@@ -58,7 +58,7 @@ export default function GamePage() {
       setConfig({
         ...levelConfig,
         rotationAngle: shuffleAngle,
-        itemExamples: shuffleExistItem,
+        // itemExamples: shuffleExistItem,
         dirrectionExamples: shuffleDirectionItem,
       });
     };
@@ -74,7 +74,7 @@ export default function GamePage() {
   }, [router.isReady, level]);
 
   return (
-    <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center">
+    <div className="flex flex-col-reverse sm:flex-row min-w-[500px] mx-auto px-4 py-5 items-center justify-center">
       <div className="flex relative flex-col items-center">
         <div className="flex flex-col items-center justify-center w-[90%] p-4 bg-white rounded-xl shadow-md">
           <span className="font-bold text-xl mb-2">
@@ -86,9 +86,9 @@ export default function GamePage() {
         </div>
         <FindItemControlButton
           findDirection={findDirection}
-          findItemExist={findItemExist}
+          // findItemExist={findItemExist}
           setFindDirection={setFindDirection}
-          setFindItemExist={setFindItemExist}
+          // setFindItemExist={setFindItemExist}
           disabled={gameState.start}
         />
         {gameState.stage === RotateCarrierStage.FIND_ITEM && (
@@ -98,16 +98,16 @@ export default function GamePage() {
           gameState.stage === RotateCarrierStage.FIND_DIRECTION && (
             <FindItemDirection key={level} />
           )}
-        {gameState.start &&
+        {/* {gameState.start &&
           gameState.stage === RotateCarrierStage.FIND_EXIST && (
             <FindItemExist key={level} />
+          )} */}
+        {/* {((!gameState.start &&
+          gameState.stage === RotateCarrierStage.FIND_EXIST) || */}
+        {!gameState.start &&
+          gameState.stage === RotateCarrierStage.FIND_DIRECTION && (
+            <div className="w-[500px] h-[500px]" />
           )}
-        {((!gameState.start &&
-          gameState.stage === RotateCarrierStage.FIND_EXIST) ||
-          (!gameState.start &&
-            gameState.stage === RotateCarrierStage.FIND_DIRECTION)) && (
-          <div className="w-[500px] h-[500px]" />
-        )}
         <GameContolButton
           level={level}
           nextLevelBtn={nextLevelBtn}

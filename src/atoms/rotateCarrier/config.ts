@@ -1,4 +1,7 @@
-import { RotateCarrierLevelConfig } from "@/assets/rotateCarrier/carrierRotateGameConfig";
+import {
+  ITEMLEVEL,
+  RotateCarrierLevelConfig,
+} from "@/assets/rotateCarrier/carrierRotateGameConfig";
 import { atom } from "recoil";
 
 export enum RotateCarrierStage {
@@ -47,9 +50,9 @@ export const RotateCarrierConfigState = atom<RotateCarrierLevelConfig>({
   default: {
     level: 0,
     findItems: -1,
-    obstacle: 0,
+    // obstacle: 0,
     findDirection: false,
-    findExist: false,
+    // findExist: false,
     answerDirection: [],
     space: [
       { x: 0, y: 0, w: 0, h: 0 },
@@ -59,8 +62,9 @@ export const RotateCarrierConfigState = atom<RotateCarrierLevelConfig>({
     rotationAngle: [],
     carrier: { imageKey: "carrier", point: { x: 0, y: 0, w: 0, h: 0 } },
     questions: [],
-    obstacles: [],
-    itemExamples: [],
+    // obstacles: [],
+    // itemExamples: [],
     dirrectionExamples: [],
+    itemLevel: ITEMLEVEL.HARD,
   },
 });

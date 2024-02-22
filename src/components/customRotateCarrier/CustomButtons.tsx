@@ -13,9 +13,9 @@ interface CustomButtonsProps {
   itemSize: number;
   rotate: number;
   findDirection: boolean;
-  findExist: boolean;
+  // findExist: boolean;
   setFindDirection: (findDirection: boolean) => void;
-  setFindExist: (findExist: boolean) => void;
+  // setFindExist: (findExist: boolean) => void;
   setGridSize: (gridSize: number) => void;
   setObstacle: (obstacle: number) => void;
   setFindItem: (findItem: string[]) => void;
@@ -28,9 +28,9 @@ export default function CustomButtons({
   itemSize,
   rotate,
   findDirection,
-  findExist,
+  // findExist,
   setFindDirection,
-  setFindExist,
+  // setFindExist,
   setGridSize,
   setObstacle,
   setFindItem,
@@ -77,9 +77,9 @@ export default function CustomButtons({
     <>
       <FindItemControlButton
         findDirection={findDirection}
-        findItemExist={findExist}
+        // findItemExist={findExist}
         setFindDirection={setFindDirection}
-        setFindItemExist={setFindExist}
+        // setFindItemExist={setFindExist}
         disabled={gameState.start}
       />
       <div className="flex flex-row pt-5 items-center">

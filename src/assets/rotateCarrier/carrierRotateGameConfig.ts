@@ -4,6 +4,11 @@ export const enum ANGLE {
   ANGLE_270 = 3,
 }
 
+export const enum ITEMLEVEL {
+  EASY = 1,
+  HARD = 2,
+}
+
 export const carrier: RotateCarrierSpacePoint = {
   x: 0,
   y: 0,
@@ -65,6 +70,7 @@ export interface RotateCarrierLevelConfig {
   //obstacles: RotateCarrierItemAssets[];
   // //itemExamples: string[];
   dirrectionExamples: DirectionGroups[];
+  itemLevel: ITEMLEVEL;
 }
 
 export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
@@ -102,6 +108,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.EASY,
   },
   {
     level: 1,
@@ -137,6 +144,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.EASY,
   },
   {
     level: 2,
@@ -182,6 +190,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.EASY,
   },
   {
     level: 3,
@@ -234,6 +243,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.EASY,
   },
   {
     level: 4,
@@ -279,6 +289,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.EASY,
   },
   {
     level: 5,
@@ -350,6 +361,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.HARD,
   },
   {
     level: 6,
@@ -385,6 +397,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.HARD,
   },
   {
     level: 7,
@@ -464,6 +477,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.EASY,
   },
   {
     level: 8,
@@ -518,6 +532,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.EASY,
   },
   {
     level: 9,
@@ -597,6 +612,7 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.HARD,
   },
   {
     level: 10,
@@ -651,5 +667,6 @@ export const RotateCarrierGameLevels: RotateCarrierLevelConfig[] = [
         ],
       },
     ],
+    itemLevel: ITEMLEVEL.HARD,
   },
 ];
