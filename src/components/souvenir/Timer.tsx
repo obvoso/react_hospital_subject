@@ -22,7 +22,7 @@ export const Timer = () => {
     }, INTERVAL);
 
     // if (timeLeft === 1000 * 5) {
-      if (timeLeft === 1000 * 60 * 5) {
+    if (timeLeft === 1000 * 60 * 5) {
       clearInterval(timer);
       setGameState(false);
     }
@@ -44,7 +44,7 @@ export const Timer = () => {
   }, [gameState]);
 
   return (
-    <div className="flex absolute w-[100px] mt-4 ml-72">
+    <div className="flex absolute w-[100px] mt-7 ml-72 justify-center items-center">
       <Image
         src="/assets/souvenir/bubble.png"
         alt="시계"
@@ -53,7 +53,8 @@ export const Timer = () => {
         style={{ width: 100, height: 50 }}
         className="absolute w-[100px] h-[50px] bg-cover"
       />
-      <span className="flex mt-3 ml-5 text-xl text-bold outline-title">
+      {/*<span className="flex mt-3 ml-5 text-xl text-bold outline-title">*/}
+      <span className="flex justify-center items-center text-lg text-semibold outline-title">
         {minutes} : {second}
       </span>
     </div>

@@ -8,9 +8,5 @@ export default function SouvenirGame() {
 
   useHandleGame(engineRef);
 
-  return (
-    <div>
-      <div ref={boxRef} />
-    </div>
-  );
+  return <div>{<div ref={boxRef} />}</div>;
 }
