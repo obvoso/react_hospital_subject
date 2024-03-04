@@ -73,11 +73,13 @@ const Rank = ({
 }) => {
   return (
     <div className="flex flex-row items-center w-full justify-center h-[80px]">
-      <div className="flex flex-row items-center justify-center ml-3 gap-x-1 w-[40%]">
-        <span className="outline-title text-xl">{rank}등</span>
+      <div className="flex flex-row items-center justify-center pl-2 gap-x-1 w-[45%]">
+        <span className="flex outline-title items-center text-lg pt-1">
+          {rank}등
+        </span>
         {Icon}
       </div>
-      <span className="outline-title w-[50%] text-2xl pl-3">{score}</span>
+      <span className="outline-title w-[50%] text-2xl pl-2 pt-1">{score}</span>
     </div>
   );
 };
