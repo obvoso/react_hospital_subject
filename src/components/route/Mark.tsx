@@ -8,6 +8,7 @@ import { customRouteState } from "@/atoms/route/custom";
 import DrawMark from "./DrawMark";
 import { isTransitMark } from "@/utils/route/arraysHaveSameSequence";
 import useDrawRouteLine from "@/hooks/route/useDrawRouteLine";
+import React from "react";
 
 interface MarkProps {
   marks: Mark[];
@@ -15,7 +16,11 @@ interface MarkProps {
   clickAble: boolean;
 }
 
-export default function Mark({ marks, level, clickAble }: MarkProps) {
+export default React.memo(function Mark({
+  marks,
+  level,
+  clickAble,
+}: MarkProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const customRoute = useRecoilValue(customRouteState);
@@ -117,4 +122,4 @@ export default function Mark({ marks, level, clickAble }: MarkProps) {
       </div>
     </div>
   );
-}
+});

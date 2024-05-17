@@ -4,40 +4,49 @@ import SelectsDropDown from "./SelectsDropDown";
 import SelectsRotationAngle from "./SelectRotationAngle";
 import { DropDownButton } from "./DropDownButton";
 import { ANGLE } from "@/assets/rotateCarrier/carrierRotateGameConfig";
-import { RotateCarrierGameState } from "@/atoms/rotateCarrier/config";
+import {
+  RotateCarrierGameStartState,
+  RotateCarrierGameState,
+} from "@/atoms/rotateCarrier/config";
 import { useRecoilValue } from "recoil";
+import { useCustom } from "@/hooks/rotateCarrier/useCustom";
 
 interface CustomButtonsProps {
-  gridSize: number;
-  obstacleSize: number;
-  itemSize: number;
-  rotate: number;
   findDirection: boolean;
-  // findExist: boolean;
   setFindDirection: (findDirection: boolean) => void;
-  // setFindExist: (findExist: boolean) => void;
-  setGridSize: (gridSize: number) => void;
-  setObstacle: (obstacle: number) => void;
-  setFindItem: (findItem: string[]) => void;
-  setRotate: (rotate: number) => void;
-  setRotateAngle: (rotateAngle: number[]) => void;
 }
-export default function CustomButtons({
-  gridSize,
-  obstacleSize,
-  itemSize,
-  rotate,
+//export default function CustomButtons({
+//  gridSize,
+//  obstacleSize,
+//  itemSize,
+//  rotate,
+//  findDirection,
+//  // findExist,
+//  setFindDirection,
+//  // setFindExist,
+//  setGridSize,
+//  setObstacle,
+//  setFindItem,
+//  setRotate,
+//  setRotateAngle,
+//}: CustomButtonsProps) {
+export default React.memo(function CustomButtons({
   findDirection,
-  // findExist,
   setFindDirection,
-  // setFindExist,
-  setGridSize,
-  setObstacle,
-  setFindItem,
-  setRotate,
-  setRotateAngle,
 }: CustomButtonsProps) {
-  const gameState = useRecoilValue(RotateCarrierGameState);
+  const {
+    //level,
+    gridSize,
+    setGridSize,
+    findItem,
+    setFindItem,
+    obstacle: obstacleSize,
+    setObstacle,
+    rotate,
+    setRotate,
+    setRotateAngle,
+  } = useCustom();
+  const gameStartState = useRecoilValue(RotateCarrierGameStartState);
 
   const gridSizeOptions = [
     { label: "2칸", value: 2 },
@@ -80,7 +89,7 @@ export default function CustomButtons({
         // findItemExist={findExist}
         setFindDirection={setFindDirection}
         // setFindItemExist={setFindExist}
-        disabled={gameState.start}
+        disabled={gameStartState}
       />
       <div className="flex flex-row pt-5 items-center">
         <DropDownButton
@@ -102,9 +111,9 @@ export default function CustomButtons({
           label="방해 요소"
           curValue={obstacleSize}
           options={
-            gridSize - itemSize === 0
+            gridSize - findItem.length === 0
               ? obstacleOptions.slice(0, 1)
-              : gridSize - itemSize === 1
+              : gridSize - findItem.length === 1
               ? obstacleOptions.slice(0, 2)
               : obstacleOptions
           }
@@ -124,4 +133,4 @@ export default function CustomButtons({
       </div>
     </>
   );
-}
+});

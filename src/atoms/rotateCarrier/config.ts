@@ -2,7 +2,7 @@ import {
   ITEMLEVEL,
   RotateCarrierLevelConfig,
 } from "@/assets/rotateCarrier/carrierRotateGameConfig";
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export enum RotateCarrierStage {
   FIND_ITEM,
@@ -42,6 +42,14 @@ export const RotateCarrierGameState = atom<IRotateCarrierGame>({
     start: false,
     lastAngle: 0,
     lastDirection: -1,
+  },
+});
+
+export const RotateCarrierGameStartState = selector({
+  key: "StartState",
+  get: ({ get }) => {
+    const gameState = get(RotateCarrierGameState);
+    return gameState.start;
   },
 });
 

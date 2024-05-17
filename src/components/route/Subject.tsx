@@ -33,7 +33,6 @@ export default function Subject({ level, setSubjectInit }: SubjectProps) {
           index: subject.index + 1,
         });
       }, 70);
-
       return () => clearTimeout(timer);
     } else {
       // 서브젝트 렌더링 0.5초 후에 버스 출발
