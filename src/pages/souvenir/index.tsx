@@ -37,7 +37,7 @@ const GamePage = () => {
 
   return (
     <>
-      <Head>
+      {/*<Head>
         <link rel="preload" href="/assets/souvenir/bubble.png" as="image" />
         <link rel="preload" href="/assets/souvenir/queue.png" as="image" />
         <link rel="preload" href="/assets/souvenir/item/item0.png" as="image" />
@@ -47,7 +47,7 @@ const GamePage = () => {
         <link rel="preload" href="/assets/souvenir/item/item4.png" as="image" />
         <link rel="preload" href="/assets/souvenir/item/item5.png" as="image" />
         <link rel="preload" href="/assets/souvenir/item/item6.png" as="image" />
-      </Head>
+      </Head>*/}
       <div className="flex h-screen justify-center min-w-max bg-[#FFF2CC]">
         {gameState === false && <GameEndModal />}
         <div
