@@ -29,13 +29,15 @@ export default function RoutePage() {
   }
 
   return (
-    <div
-      style={{
-        transform: `scale(${scale})`,
-        transformOrigin: "center top",
-      }}
-    >
-      <Route level={Number(level)} key={Number(level)} />
-    </div>
+    <>
+      <div
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: "center top",
+        }}
+      >
+        <Route level={Number(level)} key={Number(level)} />
+      </div>
+    </>
   );
 }

@@ -91,7 +91,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     speed: Speed.FAST,
     invalidGrid: InvalidGridMap2,
     background: "map2",
-    subject: "",
+    subject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
   },
   {
     level: 7,
@@ -126,7 +126,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     speed: Speed.FAST,
     invalidGrid: InvalidGridMap2,
     background: "map2",
-    subject: "",
+    subject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
   },
   {
     level: 10,
@@ -137,7 +137,7 @@ export const routeGameConfigList: RouteGameConfig[] = [
     speed: Speed.FAST,
     invalidGrid: InvalidGridMap2,
     background: "map2",
-    subject: "",
+    subject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
   },
   // 3단계 영상
   {

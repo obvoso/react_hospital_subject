@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import shuffleArray from "@/utils/arrayShuffle";
 import { Mark } from "@/type/route/Mark";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { subjectState } from "@/atoms/route/game";
 import { Direction } from "@/type/route/routeGameConfigType";
 import { arraysHaveSameSequence } from "@/utils/route/arraysHaveSameSequence";
@@ -25,7 +25,7 @@ export default function useObstacleRoute({
   setAnimationDone,
   config,
 }: params) {
-  const [subject, setSubject] = useRecoilState(subjectState);
+  const setSubject = useSetRecoilState(subjectState);
 
   // 첫번째 경로 할당
   useEffect(() => {
@@ -33,20 +33,13 @@ export default function useObstacleRoute({
     setCurrentRoute(mark);
     setOtherRoute([]);
     setAnimationDone(false);
-    if (
-      config.obstacle &&
-      config.level < 13 &&
-      subject.fullSubject.length === 0
-    ) {
+    if (config.obstacle && config.level < 13) {
       setSubject({
         fullSubject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
         typing: "",
         index: 0,
       });
-    } else if (
-      config.obstacle &&
-      (config.level >= 13 || subject.fullSubject.length !== 0)
-    ) {
+    } else if (config.obstacle && config.level >= 13) {
       setSubject({
         fullSubject: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",
         typing: "각 버스와 택시가 이동하는 경로를 모두 기억해주세요.",

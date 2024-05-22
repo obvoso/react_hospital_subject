@@ -21,7 +21,6 @@ export const useCustom = () => {
   const [rotateAngle, setRotateAngle] = useState<number[]>([1]);
   const [config, setConfig] = useRecoilState(RotateCarrierConfigState);
   const resetConfig = useResetRecoilState(RotateCarrierConfigState);
-  const [gameState, setGameState] = useRecoilState(RotateCarrierGameState);
   const resetGameState = useResetRecoilState(RotateCarrierGameState);
   const [level, setLevel] = useState(0);
   const [randomIndex, setRandomIndex] = useState<number[]>([0, 1]);
@@ -46,6 +45,7 @@ export const useCustom = () => {
   }, [gridSize]);
 
   useEffect(() => {
+    if (findItem.length === 0) return;
     setLevel(9 + gridSize + obstacle + rotate + findItem.length);
     setConfig({
       level: 9 + gridSize + obstacle + rotate + findItem.length,
@@ -212,6 +212,5 @@ export const useCustom = () => {
     rotate,
     setRotate,
     setRotateAngle,
-    gameState,
   };
 };
