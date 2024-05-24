@@ -1,5 +1,5 @@
 import { routeGameConfigList } from "@/assets/route/routeGameConfig";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import Mark from "./Mark";
 import { MapWidth, MapHeight, Mark as IMark } from "@/type/route/Mark";
 import { useAnimate } from "@/hooks/route/useAnimate";
@@ -25,6 +25,7 @@ const DrawMarkAndCanvas = ({
   const { mark } = useRandomMark({ level, gridInitFlag });
   const [otherRoute, setOtherRoute] = useState<IMark[]>([]);
   const [currentRoute, setCurrentRoute] = useState<IMark[]>([]);
+  const memoizedMarks = useMemo(() => currentRoute, [currentRoute]);
 
   const { animationDone, setAnimationDone } = useAnimate({
     level,
@@ -56,7 +57,7 @@ const DrawMarkAndCanvas = ({
         }`}
         key={level}
       >
-        <Mark marks={currentRoute} level={level} clickAble={animationDone} />
+        <Mark marks={memoizedMarks} level={level} clickAble={animationDone} />
         <canvas ref={canvasRef} width={MapWidth} height={MapHeight}></canvas>
       </div>
     </>
